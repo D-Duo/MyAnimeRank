@@ -48,7 +48,7 @@ class TitleItemDisplay extends StatelessWidget {
             height: 200,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage(title.imagePath),
+                image: NetworkImage(title.imagePath),
                 fit: BoxFit.cover,
               ),
             ),

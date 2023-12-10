@@ -28,7 +28,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
         height: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: AssetImage(character.mainImagePaths[mainImageIndex]),
+            image: NetworkImage(character.mainImagePaths[mainImageIndex]),
             fit: BoxFit.cover,
           ),
         ),
@@ -43,7 +43,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
               height: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: AssetImage(character.mainImagePaths[mainImageIndex]),
+                  image: NetworkImage(character.mainImagePaths[mainImageIndex]),
                   fit: BoxFit.fitHeight,
                 ),
               ),

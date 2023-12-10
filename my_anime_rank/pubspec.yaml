@@ -36,6 +36,7 @@ dependencies:
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
   expandable: ^5.0.1
+  http: ^1.1.2
 
 dev_dependencies:
   flutter_test:
@@ -60,28 +61,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-   - assets/images/BoaHancock/BoaHancock.jpg
-   - assets/images/BoaHancock/BoaHancock_2.jpg
-   - assets/images/BoaHancock/Boa_Close.jpg
-   - assets/images/BoaHancock/BoaHancockDance.gif
-   - assets/images/BoaHancock/OnePiece.jpg
-   - assets/images/BoaHancock/OnePieceStampede.jpg
-   - assets/images/Power/Power.jpg
-   - assets/images/Power/Power_2.jpg
-   - assets/images/Power/Power_Close.jpg
-   - assets/images/Power/ChainsawMan.jpg
-   - assets/images/Asuna/Asuna.jpg
-   - assets/images/Asuna/Asuna_2.jpg
-   - assets/images/Asuna/Asuna_Close.jpg
-   - assets/images/Asuna/SAO_1.jpg
-   - assets/images/Asuna/SAO_2.jpg
-   - assets/images/Asuna/SAO_OrdinalScale.jpg
-   - assets/images/Asuna/SAO_Alicization.jpg
-   - assets/images/Asuna/SAO_WarOfUnderworld.jpg
-   - assets/images/Asuna/SAO_WarOfUnderworld_2.jpg
-   - assets/images/Asuna/SAO_HoshiNakiYoruNoAria.jpg
-   - assets/characters.json
+  # assets:
+  #  - assets/images/BoaHancock/BoaHancock.jpg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

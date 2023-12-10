@@ -32,7 +32,7 @@ class CharacterGridItem extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
           child: Image(
-            image: AssetImage(character.mainImagePaths.first),
+            image: NetworkImage(character.mainImagePaths.first),
             fit: BoxFit.cover,
           ),
         ),

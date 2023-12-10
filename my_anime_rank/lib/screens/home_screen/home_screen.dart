@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/character.dart';
 import 'package:my_anime_rank/screens/home_screen/widgets/character_gridItem.dart';
 
-Future<List<Character>> characters = loadCharacters();
+//Future<List<Character>> characters = loadCharactersLocal();
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
