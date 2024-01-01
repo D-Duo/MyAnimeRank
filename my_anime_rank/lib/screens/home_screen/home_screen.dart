@@ -13,14 +13,44 @@ class HomeScreen extends StatelessWidget {
     //final itemsPerRow = (screenSize.width / 150).floor();
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 29, 42, 59),
+      backgroundColor: const Color.fromARGB(255, 29, 42, 59),      
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 19, 28, 39),
         title: const Text(
           "Pick your waifu:",
           style: TextStyle(
             color: Colors.white,
-          ),
+          ),          
+        ),
+      ),
+      bottomNavigationBar: BottomAppBar(
+        height: 50,
+        color: Color.fromARGB(255, 29, 42, 59), // Set the color of the BottomAppBar
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            IconButton(
+              icon: Icon(Icons.person),
+              onPressed: () => Navigator.of(context)
+                    .pushNamed("/"),
+            ),
+            IconButton(
+              icon: Icon(Icons.search),
+              onPressed: () => Navigator.of(context)
+                    .pushNamed("/discoverDemo"),
+            ),
+            IconButton(
+              icon: Icon(Icons.calendar_today_rounded),
+              onPressed: () => Navigator.of(context)
+                    .pushNamed("/"),
+            ),
+            IconButton(
+              icon: Icon(Icons.format_list_bulleted_rounded),
+              onPressed: () => Navigator.of(context)
+                    .pushNamed("/"),
+            ),
+          ],
         ),
       ),
       body: FutureBuilder(

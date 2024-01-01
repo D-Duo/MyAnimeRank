@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/screens/home_screen/home_screen.dart';
 import 'package:my_anime_rank/screens/character_screen/character_screen.dart';
+import 'package:my_anime_rank/discover_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,6 +17,7 @@ class MyApp extends StatelessWidget {
       routes: {
         "/": (_) => const HomeScreen(),
         "/characterDemo": (_) => const CharacterScreen(),
+        "/discoverDemo": (_) => const DiscoverScreen(),
       },
     );
   }
