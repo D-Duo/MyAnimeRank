@@ -1,0 +1,74 @@
+{
+    "profiles": [
+        {
+            "nickname": "itsnick69itsbig",
+            "profileImage": "https://w0.peakpx.com/wallpaper/880/618/HD-wallpaper-yuuki-asuna-pretty-bread-adorable-sweet-nice-anime-anime-girl-long-hair-yuuki-lovely-food-chibi-braids-cute-asuna-yuuki-asuna-white-eating-knight-dress-brown-hungry-adore-eat.jpg",
+            "mail": "kikofp02@gmail.com",
+            "password": "contraseñasupersegura123",
+            "birthday": {
+                "day": 1,
+                "month": 5,
+                "year": 2002
+            },
+            "location": {
+                "country": "Spain",
+                "city": "Barcelona"
+            },
+            "animeRanklist": [
+                {
+                    "id": 124381,
+                    "rank": 1
+                },
+                {
+                    "id": 40882,
+                    "rank": 2
+                }
+            ],
+            "characterRanklist": [
+                {
+                    "id": 124381,
+                    "rank": 1
+                },
+                {
+                    "id": 40882,
+                    "rank": 2
+                }
+            ]
+        },
+        {
+            "nickname": "punto16",
+            "profileImage": "https://cdn.discordapp.com/attachments/1132412424365019219/1191693264366096494/99800056.png?ex=65a65dd6&is=6593e8d6&hm=63b0ab054e82c12e47040b500dd0bc8ad2c033b750a3195e1c2b93569503fdaf&",
+            "mail": "lluis.gora@gmail.com",
+            "password": "contraseñapocosegura123",
+            "birthday": {
+                "day": 20,
+                "month": 8,
+                "year": 2003
+            },
+            "location": {
+                "country": "Spain",
+                "city": "Barcelona"
+            },
+            "animeRanklist": [
+                {
+                    "id": 124381,
+                    "rank": 1
+                },
+                {
+                    "id": 40882,
+                    "rank": 2
+                }
+            ],
+            "characterRanklist": [
+                {
+                    "id": 124381,
+                    "rank": 1
+                },
+                {
+                    "id": 40882,
+                    "rank": 2
+                }
+            ]
+        }
+    ]
+}
