@@ -12,6 +12,7 @@ class TitleItem {
 }
 
 class Character {
+  int? apiId;
   final String name;
   final String descriptionShort;
   final String? descriptionLong;
@@ -34,7 +35,8 @@ class Character {
         rank = rank_?.toString() ?? "Unranked";
 
   Character.fromJsonRemote(Map<String, dynamic> json)
-      : name = json["name"]["full"],
+      : apiId = json["id"],
+        name = json["name"]["full"],
         descriptionShort = json["description"],
         descriptionLong = json["descriptionLong"],
         bestAlias = json["name"]["alternative"][0],
@@ -49,8 +51,9 @@ class Character {
             .toList();
 }
 
-
 Future<Character> loadCharacterRemote(int characterId) async {
+  dynamic lastException;
+
   final query = '''
       query (\$id: Int) {
         Character (id: \$id) {
@@ -83,12 +86,22 @@ Future<Character> loadCharacterRemote(int characterId) async {
     body: json.encode(body),
   );
 
-  final data = json.decode(response.body);
-  final characterJson = data['data']['Character'];
-  final character = Character.fromJsonRemote(characterJson);
-
-  return character;
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    final characterJson = data['data']['Character'];
+    final character = Character.fromJsonRemote(characterJson);
+    return character;
+  } else if (response.statusCode == 429) {
+    final retryAfter = response.headers['retry-after'];
+    lastException = '''Error in loadCharacterRemote: ${response.statusCode}. Surpassed requests per minute limit.
+    Retry after ${retryAfter ?? 'unknown'} seconds pressing the next button.''';
+    return Future.error(lastException); // Return an error future
+  } else {
+    lastException = ('Error in loadCharacterRemote: ${response.statusCode}. Retry pressing the next button.');
+    return Future.error(lastException); // Return an error future
+  }
 }
+
 
 Future<List<Character>> loadCharacters() async {
   List<Future<Character>> characterFutures = [
@@ -113,7 +126,7 @@ Future<List<Character>> loadCharacters() async {
     loadCharacterRemote(88750),
     loadCharacterRemote(88749),
   ];
-  
+
   List<Character> characters = await Future.wait(characterFutures);
 
   return characters;

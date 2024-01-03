@@ -8,16 +8,70 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      routes: {
-        "/": (_) => const HomeScreen(),
-        "/characterDemo": (_) => const CharacterScreen(),
-        "/discoverDemo": (_) => const DiscoverScreen(),
+      initialRoute: '/',
+      onGenerateRoute: (settings) {
+        switch (settings.name) {
+          case '/':
+            return PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const HomeScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                // Customize the transition for the characterDemo route
+                // You can use different transition effects for each route
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            );
+          case '/characterDemo':
+            return PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const CharacterScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                // Customize the transition for the characterDemo route
+                // You can use different transition effects for each route
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+              settings: RouteSettings(
+                arguments: settings.arguments as int,
+              ),
+            );
+          case '/discoverDemo':
+            return PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const DiscoverScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                // Customize the transition for the characterDemo route
+                // You can use different transition effects for each route
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            );
+          default:
+            // If the route is not found, you can return a default page or navigate to an error page
+            return MaterialPageRoute(
+              builder: (context) => Scaffold(
+                body: Center(
+                  child: Text('Route not found'),
+                ),
+              ),
+            );
+        }
       },
     );
   }

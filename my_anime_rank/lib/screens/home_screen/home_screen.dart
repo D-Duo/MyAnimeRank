@@ -4,8 +4,27 @@ import 'package:my_anime_rank/screens/home_screen/widgets/character_gridItem.dar
 
 //Future<List<Character>> characters = loadCharactersLocal();
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late Future<List<Character>> _charactersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _charactersFuture = loadCharacters();
+  }
+
+  Future<void> _reloadData() async {
+    setState(() {
+      _charactersFuture = loadCharacters();
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -13,48 +32,51 @@ class HomeScreen extends StatelessWidget {
     //final itemsPerRow = (screenSize.width / 150).floor();
 
     return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 29, 42, 59),      
+      backgroundColor: const Color.fromARGB(255, 29, 42, 59),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 19, 28, 39),
         title: const Text(
           "Pick your waifu:",
           style: TextStyle(
             color: Colors.white,
-          ),          
+          ),
         ),
       ),
       bottomNavigationBar: BottomAppBar(
         height: 50,
-        color: Color.fromARGB(255, 29, 42, 59), // Set the color of the BottomAppBar
+        color: const Color.fromARGB(
+            255, 29, 42, 59), // Set the color of the BottomAppBar
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             IconButton(
-              icon: Icon(Icons.person),
-              onPressed: () => Navigator.of(context)
-                    .pushNamed("/"),
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                // Handle favorite button press
+              },
             ),
             IconButton(
-              icon: Icon(Icons.search),
-              onPressed: () => Navigator.of(context)
-                    .pushNamed("/discoverDemo"),
+              icon: const Icon(Icons.search),
+              onPressed: () => Navigator.of(context).pushNamed("/discoverDemo"),
             ),
             IconButton(
-              icon: Icon(Icons.calendar_today_rounded),
-              onPressed: () => Navigator.of(context)
-                    .pushNamed("/"),
+              icon: const Icon(Icons.calendar_today_rounded),
+              onPressed: () {
+                // Handle favorite button press
+              },
             ),
             IconButton(
-              icon: Icon(Icons.format_list_bulleted_rounded),
-              onPressed: () => Navigator.of(context)
-                    .pushNamed("/"),
+              icon: const Icon(Icons.format_list_bulleted_rounded),
+              onPressed: () {
+                // Handle favorite button press
+              },
             ),
           ],
         ),
       ),
       body: FutureBuilder(
-        future: loadCharacters(),
+        future: _charactersFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -62,7 +84,17 @@ class HomeScreen extends StatelessWidget {
             );
           } else if (snapshot.hasError) {
             return Center(
-              child: Text('Error: ${snapshot.error}'),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Text('Error: ${snapshot.error}'),
+                    const SizedBox(height: 20,),
+                    IconButton(
+                      icon: const Icon(Icons.refresh_sharp),
+                      onPressed: _reloadData,
+                    ),
+                  ],
+                ),
             );
           } else if (!snapshot.hasData) {
             return const Center(
@@ -81,8 +113,8 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () => Navigator.of(context)
-                    .pushNamed("/characterDemo", arguments: characters[index]),
+                onTap: () => Navigator.of(context).pushNamed("/characterDemo",
+                    arguments: characters[index].apiId),
                 child: CharacterGridItem(
                   character: characters[index],
                 ),

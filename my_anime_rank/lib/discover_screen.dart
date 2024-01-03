@@ -26,8 +26,9 @@ class DiscoverScreen extends StatelessWidget {
             ),
             IconButton(
               icon: Icon(Icons.search),
-              onPressed: () => Navigator.of(context)
-                    .pushNamed("/discoverDemo"),
+              onPressed: () {
+                // Handle favorite button press
+              },
             ),
             IconButton(
               icon: Icon(Icons.calendar_today_rounded),

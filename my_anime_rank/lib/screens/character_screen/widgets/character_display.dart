@@ -14,7 +14,7 @@ class CharacterDisplay extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    double scalingFactor = (screenSize.width) * 0.002;
+    //double scalingFactor = (screenSize.width) * 0.002;
     final double sidesPadding =
         screenSize.width <= 440 ? 20 :  20 + ((screenSize.width - 440) / 60) * 20;
     return Container(
