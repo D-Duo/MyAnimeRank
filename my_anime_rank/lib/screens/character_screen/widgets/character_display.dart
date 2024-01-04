@@ -119,14 +119,14 @@ class CharacterDisplay extends StatelessWidget {
                     const SizedBox(
                       height: 20,
                     ),
-                    Text(
-                      "WaifuTracker.net is a property of KikoFP Co.,Ltd. ©2023 All Rights Reserved.",
+                    const Text(
+                      "MyAnimeRank is a property of D.Duo Co.,Ltd. ©2023 All Rights Reserved.",
                       style: TextStyle(
                         color: Colors.white,
                         fontSize: 10,
                       ),
                     ),
-                    Text(
+                    const Text(
                       "This site is protected by Me and Myself and I.",
                       style: TextStyle(
                         color: Colors.white,

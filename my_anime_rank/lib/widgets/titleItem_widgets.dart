@@ -40,42 +40,46 @@ class TitleItemDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 150,
-      child: Column(
-        children: [
-          Container(
-            height: 200,
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(title.imagePath),
-                fit: BoxFit.cover,
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pushNamed("/animeDemo",
+                    arguments: title.apiId),
+      child: Container(
+        width: 150,
+        child: Column(
+          children: [
+            Container(
+              height: 200,
+              decoration: BoxDecoration(
+                image: DecorationImage(
+                  image: NetworkImage(title.imagePath),
+                  fit: BoxFit.cover,
+                ),
               ),
+              margin: const EdgeInsets.all(8.0),
             ),
-            margin: const EdgeInsets.all(8.0),
-          ),
-          Align(
-            alignment: Alignment.topLeft,
-            child: Container(
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(10)),
-                color: Color.fromARGB(255, 54, 85, 131),
-              ),
-              margin: const EdgeInsets.only(left: 10, right: 10),
-              child: Padding(
-                padding: const EdgeInsets.all(5),
-                child: Text(
-                  title.title,
-                  style: const TextStyle(
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
-                    color: Color.fromARGB(255, 174, 184, 197),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Container(
+                decoration: const BoxDecoration(
+                  borderRadius: BorderRadius.all(Radius.circular(10)),
+                  color: Color.fromARGB(255, 54, 85, 131),
+                ),
+                margin: const EdgeInsets.only(left: 10, right: 10),
+                child: Padding(
+                  padding: const EdgeInsets.all(5),
+                  child: Text(
+                    title.title,
+                    style: const TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold,
+                      color: Color.fromARGB(255, 174, 184, 197),
+                    ),
                   ),
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }

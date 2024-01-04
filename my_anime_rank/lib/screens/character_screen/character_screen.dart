@@ -15,6 +15,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
   int mainImageIndex = 0;
 
   late Future<Character> _characterFuture;
+  bool _initialized = false;
 
   Future<void> _reloadData(int charId) async {
     setState(() {
@@ -26,13 +27,16 @@ class _CharacterScreenState extends State<CharacterScreen> {
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     final int charId = ModalRoute.of(context)!.settings.arguments as int;
-    _characterFuture = loadCharacterRemote(charId);
+    if (!_initialized) {
+      _characterFuture = loadCharacterRemote(charId);
+      _initialized = true;
+    }
 
     // Main screen scafold
     return Scaffold(
       // Container for the background image
       body: FutureBuilder(
-        future:  _characterFuture,
+        future: _characterFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -42,15 +46,17 @@ class _CharacterScreenState extends State<CharacterScreen> {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Error: ${snapshot.error}'),
-                    const SizedBox(height: 20,),
-                    IconButton(
-                      icon: const Icon(Icons.refresh_sharp),
-                      onPressed: () => _reloadData(charId),
-                    ),
-                  ],
-                ),
+                children: [
+                  Text('Error: ${snapshot.error}'),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.refresh_sharp),
+                    onPressed: () => _reloadData(charId),
+                  ),
+                ],
+              ),
             );
           } else if (!snapshot.hasData) {
             return const Center(
@@ -94,10 +100,6 @@ class _CharacterScreenState extends State<CharacterScreen> {
                             height: screenSize.height <= 210
                                 ? screenSize.height
                                 : screenSize.height - 210,
-                            child: Align(
-                              alignment: Alignment.centerLeft,
-                              child: SwapImagesButtons(character),
-                            ),
                           ),
                           //
                           CharacterDisplay(character: character),
@@ -113,50 +115,6 @@ class _CharacterScreenState extends State<CharacterScreen> {
           );
         },
       ),
-    );
-  }
-
-  Row SwapImagesButtons(Character character) {
-    return Row(
-      children: [
-        IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_rounded,
-            color: Colors.white,
-            size: 25,
-          ),
-          onPressed: () {
-            if ((mainImageIndex - 1) >= 0) {
-              setState(() {
-                mainImageIndex--;
-              });
-            } else {
-              setState(() {
-                mainImageIndex = character.mainImagePaths.length - 1;
-              });
-            }
-          },
-        ),
-        const Spacer(),
-        IconButton(
-          icon: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: Colors.white,
-            size: 25,
-          ),
-          onPressed: () {
-            if ((mainImageIndex + 1) < character.mainImagePaths.length) {
-              setState(() {
-                mainImageIndex++;
-              });
-            } else {
-              setState(() {
-                mainImageIndex = 0;
-              });
-            }
-          },
-        ),
-      ],
     );
   }
 }
