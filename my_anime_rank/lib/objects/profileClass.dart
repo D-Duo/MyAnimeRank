@@ -45,21 +45,12 @@ class ProfileClass {
     );
   }
 
-  // Constructor de fábrica para cargar desde un archivo
-  static ProfileClass? fromFile(String filePath) {
+  static ProfileClass fromFile() {
+    String filePath = "assets/profile.json";
     String jsonString = File(filePath).readAsStringSync();
     Map<String, dynamic> jsonData = json.decode(jsonString);
 
-    if (jsonData.containsKey('profile')) {
-      // Solo hay un perfil en el nuevo JSON
-      Map<String, dynamic> profileData = jsonData['profile'];
-
-      return ProfileClass.fromJson(profileData);
-    } else {
-      // Log de perfil no encontrado
-      print('Perfil no encontrado.');
-      return null;
-    }
+    return ProfileClass.fromJson(jsonData);
   }
 }
 

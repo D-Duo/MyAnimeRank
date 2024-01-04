@@ -52,9 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
           children: <Widget>[
             IconButton(
               icon: const Icon(Icons.person),
-              onPressed: () {
-                // Handle favorite button press
-              },
+              onPressed: () => Navigator.of(context).pushNamed("/profileDemo"),
             ),
             IconButton(
               icon: const Icon(Icons.search),
@@ -86,15 +84,17 @@ class _HomeScreenState extends State<HomeScreen> {
             return Center(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Error: ${snapshot.error}'),
-                    const SizedBox(height: 20,),
-                    IconButton(
-                      icon: const Icon(Icons.refresh_sharp),
-                      onPressed: _reloadData,
-                    ),
-                  ],
-                ),
+                children: [
+                  Text('Error: ${snapshot.error}'),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  IconButton(
+                    icon: const Icon(Icons.refresh_sharp),
+                    onPressed: _reloadData,
+                  ),
+                ],
+              ),
             );
           } else if (!snapshot.hasData) {
             return const Center(
