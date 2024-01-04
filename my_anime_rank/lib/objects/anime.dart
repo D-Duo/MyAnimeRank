@@ -136,7 +136,7 @@ Future<Anime> loadAnimeRemote(int animeId) async {
 
   const query = '''
       query (\$id: Int) {
-        Media (id: \$id) {
+        Media (id: \$id, type: ANIME) {
           id
           title {
             english (stylised: \$Boolean)

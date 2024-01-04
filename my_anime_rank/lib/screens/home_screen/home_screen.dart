@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_anime_rank/objects/character.dart';
-import 'package:my_anime_rank/screens/home_screen/widgets/character_gridItem.dart';
+import 'package:my_anime_rank/objects/preview_item.dart';
+import 'package:my_anime_rank/screens/home_screen/widgets/previewItem_gridDisplay.dart';
 
 //Future<List<Character>> characters = loadCharactersLocal();
 
@@ -12,17 +12,17 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Character>> _charactersFuture;
+  late Future<List<PreviewItem>> _charactersFuture;
 
   @override
   void initState() {
     super.initState();
-    _charactersFuture = loadCharacters();
+    _charactersFuture = loadItems();
   }
 
   Future<void> _reloadData() async {
     setState(() {
-      _charactersFuture = loadCharacters();
+      _charactersFuture = loadItems();
     });
   }
 
@@ -101,9 +101,9 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text('No data available'),
             );
           }
-          final characters = snapshot.data!;
+          final previewItems = snapshot.data!;
           return GridView.builder(
-            itemCount: characters.length,
+            itemCount: previewItems.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 250,
               crossAxisSpacing: 8,
@@ -113,10 +113,21 @@ class _HomeScreenState extends State<HomeScreen> {
             padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () => Navigator.of(context).pushNamed("/characterDemo",
-                    arguments: characters[index].apiId),
-                child: CharacterGridItem(
-                  character: characters[index],
+                onTap: () {
+                  if (previewItems[index].type == 0) {
+                    Navigator.of(context).pushNamed(
+                      "/characterDemo",
+                      arguments: previewItems[index].apiId,
+                    );
+                  } else {
+                    Navigator.of(context).pushNamed(
+                      "/animeDemo",
+                      arguments: previewItems[index].apiId,
+                    );
+                  }
+                },
+                child: PreviewItemGridDisplay(
+                  item: previewItems[index],
                 ),
               );
             },
