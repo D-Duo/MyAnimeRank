@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/anime.dart';
+import 'package:my_anime_rank/screens/anime_screen/widgets/anime_appbar.dart';
 //import 'package:my_anime_rank/screens/character_screen/widgets/anime_display.dart';
 //import 'package:my_anime_rank/screens/character_screen/widgets/anime_appbar.dart';
 import 'dart:ui';
@@ -105,7 +106,7 @@ class AnimeScreenState extends State<AnimeScreen> {
                         ],
                       ),
                       // Appbar of the screen
-                      //const CustomAppBar(),
+                      const AnimeAppBar(),
                     ],
                   ),
                 ),
