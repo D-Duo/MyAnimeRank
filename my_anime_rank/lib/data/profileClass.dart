@@ -46,36 +46,18 @@ class ProfileClass {
   }
 
   // Constructor de fábrica para cargar desde un archivo
-  static ProfileClass? fromFile(
-      String filePath, String inputMail, String inputPassword) {
+  static ProfileClass? fromFile(String filePath) {
     String jsonString = File(filePath).readAsStringSync();
     Map<String, dynamic> jsonData = json.decode(jsonString);
 
-    // Buscar el perfil por email o nickname
-    dynamic profileData;
-    try {
-      profileData = (jsonData['profiles'] as List<dynamic>)
-          .cast<Map<String, dynamic>>()
-          .firstWhere(
-            (profile) =>
-                profile['mail'] == inputMail ||
-                profile['nickname'] == inputMail,
-          );
-    } catch (e) {
-      profileData = null;
-    }
+    if (jsonData.containsKey('profile')) {
+      // Solo hay un perfil en el nuevo JSON
+      Map<String, dynamic> profileData = jsonData['profile'];
 
-    if (profileData != null) {
-      if (profileData['password'] == inputPassword) {
-        return ProfileClass.fromJson(profileData);
-      } else {
-        // Log de contraseña incorrecta
-        print('Contraseña incorrecta.');
-        return null;
-      }
+      return ProfileClass.fromJson(profileData);
     } else {
-      // Log de usuario no encontrado
-      print('Usuario no encontrado.');
+      // Log de perfil no encontrado
+      print('Perfil no encontrado.');
       return null;
     }
   }
