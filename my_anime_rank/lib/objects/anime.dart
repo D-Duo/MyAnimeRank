@@ -131,7 +131,7 @@ class Anime {
 //   final String VAname;
 //   final List<String> VAimagePath;
 
-Future<Anime> loadAnimeRemote(int characterId) async {
+Future<Anime> loadAnimeRemote(int animeId) async {
   dynamic lastException;
 
   const query = '''
@@ -196,7 +196,7 @@ Future<Anime> loadAnimeRemote(int characterId) async {
       }
     ''';
 
-  final variables = {'id': characterId};
+  final variables = {'id': animeId};
 
   final url = 'https://graphql.anilist.co';
   final headers = {
@@ -213,8 +213,8 @@ Future<Anime> loadAnimeRemote(int characterId) async {
 
   if (response.statusCode == 200) {
     final data = json.decode(response.body);
-    final characterJson = data['data']['Character'];
-    final anime = Anime.fromJsonRemote(characterJson);
+    final animeJson = data['data']['Media'];
+    final anime = Anime.fromJsonRemote(animeJson);
     return anime;
   } else if (response.statusCode == 429) {
     final retryAfter = response.headers['retry-after'];
@@ -231,24 +231,24 @@ Future<Anime> loadAnimeRemote(int characterId) async {
 
 Future<List<Anime>> loadCharacters() async {
   List<Future<Anime>> animeFuture = [
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
-    loadAnimeRemote(124381),
+    loadAnimeRemote(21), //one piece
+    loadAnimeRemote(99423), //darling in the franxx
+    loadAnimeRemote(16498), //shingeki
+    loadAnimeRemote(154587), //frieren
+    loadAnimeRemote(1535), //death note
+    loadAnimeRemote(140960), //spy x fam
+    loadAnimeRemote(11757), //sword art
+    loadAnimeRemote(21087), //one punch
+    loadAnimeRemote(127230), //chainsaw
+    loadAnimeRemote(20657), //saenai heroine
+    loadAnimeRemote(12438), //
+    loadAnimeRemote(1243), //
+    loadAnimeRemote(124), //
+    loadAnimeRemote(12), //
+    loadAnimeRemote(1), //
+    loadAnimeRemote(2), //
+    loadAnimeRemote(3), //
+    loadAnimeRemote(4), //
   ];
 
   List<Anime> animes = await Future.wait(animeFuture);
