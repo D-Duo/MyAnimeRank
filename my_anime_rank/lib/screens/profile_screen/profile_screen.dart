@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/character.dart';
+import 'package:my_anime_rank/objects/profileClass.dart';
+import 'package:my_anime_rank/providers/profile_provider.dart';
 import 'package:my_anime_rank/screens/character_screen/widgets/character_display.dart';
 import 'package:my_anime_rank/screens/character_screen/widgets/custom_appbar.dart';
 import 'dart:ui';
 
-import '/data/profiles.json';
+import 'package:provider/provider.dart';
 
 class ProfileScreen extends StatefulWidget {
   const ProfileScreen({super.key});
@@ -14,23 +16,48 @@ class ProfileScreen extends StatefulWidget {
 }
 
 class _ProfileScreenState extends State<ProfileScreen> {
-  int mainImageIndex = 0;
-
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final Character character =
-        ModalRoute.of(context)!.settings.arguments as Character;
-
+    ProfileClass profile = Provider.of<ProfileProvider>(context).profile;
     // Main screen scafold
     return Scaffold(
+      bottomNavigationBar: BottomAppBar(
+        height: 50,
+        color: const Color.fromARGB(
+            255, 29, 42, 59), // Set the color of the BottomAppBar
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            IconButton(
+              icon: const Icon(Icons.person),
+              onPressed: () {
+                // Handle favorite button press
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.search),
+              onPressed: () => Navigator.of(context).pushNamed("/discoverDemo"),
+            ),
+            IconButton(
+              icon: const Icon(Icons.calendar_today_rounded),
+              onPressed: () => Navigator.of(context).pushNamed("/"),
+            ),
+            IconButton(
+              icon: const Icon(Icons.format_list_bulleted_rounded),
+              onPressed: () => Navigator.of(context).pushNamed("/"),
+            ),
+          ],
+        ),
+      ),
       // Container for the background image
       body: Container(
         width: double.infinity,
         height: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(character.mainImagePaths[mainImageIndex]),
+            image: NetworkImage(profile.profileImage),
             fit: BoxFit.cover,
           ),
         ),
@@ -45,82 +72,28 @@ class _ProfileScreenState extends State<ProfileScreen> {
               height: double.infinity,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(character.mainImagePaths[mainImageIndex]),
+                  image: NetworkImage(profile.profileImage),
                   fit: BoxFit.fitHeight,
                 ),
               ),
               // Main ListView of the screen
-              child: Stack(
+              child: ListView(
+                scrollDirection: Axis.vertical,
                 children: [
-                  ListView(
-                    scrollDirection: Axis.vertical,
-                    children: [
-                      //Container to limit the view of the background
-                      SizedBox(
-                        height: screenSize.height <= 210
-                            ? screenSize.height
-                            : screenSize.height - 210,
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: SwapImagesButtons(character),
-                        ),
-                      ),
-                      //
-                      CharacterDisplay(character: character),
-                    ],
+                  //Container to limit the view of the background
+                  SizedBox(
+                    height: screenSize.height <= 210
+                        ? screenSize.height
+                        : screenSize.height - 210,
                   ),
-                  // Appbar of the screen
-                  const CustomAppBar(),
+                  // profile display
+                  //to do
                 ],
               ),
             ),
           ),
         ),
       ),
-    );
-  }
-
-  Row SwapImagesButtons(Character character) {
-    return Row(
-      children: [
-        IconButton(
-          icon: const Icon(
-            Icons.arrow_back_ios_rounded,
-            color: Colors.white,
-            size: 25,
-          ),
-          onPressed: () {
-            if ((mainImageIndex - 1) >= 0) {
-              setState(() {
-                mainImageIndex--;
-              });
-            } else {
-              setState(() {
-                mainImageIndex = character.mainImagePaths.length - 1;
-              });
-            }
-          },
-        ),
-        const Spacer(),
-        IconButton(
-          icon: const Icon(
-            Icons.arrow_forward_ios_rounded,
-            color: Colors.white,
-            size: 25,
-          ),
-          onPressed: () {
-            if ((mainImageIndex + 1) < character.mainImagePaths.length) {
-              setState(() {
-                mainImageIndex++;
-              });
-            } else {
-              setState(() {
-                mainImageIndex = 0;
-              });
-            }
-          },
-        ),
-      ],
     );
   }
 }
