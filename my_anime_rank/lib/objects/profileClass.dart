@@ -1,17 +1,49 @@
 import 'dart:convert';
-import 'dart:io';
+import 'package:flutter/services.dart' show rootBundle;
 
-class ProfileClass {
+class RankListItem {
+  int id;
+  int rank;
+
+  RankListItem({
+    required this.id,
+    required this.rank,
+  });
+}
+
+class ProfileDate {
+  int day;
+  int month;
+  int year;
+
+  ProfileDate({
+    required this.day,
+    required this.month,
+    required this.year,
+  });
+}
+
+class ProfileLocation {
+  String country;
+  String city;
+
+  ProfileLocation({
+    required this.country,
+    required this.city,
+  });
+}
+
+class Profile {
   String nickname;
   String profileImage;
   String mail;
   String password;
   ProfileDate birthday;
   ProfileLocation location;
-  List<ProfileRankListInfo> animeRankList;
-  List<ProfileRankListInfo> characterRankList;
+  List<RankListItem>? animeRankList;
+  List<RankListItem>? characterRankList;
 
-  ProfileClass({
+  Profile({
     required this.nickname,
     required this.profileImage,
     required this.mail,
@@ -22,84 +54,36 @@ class ProfileClass {
     required this.characterRankList,
   });
 
-  factory ProfileClass.fromJson(Map<String, dynamic> json) {
-    List<ProfileRankListInfo> animeRankList =
-        (json['animeRanklist'] as List<dynamic>)
-            .map((item) => ProfileRankListInfo.fromJson(item))
+  Profile.fromJson(Map<String, dynamic> json)
+      : nickname = json["nickname"],
+        profileImage = json["profileImage"],
+        mail = json["mail"],
+        password = json["password"],
+        birthday = ProfileDate(
+            day: json["birthday"]["day"],
+            month: json["birthday"]["month"],
+            year: json["birthday"]["year"]),
+        location = ProfileLocation(
+            country: json["location"]["country"],
+            city: json["location"]["city"]),
+        animeRankList = (json["filmography"] as List<dynamic>?)
+            ?.map<RankListItem>((item) => RankListItem(
+                  id: item["title"] as int,
+                  rank: item["imagePath"] as int,
+                ))
+            .toList(),
+        characterRankList = (json["filmography"] as List<dynamic>?)
+            ?.map<RankListItem>((item) => RankListItem(
+                  id: item["title"] as int,
+                  rank: item["imagePath"] as int,
+                ))
             .toList();
-
-    List<ProfileRankListInfo> characterRankList =
-        (json['characterRanklist'] as List<dynamic>)
-            .map((item) => ProfileRankListInfo.fromJson(item))
-            .toList();
-
-    return ProfileClass(
-      nickname: json['nickname'],
-      profileImage: json['profileImage'],
-      mail: json['mail'],
-      password: json['password'],
-      birthday: ProfileDate.fromJson(json['birthday']),
-      location: ProfileLocation.fromJson(json['location']),
-      animeRankList: animeRankList,
-      characterRankList: characterRankList,
-    );
-  }
-
-  static ProfileClass fromFile() {
-    String filePath = "assets/profile.json";
-    String jsonString = File(filePath).readAsStringSync();
-    Map<String, dynamic> jsonData = json.decode(jsonString);
-
-    return ProfileClass.fromJson(jsonData);
-  }
 }
 
-class ProfileDate {
-  int day, month, year;
+Future<Profile> loadProfile() async {
+  final jsonString = await rootBundle.loadString('assets/profile.json');
+  final jsonData = jsonDecode(jsonString);
 
-  ProfileDate({
-    required this.day,
-    required this.month,
-    required this.year,
-  });
-
-  factory ProfileDate.fromJson(Map<String, dynamic> json) {
-    return ProfileDate(
-      day: json['day'],
-      month: json['month'],
-      year: json['year'],
-    );
-  }
-}
-
-class ProfileLocation {
-  String country, city;
-
-  ProfileLocation({
-    required this.country,
-    required this.city,
-  });
-
-  factory ProfileLocation.fromJson(Map<String, dynamic> json) {
-    return ProfileLocation(
-      country: json['country'],
-      city: json['city'],
-    );
-  }
-}
-
-class ProfileRankListInfo {
-  int id, rank;
-
-  ProfileRankListInfo({
-    required this.id,
-    required this.rank,
-  });
-
-  factory ProfileRankListInfo.fromJson(Map<String, dynamic> json) {
-    return ProfileRankListInfo(
-      id: json['id'],
-      rank: json['rank'],
-    );
-  }
+  Profile profile = Profile.fromJson(jsonData);
+  return profile;
 }

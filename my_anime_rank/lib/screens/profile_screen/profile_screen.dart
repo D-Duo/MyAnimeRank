@@ -19,7 +19,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    ProfileClass profile = Provider.of<ProfileProvider>(context).profile;
+    Profile profile = Provider.of<ProfileProvider>(context).profile;
     // Main screen scafold
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
