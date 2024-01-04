@@ -60,9 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             IconButton(
               icon: const Icon(Icons.calendar_today_rounded),
-              onPressed: () {
-                // Handle favorite button press
-              },
+              onPressed: () => Navigator.of(context).pushNamed("/seasonalDemo"),
             ),
             IconButton(
               icon: const Icon(Icons.format_list_bulleted_rounded),

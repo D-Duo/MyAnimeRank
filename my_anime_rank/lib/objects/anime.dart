@@ -44,8 +44,7 @@ class Anime {
   final String type;
   final String format;
   final String status;
-  final String descriptionShort;
-  final String? descriptionLong;
+  final String description;
   final int startDateYear;
   final int startDateMonth;
   final int endDateYear;
@@ -59,7 +58,6 @@ class Anime {
   final int statsScore;
   final int statsAmount;
   final int favs;
-  final String rank;
   final List<CharacterItem>? character;
 
   Anime({
@@ -67,8 +65,7 @@ class Anime {
     required this.type,
     required this.format,
     required this.status,
-    required this.descriptionShort,
-    this.descriptionLong,
+    required this.description,
     required this.startDateYear,
     required this.startDateMonth,
     required this.endDateYear,
@@ -82,19 +79,16 @@ class Anime {
     required this.statsScore,
     required this.statsAmount,
     int? favs_,
-    int? rank_,
     this.character,
-  })  : favs = favs_ ?? 0,
-        rank = rank_?.toString() ?? "Unranked";
+  }) : favs = favs_ ?? 0;
 
   Anime.fromJsonRemote(Map<String, dynamic> json)
       : apiId = json["id"],
-        title = json["title"]["english"],
+        title = json["title"]["romaji"],
         type = json["type"],
         format = json["format"],
         status = json["status"],
-        descriptionShort = json["description"],
-        descriptionLong = json["descriptionLong"],
+        description = json["description"],
         startDateYear = json["startDate"]["year"],
         startDateMonth = json["startDate"]["month"],
         endDateYear = json["endDate"]["year"],
@@ -102,13 +96,14 @@ class Anime {
         season = json["season"],
         episodes = json["episodes"],
         source = json["source"],
-        mainImagePaths = [json["image"]["large"]],
+        mainImagePaths = [json["coverImage"]["large"]],
         genres = json["genres"],
-        studios = json["studios"]["nodes"],
-        statsScore = json["scoreDistribution"]["score"],
-        statsAmount = json["scoreDistribution"]["amount"],
+        studios = (json["studios"]["nodes"] as List<dynamic>)
+            .map<String>((studio) => studio["name"] as String)
+            .toList(),
+        statsScore = json["stats"]["scoreDistribution"]["score"],
+        statsAmount = json["stats"]["scoreDistribution"]["amount"],
         favs = json["favourites"] ?? 0,
-        rank = json["rank"] ?? "Unranked",
         character = (json["characters"]["edges"] as List<dynamic>?)
             ?.map<CharacterItem>((item) {
           final node = item["node"];
@@ -116,11 +111,11 @@ class Anime {
             Cname: node["name"]["full"] as String,
             CimagePath: node["image"] as String,
             role: item["role"] as String,
-            VAname: (node["voiceActors"] as List<dynamic>).isNotEmpty
-                ? node["voiceActors"][0]["name"]["full"] as String
+            VAname: (item["voiceActors"] != null)
+                ? item["voiceActors"]["name"]["full"] as String
                 : "",
-            VAimagePath: (node["voiceActors"] as List<dynamic>).isNotEmpty
-                ? node["voiceActors"][0]["image"] as String
+            VAimagePath: (item["voiceActors"] != null)
+                ? item["voiceActors"]["image"] as String
                 : "",
           );
         }).toList();
@@ -139,12 +134,12 @@ Future<Anime> loadAnimeRemote(int animeId) async {
         Media (id: \$id, type: ANIME) {
           id
           title {
-            english (stylised: \$Boolean)
+            romaji
           }
           type
           format
-          status (\$version: Int)
-          description (\$asHtml: Boolean)
+          status
+          description (asHtml: false)
           startDate {
             year
             month
@@ -155,32 +150,36 @@ Future<Anime> loadAnimeRemote(int animeId) async {
           }
           season
           episodes
-          source (\$version: Int)
+          source
           coverImage {
             large
           }
           genres
           favourites
-          characters (\$sort: [CharacterSort]) {
+          characters (sort: [MAIN]) {
             edges {
               node {
                 id
                 name {
                   full
                 }
-                image
+                image {
+                  large
+                }
               }
               role
-              voiceActors {
+              voiceActors (language: JAPANESE) {
                 id
                 name {
                   full
                 }
-                image
+                image {
+                  large
+                }
               }
             }    
           }
-          studios (\$sort: [StudioSort]) {
+          studios {
             nodes {
               name
             }
@@ -229,26 +228,26 @@ Future<Anime> loadAnimeRemote(int animeId) async {
   }
 }
 
-Future<List<Anime>> loadCharacters() async {
+Future<List<Anime>> loadAnimes() async {
   List<Future<Anime>> animeFuture = [
     loadAnimeRemote(21), //one piece
     loadAnimeRemote(99423), //darling in the franxx
     loadAnimeRemote(16498), //shingeki
     loadAnimeRemote(154587), //frieren
-    loadAnimeRemote(1535), //death note
-    loadAnimeRemote(140960), //spy x fam
-    loadAnimeRemote(11757), //sword art
-    loadAnimeRemote(21087), //one punch
-    loadAnimeRemote(127230), //chainsaw
-    loadAnimeRemote(20657), //saenai heroine
-    loadAnimeRemote(12438), //
-    loadAnimeRemote(1243), //
-    loadAnimeRemote(124), //
-    loadAnimeRemote(12), //
-    loadAnimeRemote(1), //
-    loadAnimeRemote(2), //
-    loadAnimeRemote(3), //
-    loadAnimeRemote(4), //
+    //loadAnimeRemote(1535), //death note
+    //loadAnimeRemote(140960), //spy x fam
+    //loadAnimeRemote(11757), //sword art
+    //loadAnimeRemote(21087), //one punch
+    //loadAnimeRemote(127230), //chainsaw
+    //loadAnimeRemote(20657), //saenai heroine
+    //loadAnimeRemote(12438), //
+    //loadAnimeRemote(1243), //
+    //loadAnimeRemote(124), //
+    //loadAnimeRemote(12), //
+    //loadAnimeRemote(1), //
+    //loadAnimeRemote(2), //
+    //loadAnimeRemote(3), //
+    //loadAnimeRemote(4), //
   ];
 
   List<Anime> animes = await Future.wait(animeFuture);

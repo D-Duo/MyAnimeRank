@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/anime.dart';
 
-class SeasonalScreen extends StatelessWidget {
-  const SeasonalScreen({
+class AnimeGridItem extends StatelessWidget {
+  const AnimeGridItem({
     super.key,
     required this.anime,
   });
