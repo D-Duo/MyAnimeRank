@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/anime.dart';
+import 'package:my_anime_rank/screens/anime_screen/widgets/anime_general_info.dart';
+import 'package:my_anime_rank/screens/anime_screen/widgets/anime_subtitle.dart';
 import 'package:my_anime_rank/widgets/custom_expandable.dart';
+
+const double paddingSpace = 20;
 
 class AnimeDescription extends StatelessWidget {
   const AnimeDescription({
@@ -9,6 +13,8 @@ class AnimeDescription extends StatelessWidget {
   });
 
   final Anime anime;
+
+  SizedBox _space(double h) => SizedBox(height: h);
 
   @override
   Widget build(BuildContext context) {
@@ -89,25 +95,35 @@ class AnimeDescription extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  Text(
-                    "${anime.favs}, ${anime.startDateYear}",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        "${anime.favs}, ${anime.startDateYear}",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
-                  Text(
-                    anime.status,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Color.fromARGB(255, 0, 204, 174),
+                  Center(
+                    child: Text(
+                      anime.status,
+                      style: const TextStyle(
+                        fontSize: 16,
+                        color: Color.fromARGB(255, 0, 204, 174),
+                      ),
                     ),
                   ),
-                  Text(
-                    "${anime.episodes} eps / 24 min",
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        "${anime.episodes} eps / 24 min",
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: Colors.white,
+                        ),
+                      ),
                     ),
                   ),
                 ],
@@ -130,7 +146,7 @@ class AnimeDescription extends StatelessWidget {
                       anime.genres[i],
                       style: const TextStyle(
                         fontSize: 16,
-                        color: Color.fromARGB(252, 255, 255, 85),
+                        color: Color.fromARGB(255, 255, 255, 85),
                       ),
                     ),
                 ],
@@ -147,6 +163,19 @@ class AnimeDescription extends StatelessWidget {
             triggerTextMore: "Show spoilers...",
             triggerTextLess: "Hide spoilers...",
           ),
+          _space(paddingSpace),
+          const SubtitleItem(
+            subtitle: "General Information",
+          ),
+          _space(paddingSpace),
+          GeneralInformation(
+            anime: anime,
+          ),
+          _space(paddingSpace),
+          const SubtitleItem(
+            subtitle: "Characters & Voice Actors",
+          ),
+          _space(paddingSpace),
         ],
       ),
     );

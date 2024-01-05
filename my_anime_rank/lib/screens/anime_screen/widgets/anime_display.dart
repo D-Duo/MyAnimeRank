@@ -104,15 +104,15 @@ class AnimeDisplay extends StatelessWidget {
                       height: 30,
                     ),
                     Container(
-                      height: 1,
+                      height: 2,
                       width: 300,
                       decoration: const BoxDecoration(
                         gradient: RadialGradient(
                           center: Alignment.center,
-                          radius: 400,
+                          radius: 80,
                           colors: [
-                            Color.fromARGB(255, 54, 85, 131),
-                            Colors.transparent,
+                            Color(0xFF365583), // #365583
+                            Color(0xFF1D2A3B), // #1D2A3B
                           ],
                         ),
                       ),
