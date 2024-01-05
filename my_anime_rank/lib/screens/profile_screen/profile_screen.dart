@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/character.dart';
-import 'package:my_anime_rank/objects/profileClass.dart';
+import 'package:my_anime_rank/objects/profile.dart';
 import 'package:my_anime_rank/providers/profile_provider.dart';
 import 'package:my_anime_rank/screens/character_screen/widgets/character_display.dart';
 import 'package:my_anime_rank/screens/character_screen/widgets/custom_appbar.dart';
@@ -39,11 +39,11 @@ class _ProfileScreenState extends State<ProfileScreen> {
             ),
             IconButton(
               icon: const Icon(Icons.search),
-              onPressed: () => Navigator.of(context).pushNamed("/discoverDemo"),
+              onPressed: () => Navigator.of(context).pushNamed("/"),
             ),
             IconButton(
               icon: const Icon(Icons.calendar_today_rounded),
-              onPressed: () => Navigator.of(context).pushNamed("/"),
+              onPressed: () => Navigator.of(context).pushNamed("/seasonalDemo"),
             ),
             IconButton(
               icon: const Icon(Icons.format_list_bulleted_rounded),

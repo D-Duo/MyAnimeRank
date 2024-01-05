@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_anime_rank/objects/profileClass.dart';
+import 'package:my_anime_rank/objects/profile.dart';
 import 'package:my_anime_rank/providers/profile_provider.dart';
 import 'package:my_anime_rank/screens/profile_screen/widgets/edit%20secondaryinfo.dart';
 import 'package:my_anime_rank/screens/profile_screen/widgets/edit_idinfo.dart';

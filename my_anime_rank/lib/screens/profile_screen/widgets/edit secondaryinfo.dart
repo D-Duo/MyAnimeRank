@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:my_anime_rank/objects/profileClass.dart';
+import 'package:my_anime_rank/objects/profile.dart';
 
 class EditSecondaryInfo extends StatefulWidget {
   const EditSecondaryInfo({super.key, required this.profile});

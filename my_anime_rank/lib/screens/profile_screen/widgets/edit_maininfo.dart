@@ -1,6 +1,6 @@
 import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
-import 'package:my_anime_rank/objects/profileClass.dart';
+import 'package:my_anime_rank/objects/profile.dart';
 
 class EditMainInfo extends StatefulWidget {
   const EditMainInfo({super.key, required this.profile});
