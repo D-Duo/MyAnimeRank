@@ -57,6 +57,7 @@ class Anime {
   //final int statsScore;
   //final int statsAmount;
   final int favs;
+  final String rank;
   //final List<CharacterItem>? character;
 
   Anime({
@@ -78,7 +79,9 @@ class Anime {
     //required this.statsScore,
     //required this.statsAmount,
     int? favs_,
-  }) : favs = favs_ ?? 0;
+    String? rank_,
+  })  : favs = favs_ ?? 0,
+        rank = rank_?.toString() ?? "Unranked";
 
   Anime.fromJsonRemote(Map<String, dynamic> json)
       : apiId = json["id"],
@@ -103,7 +106,10 @@ class Anime {
             .toList(),
         //statsScore = json["stats"]["scoreDistribution"]["score"],
         //statsAmount = json["stats"]["scoreDistribution"]["amount"],
-        favs = json["favourites"] ?? 0;
+        favs = json["favourites"] ?? 0,
+        rank = json["rank"] ?? "Unranked";
+
+  get descriptionShort => null;
 }
 // final String Cname;
 //   final List<String> CimagePath;
@@ -194,7 +200,7 @@ Future<Anime> loadAnimeRemote(int animeId) async {
 
 Future<List<Anime>> loadAnimes() async {
   List<Future<Anime>> animeFuture = [
-    loadAnimeRemote(21), //one piece
+    //loadAnimeRemote(21), //one piece
     //loadAnimeRemote(99423), //darling in the franxx
     //loadAnimeRemote(16498), //shingeki
     //loadAnimeRemote(154587), //frieren

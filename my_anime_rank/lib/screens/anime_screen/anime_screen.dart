@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/anime.dart';
 import 'package:my_anime_rank/screens/anime_screen/widgets/anime_appbar.dart';
-//import 'package:my_anime_rank/screens/character_screen/widgets/anime_display.dart';
-//import 'package:my_anime_rank/screens/character_screen/widgets/anime_appbar.dart';
+import 'package:my_anime_rank/screens/anime_screen/widgets/anime_display.dart';
 import 'dart:ui';
 
 class AnimeScreen extends StatefulWidget {
@@ -18,9 +17,9 @@ class AnimeScreenState extends State<AnimeScreen> {
   late Future<Anime> _animeFuture;
   bool _initialized = false;
 
-  Future<void> _reloadData(int charId) async {
+  Future<void> _reloadData(int animeId) async {
     setState(() {
-      _animeFuture = loadAnimeRemote(charId);
+      _animeFuture = loadAnimeRemote(animeId);
     });
   }
 
@@ -102,7 +101,7 @@ class AnimeScreenState extends State<AnimeScreen> {
                                 : screenSize.height - 210,
                           ),
                           //
-                          //CharacterDisplay(character: character),
+                          AnimeDisplay(anime: anime),
                         ],
                       ),
                       // Appbar of the screen
