@@ -66,16 +66,16 @@ class Profile {
         location = ProfileLocation(
             country: json["location"]["country"],
             city: json["location"]["city"]),
-        animeRankList = (json["filmography"] as List<dynamic>?)
+        animeRankList = (json["animeRanklist"] as List<dynamic>?)
             ?.map<RankListItem>((item) => RankListItem(
-                  id: item["title"] as int,
-                  rank: item["imagePath"] as int,
+                  id: item["id"] as int,
+                  rank: item["rank"] as int,
                 ))
             .toList(),
-        characterRankList = (json["filmography"] as List<dynamic>?)
+        characterRankList = (json["characterRanklist"] as List<dynamic>?)
             ?.map<RankListItem>((item) => RankListItem(
-                  id: item["title"] as int,
-                  rank: item["imagePath"] as int,
+                  id: item["id"] as int,
+                  rank: item["rank"] as int,
                 ))
             .toList();
 }

@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:my_anime_rank/objects/character.dart';
 import 'package:my_anime_rank/objects/profile.dart';
 import 'package:my_anime_rank/providers/profile_provider.dart';
-import 'package:my_anime_rank/screens/character_screen/widgets/character_display.dart';
-import 'package:my_anime_rank/screens/character_screen/widgets/custom_appbar.dart';
 import 'package:my_anime_rank/screens/profile_screen/widgets/profile_display.dart';
 import 'dart:ui';
 
@@ -20,7 +17,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    Profile profile = Provider.of<ProfileProvider>(context).profile;
+    Profile? profile = Provider.of<ProfileProvider>(context).profile;
     // Main screen scafold
     return Scaffold(
       bottomNavigationBar: BottomAppBar(
@@ -58,7 +55,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
         height: double.infinity,
         decoration: BoxDecoration(
           image: DecorationImage(
-            image: NetworkImage(profile.profileImage),
+            image: NetworkImage(profile!.profileImage),
             fit: BoxFit.cover,
           ),
         ),

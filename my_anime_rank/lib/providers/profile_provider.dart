@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/profile.dart';
 
 class ProfileProvider extends ChangeNotifier {
-  late Profile _profile;
+  Profile? _profile;
 
-  Profile get profile => _profile;
+  Profile? get profile => _profile;
 
   ProfileProvider() {
     _loadProfile();
@@ -17,7 +17,7 @@ class ProfileProvider extends ChangeNotifier {
 
 //update nickname
   void updateNickname(String newData) {
-    _profile.nickname = newData;
+    _profile!.nickname = newData;
     notifyListeners();
     UpdateJson();
   }

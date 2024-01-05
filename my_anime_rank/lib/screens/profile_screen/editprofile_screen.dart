@@ -16,7 +16,7 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    Profile profile = Provider.of<ProfileProvider>(context).profile;
+    Profile? profile = Provider.of<ProfileProvider>(context).profile;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 19, 28, 39),
       appBar: AppBar(
@@ -54,7 +54,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               //EDIT MAIN INFO PROFILE
-              EditMainInfo(profile: profile),
+              EditMainInfo(profile: profile!),
               //DEDORATION
               Container(
                 margin: const EdgeInsets.only(top: 30, bottom: 30),
