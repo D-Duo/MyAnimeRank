@@ -4,6 +4,7 @@ import 'package:my_anime_rank/objects/profileClass.dart';
 import 'package:my_anime_rank/providers/profile_provider.dart';
 import 'package:my_anime_rank/screens/character_screen/widgets/character_display.dart';
 import 'package:my_anime_rank/screens/character_screen/widgets/custom_appbar.dart';
+import 'package:my_anime_rank/screens/profile_screen/widgets/profile_display.dart';
 import 'dart:ui';
 
 import 'package:provider/provider.dart';
@@ -88,6 +89,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   ),
                   // profile display
                   //to do
+                  ProfileDisplay(profile: profile),
                 ],
               ),
             ),
