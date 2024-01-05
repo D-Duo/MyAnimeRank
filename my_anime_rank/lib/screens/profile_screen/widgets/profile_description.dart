@@ -8,7 +8,7 @@ class ProfileDescription extends StatelessWidget {
     required this.profile,
   });
 
-  final ProfileClass profile;
+  final Profile profile;
 
   @override
   Widget build(BuildContext context) {

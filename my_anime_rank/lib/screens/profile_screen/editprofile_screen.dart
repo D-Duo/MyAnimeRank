@@ -16,7 +16,7 @@ class EditProfileScreen extends StatefulWidget {
 class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   Widget build(BuildContext context) {
-    ProfileClass profile = Provider.of<ProfileProvider>(context).profile;
+    Profile profile = Provider.of<ProfileProvider>(context).profile;
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 19, 28, 39),
       appBar: AppBar(

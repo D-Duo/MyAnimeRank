@@ -4,7 +4,7 @@ import 'package:my_anime_rank/screens/profile_screen/widgets/profile_description
 
 class ProfileDisplay extends StatefulWidget {
   const ProfileDisplay({super.key, required this.profile});
-  final ProfileClass profile;
+  final Profile profile;
 
   @override
   State<ProfileDisplay> createState() => _ProfileDisplayState();

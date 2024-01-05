@@ -3,7 +3,7 @@ import 'package:my_anime_rank/objects/profileClass.dart';
 
 class EditIdInfo extends StatefulWidget {
   const EditIdInfo({super.key, required this.profile});
-  final ProfileClass profile;
+  final Profile profile;
   @override
   State<EditIdInfo> createState() => _EditIdInfoState();
 }

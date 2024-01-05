@@ -4,7 +4,7 @@ import 'package:my_anime_rank/objects/profileClass.dart';
 
 class EditMainInfo extends StatefulWidget {
   const EditMainInfo({super.key, required this.profile});
-  final ProfileClass profile;
+  final Profile profile;
 
   @override
   State<EditMainInfo> createState() => _EditMainInfoState();
