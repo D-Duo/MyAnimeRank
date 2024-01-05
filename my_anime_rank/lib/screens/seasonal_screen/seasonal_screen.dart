@@ -1,8 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:my_anime_rank/objects/anime.dart';
-import 'package:my_anime_rank/screens/home_screen/widgets/anime_gridItem.dart';
+import 'package:my_anime_rank/objects/preview_item.dart';
+import 'package:my_anime_rank/widgets/previewItem_gridDisplay.dart';
 
-//Future<List<Character>> characters = loadCharactersLocal();
+Future<List<PreviewItem>> loadItems() async {
+  List<Future<PreviewItem>> itemsFutures = [
+    
+    loadPreviewItemRemoteMedia(21), //one piece
+    loadPreviewItemRemoteMedia(101922), //Kimetsu
+    loadPreviewItemRemoteMedia(166873), //Mushoku season 2
+    loadPreviewItemRemoteMedia(99423), //darling in the franxx
+    loadPreviewItemRemoteMedia(16498), //shingeki
+    loadPreviewItemRemoteMedia(154587), //frieren
+    loadPreviewItemRemoteMedia(1535), //death note
+    loadPreviewItemRemoteMedia(140960), //spy x fam
+    loadPreviewItemRemoteMedia(11757), //sword art
+    loadPreviewItemRemoteMedia(21087), //one punch
+    loadPreviewItemRemoteMedia(127230), //chainsaw
+    loadPreviewItemRemoteMedia(20657), //saenai heroine
+  ];
+
+  List<PreviewItem> items = await Future.wait(itemsFutures);
+
+  return items;
+}
 
 class SeasonalScreen extends StatefulWidget {
   const SeasonalScreen({super.key});
@@ -12,17 +32,17 @@ class SeasonalScreen extends StatefulWidget {
 }
 
 class _SeasonalScreenState extends State<SeasonalScreen> {
-  late Future<List<Anime>> _animesFuture;
+  late Future<List<PreviewItem>> _charactersFuture;
 
   @override
   void initState() {
     super.initState();
-    _animesFuture = loadAnimes();
+    _charactersFuture = loadItems();
   }
 
   Future<void> _reloadData() async {
     setState(() {
-      _animesFuture = loadAnimes();
+      _charactersFuture = loadItems();
     });
   }
 
@@ -36,7 +56,7 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 19, 28, 39),
         title: const Text(
-          "Seasonal:",
+          "Pick your waifu:",
           style: TextStyle(
             color: Colors.white,
           ),
@@ -56,7 +76,7 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
             ),
             IconButton(
               icon: const Icon(Icons.search),
-              onPressed: () => Navigator.of(context).pushNamed("/discoverDemo"),
+              onPressed: () => Navigator.of(context).pushNamed("/"),
             ),
             IconButton(
               icon: const Icon(Icons.calendar_today_rounded),
@@ -66,15 +86,13 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
             ),
             IconButton(
               icon: const Icon(Icons.format_list_bulleted_rounded),
-              onPressed: () {
-                // Handle favorite button press
-              },
+              onPressed: () => Navigator.of(context).pushNamed("/"),              
             ),
           ],
         ),
       ),
       body: FutureBuilder(
-        future: _animesFuture,
+        future: _charactersFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -101,22 +119,33 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
               child: Text('No data available'),
             );
           }
-          final animes = snapshot.data!;
+          final previewItems = snapshot.data!;
           return GridView.builder(
-            itemCount: animes.length,
+            itemCount: previewItems.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 250,
+              mainAxisExtent: 400,
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
-              childAspectRatio: 2 / 3,
             ),
             padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () => Navigator.of(context)
-                    .pushNamed("/animeDemo", arguments: animes[index].apiId),
-                child: AnimeGridItem(
-                  anime: animes[index],
+                onTap: () {
+                  if (previewItems[index].type == 0) {
+                    Navigator.of(context).pushNamed(
+                      "/characterDemo",
+                      arguments: previewItems[index].apiId,
+                    );
+                  } else {
+                    Navigator.of(context).pushNamed(
+                      "/animeDemo",
+                      arguments: previewItems[index].apiId,
+                    );
+                  }
+                },
+                child: PreviewItemGridDisplay(
+                  item: previewItems[index],
                 ),
               );
             },

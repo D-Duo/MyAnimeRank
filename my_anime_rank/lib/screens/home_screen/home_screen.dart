@@ -1,8 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/preview_item.dart';
-import 'package:my_anime_rank/screens/home_screen/widgets/previewItem_gridDisplay.dart';
+import 'package:my_anime_rank/widgets/previewItem_gridDisplay.dart';
+import 'package:my_anime_rank/objects/profileClass.dart';
+import 'package:my_anime_rank/providers/profile_provider.dart';
+import 'package:provider/provider.dart';
 
-//Future<List<Character>> characters = loadCharactersLocal();
+Future<List<PreviewItem>> loadItems() async {
+  List<Future<PreviewItem>> itemsFutures = [
+    loadPreviewItemRemoteCharacter(124381),
+    loadPreviewItemRemoteCharacter(40882),
+    loadPreviewItemRemoteCharacter(176754),
+    loadPreviewItemRemoteCharacter(80),
+    loadPreviewItemRemoteCharacter(40),
+    loadPreviewItemRemoteCharacter(16342),
+    loadPreviewItemRemoteCharacter(138100),
+    loadPreviewItemRemoteCharacter(169679),
+    loadPreviewItemRemoteCharacter(138101),
+    loadPreviewItemRemoteCharacter(138102),
+    loadPreviewItemRemoteCharacter(36765),
+    loadPreviewItemRemoteCharacter(36828),
+    loadPreviewItemRemoteCharacter(73935),
+    loadPreviewItemRemoteCharacter(81929),
+    loadPreviewItemRemoteCharacter(130102),
+    loadPreviewItemRemoteCharacter(137079),
+    loadPreviewItemRemoteCharacter(88747),
+    loadPreviewItemRemoteCharacter(88748),
+    loadPreviewItemRemoteCharacter(88750),
+    loadPreviewItemRemoteCharacter(88749),
+  ];
+
+  List<PreviewItem> items = await Future.wait(itemsFutures);
+
+  return items;
+}
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -13,6 +43,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Future<List<PreviewItem>> _charactersFuture;
+  List<bool> isSelected = [true, false];
 
   @override
   void initState() {
@@ -30,17 +61,75 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     //final screenSize = MediaQuery.of(context).size;
     //final itemsPerRow = (screenSize.width / 150).floor();
+    Profile profile = Provider.of<ProfileProvider>(context).profile;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 29, 42, 59),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 19, 28, 39),
+        centerTitle: true,
         title: const Text(
-          "Pick your waifu:",
+          "MAR",
           style: TextStyle(
             color: Colors.white,
+            fontWeight: FontWeight.bold,
           ),
         ),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 10.0),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pushNamed("/profileDemo"),
+            child: Container(
+              height: 25,
+              width: 25,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: NetworkImage(profile.profileImage),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
+          ),
+        ),
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 10.0),
+            child: ToggleButtons(
+              onPressed: (int index) {
+                setState(
+                  () {
+                    isSelected[index] = true;
+
+                    if (index == 0) {
+                      isSelected[1] = !isSelected[0];
+                    } else {
+                      isSelected[0] = !isSelected[1];
+                    }
+                  },
+                );
+              },
+              fillColor: Color.fromARGB(255, 54, 85, 131),
+              isSelected: isSelected,
+              children: const [
+                Text(
+                  "A",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Text(
+                  "C",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
       ),
       bottomNavigationBar: BottomAppBar(
         height: 50,
@@ -56,7 +145,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             IconButton(
               icon: const Icon(Icons.search),
-              onPressed: () => Navigator.of(context).pushNamed("/discoverDemo"),
+              onPressed: () {
+                // Handle favorite button press
+              },
             ),
             IconButton(
               icon: const Icon(Icons.calendar_today_rounded),

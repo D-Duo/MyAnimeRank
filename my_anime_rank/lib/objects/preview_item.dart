@@ -130,35 +130,3 @@ Future<PreviewItem> loadPreviewItemRemoteMedia(int previewItemId) async {
     return Future.error(lastException); // Return an error future
   }
 }
-
-Future<List<PreviewItem>> loadItems() async {
-  List<Future<PreviewItem>> itemsFutures = [
-    loadPreviewItemRemoteMedia(16498),
-    loadPreviewItemRemoteMedia(101922),
-    loadPreviewItemRemoteMedia(166873),
-    loadPreviewItemRemoteCharacter(124381),
-    loadPreviewItemRemoteCharacter(40882),
-    //loadPreviewItemRemoteCharacter(176754),
-    //loadPreviewItemRemoteCharacter(80),
-    //loadPreviewItemRemoteCharacter(40),
-    //loadPreviewItemRemoteCharacter(16342),
-    //loadPreviewItemRemoteCharacter(138100),
-    //loadPreviewItemRemoteCharacter(169679),
-    //loadPreviewItemRemoteCharacter(138101),
-    //loadPreviewItemRemoteCharacter(138102),
-    //loadPreviewItemRemoteCharacter(36765),
-    //loadPreviewItemRemoteCharacter(36828),
-    //loadPreviewItemRemoteCharacter(73935),
-    //loadPreviewItemRemoteCharacter(81929),
-    //loadPreviewItemRemoteCharacter(130102),
-    //loadPreviewItemRemoteCharacter(137079),
-    //loadPreviewItemRemoteCharacter(88747),
-    //loadPreviewItemRemoteCharacter(88748),
-    //loadPreviewItemRemoteCharacter(88750),
-    //loadPreviewItemRemoteCharacter(88749),
-  ];
-
-  List<PreviewItem> items = await Future.wait(itemsFutures);
-
-  return items;
-}
