@@ -104,9 +104,9 @@ class _HomeScreenState extends State<HomeScreen> {
             itemCount: previewItems.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 250,
+              mainAxisExtent: 400,
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
-              childAspectRatio: 2 / 3,
             ),
             padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
             itemBuilder: (context, index) {

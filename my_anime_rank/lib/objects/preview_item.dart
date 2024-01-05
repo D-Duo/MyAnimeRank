@@ -26,7 +26,7 @@ class PreviewItem {
   PreviewItem.mediaFromJsonRemote(Map<String, dynamic> json)
       : apiId = json["id"],
         mainString = json["title"]["romaji"],
-        secondaryString = json["status"],
+        secondaryString = (json["genres"] as List<dynamic>).join(', '),
         itemImage = json["coverImage"]["large"],
         type = 1;
 }
@@ -94,6 +94,7 @@ Future<PreviewItem> loadPreviewItemRemoteMedia(int previewItemId) async {
           coverImage {
             large
           }
+          genres
         }
       }
     ''';
@@ -134,6 +135,7 @@ Future<List<PreviewItem>> loadItems() async {
   List<Future<PreviewItem>> itemsFutures = [
     loadPreviewItemRemoteMedia(16498),
     loadPreviewItemRemoteMedia(101922),
+    loadPreviewItemRemoteMedia(166873),
     loadPreviewItemRemoteCharacter(124381),
     loadPreviewItemRemoteCharacter(40882),
     //loadPreviewItemRemoteCharacter(176754),

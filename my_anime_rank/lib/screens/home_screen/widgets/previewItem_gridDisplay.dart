@@ -11,32 +11,50 @@ class PreviewItemGridDisplay extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Card(
-      child: GridTile(
-        footer: ClipRRect(
-          borderRadius: BorderRadius.circular(10.0),
-          child: Container(
-            color: const Color.fromARGB(255, 19, 28, 39).withOpacity(0.5),
-            child: Align(
-              alignment: Alignment.center,
-              child: Text(
-                item.mainString,
-                style: const TextStyle(
-                  color: Colors.white,
-                  fontSize: 20,
-                ),
+    return Column(
+      children: [
+        Container(
+          height: 300,
+          child: Card(
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(6.0),
+              child: Image(
+                image: NetworkImage(item.itemImage),
+                fit: BoxFit.cover,
               ),
             ),
           ),
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(10.0),
-          child: Image(
-            image: NetworkImage(item.itemImage),
-            fit: BoxFit.cover,
+        Align(
+          alignment: Alignment.centerLeft,
+          child: Padding(
+            padding: EdgeInsets.only(left: 10, right: 10),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  item.mainString,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                  ),                  
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  item.secondaryString ?? "",
+                  style: const TextStyle(
+                    color: Colors.yellow,
+                    fontSize: 14,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
           ),
         ),
-      ),
+      ],
     );
   }
 }
