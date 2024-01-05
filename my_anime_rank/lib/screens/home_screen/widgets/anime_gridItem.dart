@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:my_anime_rank/objects/character.dart';
+import 'package:my_anime_rank/objects/anime.dart';
 
-class CharacterGridItem extends StatelessWidget {
-  const CharacterGridItem({
+class AnimeGridItem extends StatelessWidget {
+  const AnimeGridItem({
     super.key,
-    required this.character,
+    required this.anime,
   });
 
-  final Character character;
+  final Anime anime;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class CharacterGridItem extends StatelessWidget {
             child: Align(
               alignment: Alignment.center,
               child: Text(
-                character.name,
+                anime.title,
                 style: const TextStyle(
                   color: Colors.white,
                   fontSize: 20,
@@ -32,7 +32,7 @@ class CharacterGridItem extends StatelessWidget {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(10.0),
           child: Image(
-            image: NetworkImage(character.mainImagePaths.first),
+            image: NetworkImage(anime.mainImagePaths.first),
             fit: BoxFit.cover,
           ),
         ),

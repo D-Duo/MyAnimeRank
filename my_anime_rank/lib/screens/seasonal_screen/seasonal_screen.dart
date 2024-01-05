@@ -1,28 +1,28 @@
 import 'package:flutter/material.dart';
-import 'package:my_anime_rank/objects/preview_item.dart';
-import 'package:my_anime_rank/screens/home_screen/widgets/previewItem_gridDisplay.dart';
+import 'package:my_anime_rank/objects/anime.dart';
+import 'package:my_anime_rank/screens/home_screen/widgets/anime_gridItem.dart';
 
 //Future<List<Character>> characters = loadCharactersLocal();
 
-class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+class SeasonalScreen extends StatefulWidget {
+  const SeasonalScreen({super.key});
 
   @override
-  State<HomeScreen> createState() => _HomeScreenState();
+  State<SeasonalScreen> createState() => _SeasonalScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<PreviewItem>> _charactersFuture;
+class _SeasonalScreenState extends State<SeasonalScreen> {
+  late Future<List<Anime>> _animesFuture;
 
   @override
   void initState() {
     super.initState();
-    _charactersFuture = loadItems();
+    _animesFuture = loadAnimes();
   }
 
   Future<void> _reloadData() async {
     setState(() {
-      _charactersFuture = loadItems();
+      _animesFuture = loadAnimes();
     });
   }
 
@@ -36,7 +36,7 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 19, 28, 39),
         title: const Text(
-          "Pick your waifu:",
+          "Seasonal:",
           style: TextStyle(
             color: Colors.white,
           ),
@@ -60,7 +60,9 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             IconButton(
               icon: const Icon(Icons.calendar_today_rounded),
-              onPressed: () => Navigator.of(context).pushNamed("/seasonalDemo"),
+              onPressed: () {
+                // Handle favorite button press
+              },
             ),
             IconButton(
               icon: const Icon(Icons.format_list_bulleted_rounded),
@@ -72,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: FutureBuilder(
-        future: _charactersFuture,
+        future: _animesFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -99,33 +101,22 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Text('No data available'),
             );
           }
-          final previewItems = snapshot.data!;
+          final animes = snapshot.data!;
           return GridView.builder(
-            itemCount: previewItems.length,
+            itemCount: animes.length,
             gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
               maxCrossAxisExtent: 250,
-              mainAxisExtent: 400,
               crossAxisSpacing: 8,
               mainAxisSpacing: 8,
+              childAspectRatio: 2 / 3,
             ),
             padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
             itemBuilder: (context, index) {
               return GestureDetector(
-                onTap: () {
-                  if (previewItems[index].type == 0) {
-                    Navigator.of(context).pushNamed(
-                      "/characterDemo",
-                      arguments: previewItems[index].apiId,
-                    );
-                  } else {
-                    Navigator.of(context).pushNamed(
-                      "/animeDemo",
-                      arguments: previewItems[index].apiId,
-                    );
-                  }
-                },
-                child: PreviewItemGridDisplay(
-                  item: previewItems[index],
+                onTap: () => Navigator.of(context)
+                    .pushNamed("/animeDemo", arguments: animes[index].apiId),
+                child: AnimeGridItem(
+                  anime: animes[index],
                 ),
               );
             },
