@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/anime.dart';
+import 'package:my_anime_rank/screens/anime_screen/widgets/anime_charStaffItem.dart';
 import 'package:my_anime_rank/screens/anime_screen/widgets/anime_description.dart';
 //import 'package:my_anime_rank/screens/anime_screen/widgets/basic_description.dart';
 import 'package:my_anime_rank/widgets/titleItem_widgets.dart';
@@ -64,36 +65,10 @@ class AnimeDisplay extends StatelessWidget {
                   ),
                 ),
               ),
-              // if (anime.filmography != null)
-              //   Column(
-              //     children: [
-              //       Padding(
-              //         padding: EdgeInsets.only(
-              //           left: sidesPadding,
-              //           right: sidesPadding,
-              //         ),
-              //         child: const Align(
-              //           alignment: Alignment.centerLeft,
-              //           child: Text(
-              //             "Filmography:",
-              //             style: TextStyle(
-              //               color: Color.fromARGB(255, 174, 184, 197),
-              //               fontSize: 20,
-              //               fontWeight: FontWeight.bold,
-              //             ),
-              //           ),
-              //         ),
-              //       ),
-              //       const SizedBox(
-              //         height: 10,
-              //       ),
-              //       Align(
-              //         alignment: Alignment.centerLeft,
-              //         child: TitlesScrollableHorizontalDisplay(
-              //             titles: character.filmography!, initialPading: sidesPadding,),
-              //       ),
-              //     ],
-              //   ),
+              //if (anime.characters != null)
+              const SizedBox(
+                height: 10,
+              ),
               Container(
                 height: 100,
                 child: Center(
