@@ -3,6 +3,7 @@ import 'package:my_anime_rank/providers/profile_provider.dart';
 import 'package:my_anime_rank/screens/home_screen/home_screen.dart';
 import 'package:my_anime_rank/screens/character_screen/character_screen.dart';
 import 'package:my_anime_rank/screens/anime_screen/anime_screen.dart';
+import 'package:my_anime_rank/rank_screen/rank_lists.dart';
 import 'package:my_anime_rank/screens/profile_screen/editprofile_screen.dart';
 import 'package:my_anime_rank/screens/seasonal_screen/seasonal_screen.dart';
 import 'package:provider/provider.dart';
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      initialRoute: '/rankListsDemo',
       onGenerateRoute: (settings) {
         switch (settings.name) {
           case '/':
@@ -75,7 +76,7 @@ class MyApp extends StatelessWidget {
               settings: RouteSettings(
                 arguments: settings.arguments as int,
               ),
-            );          
+            );
           case '/profileDemo':
             return PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
@@ -108,6 +109,20 @@ class MyApp extends StatelessWidget {
             return PageRouteBuilder(
               pageBuilder: (context, animation, secondaryAnimation) =>
                   const SeasonalScreen(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                // Customize the transition for the characterDemo route
+                // You can use different transition effects for each route
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            );
+          case '/rankListsDemo':
+            return PageRouteBuilder(
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  const RanksScreen(),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                 // Customize the transition for the characterDemo route

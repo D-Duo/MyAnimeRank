@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/preview_item.dart';
 import 'package:my_anime_rank/widgets/previewItem_gridDisplay.dart';
+import 'package:my_anime_rank/objects/profile.dart';
+import 'package:my_anime_rank/providers/profile_provider.dart';
+import 'package:my_anime_rank/widgets/screens_navigation_bar.dart';
+import 'package:provider/provider.dart';
 
 Future<List<PreviewItem>> loadItems() async {
   List<Future<PreviewItem>> itemsFutures = [
-    
     loadPreviewItemRemoteMedia(21), //one piece
     loadPreviewItemRemoteMedia(101922), //Kimetsu
     loadPreviewItemRemoteMedia(166873), //Mushoku season 2
@@ -33,6 +36,7 @@ class SeasonalScreen extends StatefulWidget {
 
 class _SeasonalScreenState extends State<SeasonalScreen> {
   late Future<List<PreviewItem>> _charactersFuture;
+  List<bool> isSelected = [true, false];
 
   @override
   void initState() {
@@ -48,49 +52,41 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
 
   @override
   Widget build(BuildContext context) {
-    //final screenSize = MediaQuery.of(context).size;
+    final screenSize = MediaQuery.of(context).size;
     //final itemsPerRow = (screenSize.width / 150).floor();
+    Profile? profile = Provider.of<ProfileProvider>(context).profile;
 
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 29, 42, 59),
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(255, 19, 28, 39),
+        centerTitle: true,
         title: const Text(
-          "Pick your waifu:",
+          "MAR",
           style: TextStyle(
             color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 20.0),
+          child: GestureDetector(
+            onTap: () => Navigator.of(context).pushNamed("/profileDemo"),
+            child: Container(
+              height: 15,
+              width: 15,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                image: DecorationImage(
+                  image: NetworkImage(profile!.profileImage),
+                  fit: BoxFit.cover,
+                ),
+              ),
+            ),
           ),
         ),
       ),
-      bottomNavigationBar: BottomAppBar(
-        height: 50,
-        color: const Color.fromARGB(
-            255, 29, 42, 59), // Set the color of the BottomAppBar
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.person),
-              onPressed: () => Navigator.of(context).pushNamed("/profileDemo"),
-            ),
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () => Navigator.of(context).pushNamed("/"),
-            ),
-            IconButton(
-              icon: const Icon(Icons.calendar_today_rounded),
-              onPressed: () {
-                // Handle favorite button press
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.format_list_bulleted_rounded),
-              onPressed: () => Navigator.of(context).pushNamed("/"),              
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: const ScreensNavigationBar(screen: "/seasonalDemo"),
       body: FutureBuilder(
         future: _charactersFuture,
         builder: (context, snapshot) {
@@ -103,12 +99,25 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Text('Error: ${snapshot.error}'),
+                  SizedBox(
+                    width: (screenSize.width * (2 / 3)),
+                    child: Text('Error: ${snapshot.error}',
+                        style: const TextStyle(color: Colors.white)),
+                  ),
+                  const SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    height: 100,
+                    child: const Image(
+                        image: NetworkImage(
+                            "https://www.pngitem.com/pimgs/b/345-3451980_depressed-anime-girl-crying-transparent-cartoons-sad-anime.png")),
+                  ),
                   const SizedBox(
                     height: 20,
                   ),
                   IconButton(
-                    icon: const Icon(Icons.refresh_sharp),
+                    icon: const Icon(Icons.refresh_sharp, color: Colors.white),
                     onPressed: _reloadData,
                   ),
                 ],

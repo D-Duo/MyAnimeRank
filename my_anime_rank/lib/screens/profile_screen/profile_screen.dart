@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/profile.dart';
 import 'package:my_anime_rank/providers/profile_provider.dart';
 import 'package:my_anime_rank/screens/profile_screen/widgets/profile_display.dart';
+import 'package:my_anime_rank/widgets/screens_navigation_bar.dart';
 import 'dart:ui';
 
 import 'package:provider/provider.dart';
@@ -20,35 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Profile? profile = Provider.of<ProfileProvider>(context).profile;
     // Main screen scafold
     return Scaffold(
-      bottomNavigationBar: BottomAppBar(
-        height: 50,
-        color: const Color.fromARGB(
-            255, 29, 42, 59), // Set the color of the BottomAppBar
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.person),
-              onPressed: () {
-                // Handle favorite button press
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () => Navigator.of(context).pushNamed("/"),
-            ),
-            IconButton(
-              icon: const Icon(Icons.calendar_today_rounded),
-              onPressed: () => Navigator.of(context).pushNamed("/seasonalDemo"),
-            ),
-            IconButton(
-              icon: const Icon(Icons.format_list_bulleted_rounded),
-              onPressed: () => Navigator.of(context).pushNamed("/"),
-            ),
-          ],
-        ),
-      ),
+      bottomNavigationBar: const ScreensNavigationBar(screen: "/profileDemo"),
       // Container for the background image
       body: Container(
         width: double.infinity,
