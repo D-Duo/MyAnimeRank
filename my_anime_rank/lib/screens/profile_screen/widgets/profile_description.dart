@@ -28,7 +28,7 @@ class ProfileDescription extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width * 0.7,
+                width: MediaQuery.of(context).size.width <= 380 ? MediaQuery.of(context).size.width *(2/3) : 280,
                 margin: const EdgeInsets.only(bottom: 40),
                 child: Text(
                   profile.nickname,

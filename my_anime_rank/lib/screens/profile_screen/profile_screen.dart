@@ -53,9 +53,9 @@ class _ProfileScreenState extends State<ProfileScreen> {
                 children: [
                   //Container to limit the view of the background
                   SizedBox(
-                    height: screenSize.height <= 210
+                    height: screenSize.height <= 260
                         ? screenSize.height
-                        : screenSize.height - 210,
+                        : screenSize.height - 260,
                   ),
                   // profile display
                   //to do

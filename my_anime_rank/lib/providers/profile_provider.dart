@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/profile.dart';
+import 'package:path_provider/path_provider.dart';
 
 class ProfileProvider extends ChangeNotifier {
   Profile? _profile;
@@ -67,9 +68,11 @@ class ProfileProvider extends ChangeNotifier {
       final jsonString = json.encode(profileMap);
 
       // Obtener la ruta del archivo profile.json
-      final file = File('assets/profile.json');
+      final appDir = await getApplicationDocumentsDirectory();
+      final file = File('${appDir.path}/profile.json');
 
       // Escribir el JSON en el archivo
+      
       await file.writeAsString(jsonString);
     }
   }

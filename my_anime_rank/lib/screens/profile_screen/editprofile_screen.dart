@@ -20,12 +20,18 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController nicknameController = TextEditingController();
   TextEditingController cityController = TextEditingController();
   TextEditingController countryController = TextEditingController();
+  String? tempImg;
+  bool init = true;
 
   @override
   Widget build(BuildContext context) {
     Profile? profile = Provider.of<ProfileProvider>(context).profile;
     ProfileProvider profileProvider =
         Provider.of<ProfileProvider>(context, listen: true);
+    if (init) {
+      tempImg = profile!.profileImage;
+      init = false;
+    }
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 19, 28, 39),
       appBar: AppBar(
@@ -33,9 +39,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         shadowColor: const Color.fromARGB(0, 0, 0, 0),
         leading: GestureDetector(
           onTap: () {
-            profile =
-                Provider.of<ProfileProvider>(context, listen: false).profile;
             Navigator.of(context).pushNamed("/profileDemo");
+            if (tempImg != profile!.profileImage) {
+              profile.profileImage = tempImg!;
+            }
           },
           child: const Icon(Icons.keyboard_arrow_left,
               size: 40, color: Color.fromARGB(255, 255, 255, 255)),

@@ -7,6 +7,7 @@ class EditMainInfo extends StatefulWidget {
     super.key,
     required this.profile,
     required this.nicknameController,
+    
   });
   final Profile profile;
   final TextEditingController nicknameController;
@@ -18,7 +19,9 @@ class _EditMainInfoState extends State<EditMainInfo> {
   Future<String>? editImage;
 
   Future<void> _changeImage() async {
-    editImage = pickImage();
+    setState((){
+      editImage = pickImage();
+    });
   }
 
   @override
