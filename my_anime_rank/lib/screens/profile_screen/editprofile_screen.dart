@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/profile.dart';
 import 'package:my_anime_rank/providers/profile_provider.dart';
-import 'package:my_anime_rank/screens/profile_screen/widgets/edit%20secondaryinfo.dart';
+import 'package:my_anime_rank/screens/profile_screen/widgets/edit_secondaryinfo.dart';
 import 'package:my_anime_rank/screens/profile_screen/widgets/edit_idinfo.dart';
 import 'package:my_anime_rank/screens/profile_screen/widgets/edit_maininfo.dart';
 import 'package:provider/provider.dart';
@@ -14,9 +14,18 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
+  TextEditingController mailController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+  TextEditingController passwordVerficationController = TextEditingController();
+  TextEditingController nicknameController = TextEditingController();
+  TextEditingController cityController = TextEditingController();
+  TextEditingController countryController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     Profile? profile = Provider.of<ProfileProvider>(context).profile;
+    ProfileProvider profileProvider =
+        Provider.of<ProfileProvider>(context, listen: true);
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 19, 28, 39),
       appBar: AppBar(
@@ -24,6 +33,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         shadowColor: const Color.fromARGB(0, 0, 0, 0),
         leading: GestureDetector(
           onTap: () {
+            profile =
+                Provider.of<ProfileProvider>(context, listen: false).profile;
             Navigator.of(context).pushNamed("/profileDemo");
           },
           child: const Icon(Icons.keyboard_arrow_left,
@@ -32,7 +43,41 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         actions: [
           GestureDetector(
             onTap: () {
-              //TODO: update profile to json
+              //save profile changes
+              //check if password and password confirmation are the same or empty (if empty password is not being modified)
+              if ((passwordController.text ==
+                      passwordVerficationController.text) ||
+                  (passwordController.text.isEmpty &&
+                      passwordVerficationController.text.isEmpty)) {
+                profileProvider.updateProfile(
+                  Profile(
+                      nickname: nicknameController.text.isEmpty
+                          ? profile!.nickname
+                          : nicknameController.text,
+                      profileImage: profile!.profileImage,
+                      mail: mailController.text.isEmpty
+                          ? profile!.mail
+                          : mailController.text,
+                      password: passwordController.text.isEmpty
+                          ? profile!.password
+                          : passwordController.text,
+                      birthday: ProfileDate(
+                          day: profile!.birthday.day,
+                          month: profile!.birthday.month,
+                          year: profile!.birthday.year),
+                      gender: profile!.gender,
+                      location: ProfileLocation(
+                          country: countryController.text.isEmpty
+                              ? profile!.location.country
+                              : countryController.text,
+                          city: cityController.text.isEmpty
+                              ? profile!.location.city
+                              : cityController.text),
+                      animeRankList: profile!.animeRankList,
+                      characterRankList: profile!.characterRankList),
+                );
+                Navigator.of(context).pushNamed("/profileDemo");
+              }
             },
             child: const Padding(
               padding: EdgeInsets.all(16),
@@ -54,7 +99,10 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               //EDIT MAIN INFO PROFILE
-              EditMainInfo(profile: profile!),
+              EditMainInfo(
+                profile: profile!,
+                nicknameController: nicknameController,
+              ),
               //DEDORATION
               Container(
                 margin: const EdgeInsets.only(top: 30, bottom: 30),
@@ -72,7 +120,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
               //EDIT MAIN INFO PROFILE
-              EditSecondaryInfo(profile: profile),
+              EditSecondaryInfo(
+                profile: profile!,
+                cityController: cityController,
+                countryController: countryController,
+              ),
               //DEDORATION
               Container(
                 margin: const EdgeInsets.only(top: 30, bottom: 30),
@@ -90,7 +142,12 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                 ),
               ),
               //EDIT MAIN INFO PROFILE
-              EditIdInfo(profile: profile),
+              EditIdInfo(
+                profile: profile!,
+                mailController: mailController,
+                passwordController: passwordController,
+                passwordVerficationController: passwordVerficationController,
+              ),
             ],
           ),
         ),

@@ -1,6 +1,6 @@
 {
-    "nickname": "itsnick69itsbig",
-    "profileImage": "https://w0.peakpx.com/wallpaper/880/618/HD-wallpaper-yuuki-asuna-pretty-bread-adorable-sweet-nice-anime-anime-girl-long-hair-yuuki-lovely-food-chibi-braids-cute-asuna-yuuki-asuna-white-eating-knight-dress-brown-hungry-adore-eat.jpg",
+    "nickname": "test1",
+    "profileImage": "https://i.ibb.co/25S4K9g/Screenshot-2024-01-06-003125.png",
     "mail": "kikofp02@gmail.com",
     "password": "contraseñasupersegura123",
     "birthday": {
@@ -8,11 +8,12 @@
         "month": 5,
         "year": 2002
     },
+    "gender": 1,
     "location": {
         "country": "Spain",
         "city": "Barcelona"
     },
-    "animeRanklist": [
+    "animeRankList": [
         {
             "id": 124381,
             "rank": 1
@@ -22,7 +23,7 @@
             "rank": 2
         }
     ],
-    "characterRanklist": [
+    "characterRankList": [
         {
             "id": 124381,
             "rank": 1

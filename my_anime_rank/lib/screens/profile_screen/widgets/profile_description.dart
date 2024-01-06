@@ -27,8 +27,9 @@ class ProfileDescription extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(bottom: 40),
+              Container(
+                width: MediaQuery.of(context).size.width * 0.7,
+                margin: const EdgeInsets.only(bottom: 40),
                 child: Text(
                   profile.nickname,
                   style: const TextStyle(

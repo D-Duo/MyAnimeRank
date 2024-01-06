@@ -3,58 +3,79 @@ import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/profile.dart';
 
 class EditMainInfo extends StatefulWidget {
-  const EditMainInfo({super.key, required this.profile});
+  const EditMainInfo({
+    super.key,
+    required this.profile,
+    required this.nicknameController,
+  });
   final Profile profile;
-
+  final TextEditingController nicknameController;
   @override
   State<EditMainInfo> createState() => _EditMainInfoState();
 }
 
 class _EditMainInfoState extends State<EditMainInfo> {
-  TextEditingController _nicknameController = TextEditingController();
+  Future<String>? editImage;
+
+  Future<void> _changeImage() async {
+    editImage = pickImage();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         GestureDetector(
-          onTap: () {
-            //TODO: function to change profile image
-          },
-          child: Container(
-            width: MediaQuery.of(context).size.width * 0.35,
-            height: MediaQuery.of(context).size.width * 0.35,
-            decoration: const BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.all(Radius.circular(20)),
-            ),
-            child: Stack(
-              alignment: Alignment.center,
-              children: [
-                Image.network(widget.profile.profileImage, fit: BoxFit.cover),
-                Positioned.fill(
-                  child: BackdropFilter(
-                    filter: ui.ImageFilter.blur(sigmaX: 3, sigmaY: 3),
-                    child: Container(
-                      color: Colors.transparent,
-                    ),
+            onTap: () {
+              //TODO: function to change profile image
+              _changeImage();
+            },
+            child: FutureBuilder(
+              future: editImage,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
+                widget.profile.profileImage =
+                    snapshot.data ?? widget.profile.profileImage;
+                return Container(
+                  width: MediaQuery.of(context).size.width * 0.35,
+                  height: MediaQuery.of(context).size.width * 0.35,
+                  decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(20)),
                   ),
-                ),
-                Icon(
-                  Icons.image,
-                  size: MediaQuery.of(context).size.width * 0.18,
-                  color: const Color.fromARGB(255, 48, 48, 48),
-                )
-              ],
-            ),
-          ),
-        ),
-        Container(
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      Image.network(widget.profile.profileImage,
+                          fit: BoxFit.cover),
+                      Positioned.fill(
+                        child: BackdropFilter(
+                          filter: ui.ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+                          child: Container(
+                            color: Colors.transparent,
+                          ),
+                        ),
+                      ),
+                      Icon(
+                        Icons.image,
+                        size: MediaQuery.of(context).size.width * 0.18,
+                        color: const Color.fromARGB(255, 48, 48, 48),
+                      )
+                    ],
+                  ),
+                );
+              },
+            )),
+        SizedBox(
           height: MediaQuery.of(context).size.width * 0.18,
-          width: MediaQuery.of(context).size.width * 0.45,
-          padding:
-              EdgeInsets.only(left: MediaQuery.of(context).size.width * 0.06),
+          width: MediaQuery.of(context).size.width * 0.4,
           child: TextField(
-            controller: _nicknameController,
+            controller: widget.nicknameController,
             decoration: InputDecoration(
               labelText: 'Change Nickname',
               hintText: widget.profile.nickname,
