@@ -54,6 +54,7 @@ class Anime {
   final List<String> mainImagePaths;
   final List<String> genres;
   final List<String> studios;
+  final bool isAdult;
   //final int statsScore;
   //final int statsAmount;
   final int favs;
@@ -76,6 +77,7 @@ class Anime {
     required this.mainImagePaths,
     required this.genres,
     required this.studios,
+    required this.isAdult,
     //required this.statsScore,
     //required this.statsAmount,
     int? favs_,
@@ -104,6 +106,7 @@ class Anime {
         studios = (json["studios"]["edges"] as List<dynamic>)
             .map<String>((studio) => studio["node"]["name"] as String)
             .toList(),
+        isAdult = json["isAdult"],
         //statsScore = json["stats"]["scoreDistribution"]["score"],
         //statsAmount = json["stats"]["scoreDistribution"]["amount"],
         favs = json["favourites"] ?? 0,
@@ -154,6 +157,7 @@ Future<Anime> loadAnimeRemote(int animeId) async {
               }
             }
           }
+          isAdult
           stats {
             scoreDistribution {
               score
