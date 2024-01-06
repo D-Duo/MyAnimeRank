@@ -1,27 +1,25 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 
-class TitleItem {
-  final String title;
-  final String imagePath;
+class CharacterItem {
+  int Cid;
+  final String Cname;
+  final String CimagePath;
 
-  TitleItem({
-    required this.title,
-    required this.imagePath,
+  CharacterItem({
+    required this.Cid,
+    required this.Cname,
+    required this.CimagePath,
   });
 }
 
-class CharacterItem {
-  final String Cname;
-  final String CimagePath;
-  final String role;
+class VoiceActorItem {
+  final int VAid;
   final String VAname;
   final String VAimagePath;
 
-  CharacterItem({
-    required this.Cname,
-    required this.CimagePath,
-    required this.role,
+  VoiceActorItem({
+    required this.VAid,
     required this.VAname,
     required this.VAimagePath,
   });
@@ -43,6 +41,8 @@ class Anime {
   final String type;
   final String format;
   final String status;
+  String? descriptionShort;
+  String? descriptionLong;
   final String description;
   final int startDateYear;
   final int startDateMonth;
@@ -55,17 +55,17 @@ class Anime {
   final List<String> genres;
   final List<String> studios;
   final bool isAdult;
-  //final int statsScore;
-  //final int statsAmount;
+  final List<CharacterItem>? characters;
   final int favs;
   final String rank;
-  //final List<CharacterItem>? character;
 
   Anime({
     required this.title,
     required this.type,
     required this.format,
     required this.status,
+    this.descriptionShort,
+    this.descriptionLong,
     required this.description,
     required this.startDateYear,
     required this.startDateMonth,
@@ -78,8 +78,7 @@ class Anime {
     required this.genres,
     required this.studios,
     required this.isAdult,
-    //required this.statsScore,
-    //required this.statsAmount,
+    this.characters,
     int? favs_,
     String? rank_,
   })  : favs = favs_ ?? 0,
@@ -107,18 +106,35 @@ class Anime {
             .map<String>((studio) => studio["node"]["name"] as String)
             .toList(),
         isAdult = json["isAdult"],
-        //statsScore = json["stats"]["scoreDistribution"]["score"],
-        //statsAmount = json["stats"]["scoreDistribution"]["amount"],
         favs = json["favourites"] ?? 0,
-        rank = json["rank"] ?? "Unranked";
+        rank = json["rank"] ?? "Unranked",
+        characters = (json["characters"]["edges"] as List<dynamic>?)
+            ?.map<CharacterItem>(
+              (item) => CharacterItem(
+                Cid: item["node"]["id"],
+                Cname: item["node"]["name"]["full"],
+                CimagePath: item["node"]["image"]["large"],
+              ),
+            )
+            .toList() {
+    // Split description into short and long based on ~! and !~
+    final RegExp exp = RegExp(r'~!');
+    final Match? match = exp.firstMatch(json["description"]);
 
-  get descriptionShort => null;
+    if (match != null) {
+      descriptionShort = json["description"].substring(0, match.start);
+
+      descriptionLong = json["description"];
+      descriptionLong =
+          descriptionLong!.replaceAll('~!', '').replaceAll('!~', '');
+    } else {
+      // If no match, set both to the original description
+      descriptionShort = json["description"];
+    }
+  }
+
+  //get descriptionShort => null;
 }
-// final String Cname;
-//   final List<String> CimagePath;
-//   final String role;
-//   final String VAname;
-//   final List<String> VAimagePath;
 
 Future<Anime> loadAnimeRemote(int animeId) async {
   dynamic lastException;
@@ -133,7 +149,7 @@ Future<Anime> loadAnimeRemote(int animeId) async {
           type
           format
           status
-          description
+          description (asHtml: false)
           startDate {
             year
             month
@@ -149,7 +165,20 @@ Future<Anime> loadAnimeRemote(int animeId) async {
             large
           }
           genres
-          favourites          
+          favourites
+          characters (role: MAIN) {
+            edges {
+              node {
+                id
+                name {
+                  full
+                }
+                image {
+                  large
+                }
+              }
+            }
+          }          
           studios {
             edges {
               node {
@@ -164,12 +193,15 @@ Future<Anime> loadAnimeRemote(int animeId) async {
               amount
             }
           }
-
         }
       }
     ''';
 
   final variables = {'id': animeId};
+
+  // Print the GraphQL query and variables
+  print('GraphQL Query: $query');
+  print('Variables: $variables');
 
   final url = 'https://graphql.anilist.co';
   final headers = {

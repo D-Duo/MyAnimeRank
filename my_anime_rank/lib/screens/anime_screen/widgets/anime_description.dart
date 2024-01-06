@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/anime.dart';
+import 'package:my_anime_rank/screens/anime_screen/widgets/anime_charStaffItem.dart';
 import 'package:my_anime_rank/screens/anime_screen/widgets/anime_general_info.dart';
 import 'package:my_anime_rank/screens/anime_screen/widgets/anime_subtitle.dart';
 import 'package:my_anime_rank/widgets/custom_expandable.dart';
@@ -98,7 +99,7 @@ class AnimeDescription extends StatelessWidget {
                   Expanded(
                     child: Center(
                       child: Text(
-                        "${anime.favs}, ${anime.startDateYear}",
+                        "${anime.format}, ${anime.startDateYear}",
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
@@ -173,9 +174,12 @@ class AnimeDescription extends StatelessWidget {
           ),
           _space(paddingSpace),
           const SubtitleItem(
-            subtitle: "Characters & Voice Actors",
+            subtitle: "Characters",
           ),
           _space(paddingSpace),
+          CharStaffHorizontalDisplay(
+            charItem: anime.characters!,
+          ),
         ],
       ),
     );
