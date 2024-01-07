@@ -152,7 +152,7 @@ Future<String> pickImage() async {
 
       // Adjuntar la imagen al cuerpo de la solicitud
       request.files
-          .add(await http.MultipartFile.fromPath('image', _imageFile!.path));
+          .add(await http.MultipartFile.fromPath('image', _imageFile.path));
 
       // Enviar la solicitud a Imgbb
       var response = await request.send();

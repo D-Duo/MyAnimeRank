@@ -77,6 +77,7 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
     return Scaffold(
       backgroundColor: const Color.fromARGB(255, 29, 42, 59),
       appBar: AppBar(
+        scrolledUnderElevation: 0,
         backgroundColor: const Color.fromARGB(255, 19, 28, 39),
         centerTitle: true,
         title: const Text(
@@ -116,34 +117,35 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
                 );
               } else if (snapshot.hasError) {
                 return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    SizedBox(
-                      width: (screenSize.width * (2 / 3)),
-                      child: Text('Error: ${snapshot.error}',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.white)),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      height: 100,
-                      child: const Image(
-                          image: NetworkImage(
-                              "https://i.redd.it/pzjkyzkqhza11.png")),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.refresh_sharp, color: Colors.white),
-                      onPressed: _reloadData,
-                    ),
-                  ],
-                ),
-              );
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: (screenSize.width * (2 / 3)),
+                        child: Text('Error: ${snapshot.error}',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(color: Colors.white)),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 100,
+                        child: const Image(
+                            image: NetworkImage(
+                                "https://i.redd.it/pzjkyzkqhza11.png")),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.refresh_sharp,
+                            color: Colors.white),
+                        onPressed: _reloadData,
+                      ),
+                    ],
+                  ),
+                );
               } else if (!snapshot.hasData) {
                 return const Center(
                   child: Text('No data available'),
@@ -184,7 +186,7 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
           ),
           Container(
             height: 50,
-            decoration: BoxDecoration(color: Color.fromARGB(255, 19, 28, 39)),
+            decoration: const BoxDecoration(color: Color.fromARGB(255, 19, 28, 39)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

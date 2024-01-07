@@ -89,25 +89,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           : nicknameController.text,
                       profileImage: profile!.profileImage,
                       mail: mailController.text.isEmpty
-                          ? profile!.mail
+                          ? profile.mail
                           : mailController.text,
                       password: passwordController.text.isEmpty
-                          ? profile!.password
+                          ? profile.password
                           : passwordController.text,
                       birthday: ProfileDate(
-                          day: profile!.birthday.day,
-                          month: profile!.birthday.month,
-                          year: profile!.birthday.year),
-                      gender: profile!.gender,
+                          day: profile.birthday.day,
+                          month: profile.birthday.month,
+                          year: profile.birthday.year),
+                      gender: profile.gender,
                       location: ProfileLocation(
                           country: countryController.text.isEmpty
-                              ? profile!.location.country
+                              ? profile.location.country
                               : countryController.text,
                           city: cityController.text.isEmpty
-                              ? profile!.location.city
+                              ? profile.location.city
                               : cityController.text),
-                      animeRankList: profile!.animeRankList,
-                      characterRankList: profile!.characterRankList),
+                      animeRankList: profile.animeRankList,
+                      characterRankList: profile.characterRankList),
                 );
               }
             },
@@ -153,7 +153,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               //EDIT MAIN INFO PROFILE
               EditSecondaryInfo(
-                profile: profile!,
+                profile: profile,
                 cityController: cityController,
                 countryController: countryController,
               ),
@@ -175,7 +175,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
               ),
               //EDIT MAIN INFO PROFILE
               EditIdInfo(
-                profile: profile!,
+                profile: profile,
                 mailController: mailController,
                 passwordController: passwordController,
                 passwordVerficationController: passwordVerficationController,

@@ -11,15 +11,17 @@ class ScreensNavigationBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BottomAppBar(
+      elevation: 0,
+
+      padding: EdgeInsets.only(left: 12, right: 12, bottom: 12),
       height: 50,
-      color: const Color.fromARGB(
-          255, 29, 42, 59), // Set the color of the BottomAppBar
+      color: const Color.fromARGB(255, 29, 42, 59), // Set the color of the BottomAppBar
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           IconButton(
-            icon: const Icon(Icons.person),
+            icon: const Icon(Icons.person, color: Colors.white),
             onPressed: () {
               if (screen != "/profileDemo") {
                 Navigator.of(context).pushNamed("/profileDemo");
@@ -27,7 +29,7 @@ class ScreensNavigationBar extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.search),
+            icon: const Icon(Icons.search, color: Colors.white),
             onPressed: () {
               if (screen != "/") {
                 Navigator.of(context).pushNamed("/");
@@ -35,7 +37,7 @@ class ScreensNavigationBar extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.calendar_today_rounded),
+            icon: const Icon(Icons.calendar_today_rounded, color: Colors.white),
             onPressed: () {
               if (screen != "/seasonalDemo") {
                 Navigator.of(context).pushNamed("/seasonalDemo");
@@ -43,7 +45,8 @@ class ScreensNavigationBar extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: const Icon(Icons.format_list_bulleted_rounded),
+            icon: const Icon(Icons.format_list_bulleted_rounded,
+                color: Colors.white),
             onPressed: () {
               if (screen != "/rankListsDemo") {
                 Navigator.of(context).pushNamed("/rankListsDemo");

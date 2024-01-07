@@ -72,6 +72,7 @@ class _RanksScreenState extends State<RanksScreen> {
       return Scaffold(
         backgroundColor: const Color.fromARGB(255, 29, 42, 59),
         appBar: AppBar(
+          scrolledUnderElevation: 0,
           backgroundColor: const Color.fromARGB(255, 19, 28, 39),
           centerTitle: true,
           title: const Text(

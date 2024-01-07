@@ -21,6 +21,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
     Profile? profile = Provider.of<ProfileProvider>(context).profile;
     // Main screen scafold
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 29, 42, 59),
       bottomNavigationBar: const ScreensNavigationBar(screen: "/profileDemo"),
       // Container for the background image
       body: Container(
