@@ -17,7 +17,7 @@ class ProfileDescription extends StatelessWidget {
         children: [
           // Alias display
           Text(
-            profile.mail ?? '', //TODO: CHANGE MAIL TO NAME OF RANK 1 ANIME
+            profile.mail, //TODO: CHANGE MAIL TO NAME OF RANK 1 ANIME
             style: const TextStyle(
               color: Color.fromARGB(255, 252, 255, 85),
             ),

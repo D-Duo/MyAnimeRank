@@ -13,7 +13,7 @@ class ScreensNavigationBar extends StatelessWidget {
     return BottomAppBar(
       elevation: 0,
 
-      padding: EdgeInsets.only(left: 12, right: 12, bottom: 12),
+      padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
       height: 50,
       color: const Color.fromARGB(255, 29, 42, 59), // Set the color of the BottomAppBar
       child: Row(

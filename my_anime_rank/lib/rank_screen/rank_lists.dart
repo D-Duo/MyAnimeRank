@@ -187,8 +187,23 @@ class _RanksScreenState extends State<RanksScreen> {
             return ListView.separated(
               itemCount: previewItems.length,
               itemBuilder: (BuildContext context, int index) {
-                return RankListsItemDisplay(
-                    previewItems: previewItems[index], index: index);
+                return GestureDetector(
+                  onTap: () {
+                    if (previewItems[index].type == 0) {
+                      Navigator.of(context).pushNamed(
+                        "/characterDemo",
+                        arguments: previewItems[index].apiId,
+                      );
+                    } else {
+                      Navigator.of(context).pushNamed(
+                        "/animeDemo",
+                        arguments: previewItems[index].apiId,
+                      );
+                    }
+                  },
+                  child: RankListsItemDisplay(
+                      previewItems: previewItems[index], index: index),
+                );
               },
               separatorBuilder: (BuildContext context, int index) => Container(
                 height: 2,

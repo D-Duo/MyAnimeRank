@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/anime.dart';
-import 'package:my_anime_rank/screens/anime_screen/widgets/anime_charStaffItem.dart';
 import 'package:my_anime_rank/screens/anime_screen/widgets/anime_description.dart';
-//import 'package:my_anime_rank/screens/anime_screen/widgets/basic_description.dart';
-import 'package:my_anime_rank/widgets/titleItem_widgets.dart';
 
 class AnimeDisplay extends StatelessWidget {
   const AnimeDisplay({
