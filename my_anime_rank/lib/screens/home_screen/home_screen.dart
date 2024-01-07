@@ -44,6 +44,8 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
+  TextEditingController searchController = TextEditingController();
+
   late Future<List<PreviewItem>> _charactersFuture;
   List<bool> isSelected = [true, false];
 
@@ -97,56 +99,105 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ),
         bottomNavigationBar: const ScreensNavigationBar(screen: "/"),
-        body: FutureBuilder(
-          future: _charactersFuture,
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.waiting) {
-              return const Center(
-                child: CircularProgressIndicator(),
-              );
-            } else if (snapshot.hasError) {
-              return Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        body: Stack(
+          children: [
+            FutureBuilder(
+              future: _charactersFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                } else if (snapshot.hasError) {
+                  return Center(
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        SizedBox(
+                          width: (screenSize.width * (2 / 3)),
+                          child: Text('Error: ${snapshot.error}',
+                              textAlign: TextAlign.center,
+                              style: const TextStyle(color: Colors.white)),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        Container(
+                          height: 100,
+                          child: const Image(
+                              image: NetworkImage(
+                                  "https://i.redd.it/pzjkyzkqhza11.png")),
+                        ),
+                        const SizedBox(
+                          height: 20,
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.refresh_sharp,
+                              color: Colors.white),
+                          onPressed: _reloadData,
+                        ),
+                      ],
+                    ),
+                  );
+                } else if (!snapshot.hasData) {
+                  return const Center(
+                    child: Text('No data available'),
+                  );
+                }
+                final previewItems = snapshot.data!;
+                return Stack(
                   children: [
-                    SizedBox(
-                      width: (screenSize.width * (2 / 3)),
-                      child: Text('Error: ${snapshot.error}',
-                          textAlign: TextAlign.center,
-                          style: const TextStyle(color: Colors.white)),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    Container(
-                      height: 100,
-                      child: const Image(
-                          image: NetworkImage(
-                              "https://i.redd.it/pzjkyzkqhza11.png")),
-                    ),
-                    const SizedBox(
-                      height: 20,
-                    ),
-                    IconButton(
-                      icon:
-                          const Icon(Icons.refresh_sharp, color: Colors.white),
-                      onPressed: _reloadData,
-                    ),
+                    BaseHomeDisplay(previewItems: previewItems),
                   ],
-                ),
-              );
-            } else if (!snapshot.hasData) {
-              return const Center(
-                child: Text('No data available'),
-              );
-            }
-            final previewItems = snapshot.data!;
-            return Stack(
-              children: [
-                BaseHomeDisplay(previewItems: previewItems),
-              ],
-            );
-          },
+                );
+              },
+            ),
+            Container(
+              height: 50,
+              decoration:
+                  const BoxDecoration(color: Color.fromARGB(255, 19, 28, 39)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(bottom: 5),
+                    height: 40,
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        // hintText: "Search",
+                        // hintStyle: const TextStyle(
+                        //   color: Colors.grey, // fontcolor of hint
+                        //   fontSize: 14.0, // fontsize of hint
+                        // ),
+                        label: Text("Search"),
+                        suffixIcon: IconButton(
+                          icon: const Icon(
+                            Icons.search,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              searchController.text = "";
+                              //FUNCTION TO SEARCH
+                            });
+                          },
+                        ),
+                      ),
+                      style: const TextStyle(
+                        color: Colors.white, // text color inside textfield
+                        fontSize: 18.0, // fontsize inside textfield
+                      ),
+                      cursorColor: Colors.blue, // cursor color
+                    ),
+                  ),
+                ],
+              ),
+            )
+          ],
         ),
       );
     } else {
