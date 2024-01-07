@@ -7,7 +7,6 @@ class EditMainInfo extends StatefulWidget {
     super.key,
     required this.profile,
     required this.nicknameController,
-    
   });
   final Profile profile;
   final TextEditingController nicknameController;
@@ -19,7 +18,7 @@ class _EditMainInfoState extends State<EditMainInfo> {
   Future<String>? editImage;
 
   Future<void> _changeImage() async {
-    setState((){
+    setState(() {
       editImage = pickImage();
     });
   }
@@ -44,6 +43,7 @@ class _EditMainInfoState extends State<EditMainInfo> {
                 }
                 widget.profile.profileImage =
                     snapshot.data ?? widget.profile.profileImage;
+                editImage = null;
                 return Container(
                   width: MediaQuery.of(context).size.width * 0.35,
                   height: MediaQuery.of(context).size.width * 0.35,

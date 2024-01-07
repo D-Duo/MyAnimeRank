@@ -1,0 +1,2 @@
+- Future Image Loader Bug:
+When saving new profile called new repaint of the scene and the future builder of the image can get seen as containing data and asign that new data to the profile provider.

@@ -21,6 +21,8 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   TextEditingController cityController = TextEditingController();
   TextEditingController countryController = TextEditingController();
   String? tempImg;
+  ProfileDate? tempDate;
+  ProfileGender? tempGender;
   bool init = true;
 
   @override
@@ -30,6 +32,22 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         Provider.of<ProfileProvider>(context, listen: true);
     if (init) {
       tempImg = profile!.profileImage;
+
+      //setting temp variables without pointer
+      tempDate = ProfileDate(
+          day: profile.birthday.day,
+          month: profile.birthday.month,
+          year: profile.birthday.year);
+      //setting temp variables without pointer
+      if (profile.gender == ProfileGender.male) {
+        tempGender = ProfileGender.male;
+      } else if (profile.gender == ProfileGender.female) {
+        tempGender = ProfileGender.female;
+      } else if (profile.gender == ProfileGender.other) {
+        tempGender = ProfileGender.other;
+      } else {
+        tempGender = ProfileGender.unspecified;
+      }
       init = false;
     }
     return Scaffold(
@@ -39,10 +57,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         shadowColor: const Color.fromARGB(0, 0, 0, 0),
         leading: GestureDetector(
           onTap: () {
-            Navigator.of(context).pushNamed("/profileDemo");
             if (tempImg != profile!.profileImage) {
               profile.profileImage = tempImg!;
             }
+            if (tempDate != profile.birthday) {
+              profile.birthday = tempDate!;
+            }
+            if (tempGender != profile.gender) {
+              profile.gender = tempGender!;
+            }
+            init = true;
+            Navigator.of(context).pushNamed("/profileDemo");
           },
           child: const Icon(Icons.keyboard_arrow_left,
               size: 40, color: Color.fromARGB(255, 255, 255, 255)),
@@ -56,6 +81,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       passwordVerficationController.text) ||
                   (passwordController.text.isEmpty &&
                       passwordVerficationController.text.isEmpty)) {
+                Navigator.of(context).pushNamed("/profileDemo");
                 profileProvider.updateProfile(
                   Profile(
                       nickname: nicknameController.text.isEmpty
@@ -83,7 +109,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       animeRankList: profile!.animeRankList,
                       characterRankList: profile!.characterRankList),
                 );
-                Navigator.of(context).pushNamed("/profileDemo");
               }
             },
             child: const Padding(
