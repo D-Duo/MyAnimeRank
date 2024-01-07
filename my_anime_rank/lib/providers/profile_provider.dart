@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/profile.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 class ProfileProvider extends ChangeNotifier {
   Profile? _profile;
@@ -69,10 +70,19 @@ class ProfileProvider extends ChangeNotifier {
 
       // Obtener la ruta del archivo profile.json
       final appDir = await getApplicationDocumentsDirectory();
-      final file = File('${appDir.path}/profile.json');
+      final directoryPath = join(
+        appDir.path,
+        'My Anime Rank',
+        'LocalData',
+      );
+
+      // Create the directory if it doesn't exist
+      await Directory(directoryPath).create(recursive: true);
+      final filePath = join(directoryPath, 'profile.json');
+      final file = File(filePath);
 
       // Escribir el JSON en el archivo
-      
+
       await file.writeAsString(jsonString);
     }
   }

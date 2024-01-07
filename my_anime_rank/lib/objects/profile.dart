@@ -5,6 +5,7 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
 import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart';
 
 class RankListItem {
   int id;
@@ -241,7 +242,9 @@ class Profile {
 
 Future<Profile> loadProfile() async {
   final appDir = await getApplicationDocumentsDirectory();
-  final file = File('${appDir.path}/profile.json');
+  final filePath =
+          join(appDir.path, 'My Anime Rank', 'LocalData', 'profile.json');
+  final file = File(filePath);
 
   final String jsonString;
 

@@ -41,9 +41,7 @@ class Anime {
   final String type;
   final String format;
   final String status;
-  String? descriptionShort;
-  String? descriptionLong;
-  final String description;
+  String description;
   final int startDateYear;
   final int startDateMonth;
   final int endDateYear;
@@ -64,8 +62,6 @@ class Anime {
     required this.type,
     required this.format,
     required this.status,
-    this.descriptionShort,
-    this.descriptionLong,
     required this.description,
     required this.startDateYear,
     required this.startDateMonth,
@@ -85,19 +81,19 @@ class Anime {
         rank = rank_?.toString() ?? "Unranked";
 
   Anime.fromJsonRemote(Map<String, dynamic> json)
-      : apiId = json["id"],
-        title = json["title"]["romaji"],
-        type = (json["type"] as String),
-        format = (json["format"] as String),
-        status = (json["status"] as String),
-        description = json["description"],
-        startDateYear = json["startDate"]["year"],
-        startDateMonth = json["startDate"]["month"],
-        endDateYear = json["endDate"]["year"],
-        endDateMonth = json["endDate"]["month"],
-        season = (json["season"] as String),
-        episodes = json["episodes"],
-        source = (json["source"] as String),
+      : apiId = json["id"] ?? 0,
+        title = json["title"]["romaji"] ?? "Unknown Title",
+        type = ((json["type"] ?? "Unknown Type") as String),
+        format = ((json["format"] ?? "Unknown Format") as String),
+        status = ((json["status"] ?? "Unknown Status") as String),
+        description = json["description"] ?? "Unknown Description",
+        startDateYear = json["startDate"]["year"] ?? 0,
+        startDateMonth = json["startDate"]["month"] ?? 0,
+        endDateYear = json["endDate"]["year"] ?? 0,
+        endDateMonth = json["endDate"]["month"] ?? 0,
+        season = ((json["season"] ?? "Unknown Season") as String),
+        episodes = json["episodes"] ?? 0,
+        source = ((json["source"] ?? "Unknown Source") as String),
         mainImagePaths = [json["coverImage"]["large"]],
         genres = (json["genres"] as List<dynamic>)
             .map<String>((studio) => studio as String)
@@ -117,23 +113,8 @@ class Anime {
               ),
             )
             .toList() {
-    // Split description into short and long based on ~! and !~
-    final RegExp exp = RegExp(r'~!');
-    final Match? match = exp.firstMatch(json["description"]);
-
-    if (match != null) {
-      descriptionShort = json["description"].substring(0, match.start);
-
-      descriptionLong = json["description"];
-      descriptionLong =
-          descriptionLong!.replaceAll('~!', '').replaceAll('!~', '');
-    } else {
-      // If no match, set both to the original description
-      descriptionShort = json["description"];
-    }
+    description = description.replaceAll('<br>', '\n');
   }
-
-  //get descriptionShort => null;
 }
 
 Future<Anime> loadAnimeRemote(int animeId) async {
@@ -149,7 +130,7 @@ Future<Anime> loadAnimeRemote(int animeId) async {
           type
           format
           status
-          description (asHtml: false)
+          description
           startDate {
             year
             month

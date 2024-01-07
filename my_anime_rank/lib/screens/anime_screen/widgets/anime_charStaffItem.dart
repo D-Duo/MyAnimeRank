@@ -38,7 +38,7 @@ class CharStaffItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: () => Navigator.of(context)
-          .pushNamed("/animeDemo", arguments: charItem.Cid),
+          .pushNamed("/characterDemo", arguments: charItem.Cid),
       child: Container(
         width: 150,
         child: Column(

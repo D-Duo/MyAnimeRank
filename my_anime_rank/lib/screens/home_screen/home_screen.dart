@@ -112,6 +112,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     SizedBox(
                       width: (screenSize.width * (2 / 3)),
                       child: Text('Error: ${snapshot.error}',
+                          textAlign: TextAlign.center,
                           style: const TextStyle(color: Colors.white)),
                     ),
                     const SizedBox(
@@ -121,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 100,
                       child: const Image(
                           image: NetworkImage(
-                              "https://www.pngitem.com/pimgs/b/345-3451980_depressed-anime-girl-crying-transparent-cartoons-sad-anime.png")),
+                              "https://i.redd.it/pzjkyzkqhza11.png")),
                     ),
                     const SizedBox(
                       height: 20,

@@ -126,7 +126,7 @@ class GeneralInformation extends StatelessWidget {
                     const Text("Season",
                         style: TextStyle(
                             color: Colors.white, fontSize: GIfontSize)),
-                    Text("${anime.season} ${anime.startDateYear}",
+                    Text("${anime.season} ${anime.startDateYear == 0 ? anime.startDateYear : "Not released"}",
                         style: const TextStyle(
                             color: Colors.white,
                             fontSize: GIfontSize,
@@ -136,7 +136,7 @@ class GeneralInformation extends StatelessWidget {
                         style: TextStyle(
                             color: Colors.white, fontSize: GIfontSize)),
                     Text(
-                      "${MonthToString(anime.startDateMonth)} ${anime.startDateYear} to ${anime.status == "FINISHED" || anime.status == "CANCELLED" ? "${MonthToString(anime.startDateMonth)} ${anime.startDateYear}" : "?"}",
+                      anime.startDateYear == 0 ? "${MonthToString(anime.startDateMonth)}/${anime.startDateYear} to ${anime.status == "FINISHED" || anime.status == "CANCELLED" ? "${MonthToString(anime.endDateMonth)}/${anime.endDateYear}" : "?"}" : "Not released",
                       style: const TextStyle(
                           color: Colors.white,
                           fontSize: GIfontSize,

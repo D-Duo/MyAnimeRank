@@ -99,7 +99,7 @@ class AnimeDescription extends StatelessWidget {
                   Expanded(
                     child: Center(
                       child: Text(
-                        "${anime.format}, ${anime.startDateYear}",
+                        "${anime.format}, ${anime.startDateYear == 0 ? anime.startDateYear : "Not released"}",
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
@@ -160,7 +160,6 @@ class AnimeDescription extends StatelessWidget {
           // Expandable text
           CustomExpandable(
             shortText: anime.description,
-            longText: anime.description,
             triggerTextMore: "Show spoilers...",
             triggerTextLess: "Hide spoilers...",
           ),

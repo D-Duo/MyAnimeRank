@@ -83,7 +83,7 @@ Future<Character> loadCharacterRemote(int characterId) async {
           }
           description (asHtml: false)
           favourites
-          media {
+          media (type: ANIME) {
             edges {
               node {
                 id

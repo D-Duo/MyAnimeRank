@@ -34,6 +34,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
 
     // Main screen scafold
     return Scaffold(
+      backgroundColor: const Color.fromARGB(255, 29, 42, 59),
       // Container for the background image
       body: FutureBuilder(
         future: _characterFuture,
@@ -43,20 +44,41 @@ class _CharacterScreenState extends State<CharacterScreen> {
               child: CircularProgressIndicator(),
             );
           } else if (snapshot.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Error: ${snapshot.error}'),
-                  const SizedBox(
-                    height: 20,
+            return Stack(
+              children: [
+                Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      SizedBox(
+                        width: (screenSize.width * (2 / 3)),
+                        child: Text('Error: ${snapshot.error}',
+                            textAlign: TextAlign.center,
+                            style: const TextStyle(color: Colors.white)),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Container(
+                        height: 100,
+                        child: const Image(
+                            image: NetworkImage(
+                                "https://i.redd.it/pzjkyzkqhza11.png")),
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      IconButton(
+                        icon: const Icon(Icons.refresh_sharp,
+                            color: Colors.white),
+                        onPressed: () => _reloadData(charId),
+                      ),
+                    ],
                   ),
-                  IconButton(
-                    icon: const Icon(Icons.refresh_sharp),
-                    onPressed: () => _reloadData(charId),
-                  ),
-                ],
-              ),
+                ),
+                // Appbar of the screen
+                const CustomAppBar(),
+              ],
             );
           } else if (!snapshot.hasData) {
             return const Center(
