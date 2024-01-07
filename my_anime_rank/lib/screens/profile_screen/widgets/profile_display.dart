@@ -19,7 +19,7 @@ class _ProfileDisplayState extends State<ProfileDisplay> {
     final double sidesPadding = screenSize.width <= 440
         ? 20
         : 20 + ((screenSize.width - 440) / 60) * 20;
-    return Container(
+    return SizedBox(
       child: Stack(
         children: [
           Container(
