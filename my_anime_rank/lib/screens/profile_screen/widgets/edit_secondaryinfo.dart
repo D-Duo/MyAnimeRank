@@ -26,7 +26,7 @@ class _EditSecondaryInfoState extends State<EditSecondaryInfo> {
           "BirthDay",
           style: TextStyle(
             color: Colors.white, // fontcolor of label
-            fontSize: 35.0, // fontsize of label
+            fontSize: 20, // fontsize of label
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -59,7 +59,7 @@ class _EditSecondaryInfoState extends State<EditSecondaryInfo> {
                       (index + 1).toString(),
                       style: const TextStyle(
                         color: Colors.grey, // text color inside dropdown
-                        fontSize: 18.0, // fontsize inside dropdown
+                        fontSize: 16.0, // fontsize inside dropdown
                       ),
                     ),
                   );
@@ -91,7 +91,7 @@ class _EditSecondaryInfoState extends State<EditSecondaryInfo> {
                       monthToString(index + 1),
                       style: const TextStyle(
                         color: Colors.grey, // text color inside dropdown
-                        fontSize: 18.0, // fontsize inside dropdown
+                        fontSize: 16.0, // fontsize inside dropdown
                       ),
                     ),
                   );
@@ -123,7 +123,7 @@ class _EditSecondaryInfoState extends State<EditSecondaryInfo> {
                       (1900 + index + 1).toString(),
                       style: const TextStyle(
                         color: Colors.grey, // text color inside dropdown
-                        fontSize: 18.0, // fontsize inside dropdown
+                        fontSize: 16.0, // fontsize inside dropdown
                       ),
                     ),
                   );
@@ -137,7 +137,7 @@ class _EditSecondaryInfoState extends State<EditSecondaryInfo> {
           "Gender",
           style: TextStyle(
             color: Colors.white, // fontcolor of label
-            fontSize: 35.0, // fontsize of label
+            fontSize: 20, // fontsize of label
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -164,7 +164,7 @@ class _EditSecondaryInfoState extends State<EditSecondaryInfo> {
                 genderToString(gender),
                 style: const TextStyle(
                   color: Colors.grey, // text color inside dropdown
-                  fontSize: 18.0, // fontsize inside dropdown
+                  fontSize: 16.0, // fontsize inside dropdown
                 ),
               ),
             );
@@ -175,7 +175,7 @@ class _EditSecondaryInfoState extends State<EditSecondaryInfo> {
           "Location",
           style: TextStyle(
             color: Colors.white, // fontcolor of label
-            fontSize: 35.0, // fontsize of label
+            fontSize: 20, // fontsize of label
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -194,7 +194,7 @@ class _EditSecondaryInfoState extends State<EditSecondaryInfo> {
                   hintText: widget.profile.location.city,
                   labelStyle: const TextStyle(
                     color: Colors.white, // fontcolor of label
-                    fontSize: 20.0, // fontsize of label
+                    fontSize: 16, // fontsize of label
                   ),
                   hintStyle: const TextStyle(
                     color: Colors.grey, // fontcolor of hint
@@ -218,7 +218,7 @@ class _EditSecondaryInfoState extends State<EditSecondaryInfo> {
                   hintText: widget.profile.location.country,
                   labelStyle: const TextStyle(
                     color: Colors.white, // fontcolor of label
-                    fontSize: 20.0, // fontsize of label
+                    fontSize: 16.0, // fontsize of label
                   ),
                   hintStyle: const TextStyle(
                     color: Colors.grey, // fontcolor of hint

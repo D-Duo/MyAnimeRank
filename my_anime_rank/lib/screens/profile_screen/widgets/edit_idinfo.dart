@@ -32,7 +32,7 @@ class _EditIdInfoState extends State<EditIdInfo> {
           "Mail",
           style: TextStyle(
             color: Colors.white, // fontcolor of label
-            fontSize: 35.0, // fontsize of label
+            fontSize: 20, // fontsize of label
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -59,7 +59,7 @@ class _EditIdInfoState extends State<EditIdInfo> {
           "Password",
           style: TextStyle(
             color: Colors.white, // fontcolor of label
-            fontSize: 35.0, // fontsize of label
+            fontSize: 20, // fontsize of label
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -93,7 +93,7 @@ class _EditIdInfoState extends State<EditIdInfo> {
           "Confirm Password",
           style: TextStyle(
             color: Colors.white, // fontcolor of label
-            fontSize: 35.0, // fontsize of label
+            fontSize: 20, // fontsize of label
             fontWeight: FontWeight.bold,
           ),
         ),
