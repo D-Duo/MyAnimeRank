@@ -4,6 +4,7 @@ import 'package:flutter/services.dart' show rootBundle;
 
 import 'package:image_picker/image_picker.dart';
 import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 
 class RankListItem {
   int id;
@@ -239,7 +240,17 @@ class Profile {
 }
 
 Future<Profile> loadProfile() async {
-  final jsonString = await rootBundle.loadString('assets/profile.json');
+  final appDir = await getApplicationDocumentsDirectory();
+  final file = File('${appDir.path}/profile.json');
+
+  final String jsonString;
+
+  if (await file.exists()) {
+    jsonString = await file.readAsString();
+  } else {
+    jsonString = await rootBundle.loadString('assets/profile.json');    
+  }
+
   final jsonData = jsonDecode(jsonString);
 
   Profile profile = Profile.fromJson(jsonData);

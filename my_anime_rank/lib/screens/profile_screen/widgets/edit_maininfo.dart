@@ -44,6 +44,7 @@ class _EditMainInfoState extends State<EditMainInfo> {
                 }
                 widget.profile.profileImage =
                     snapshot.data ?? widget.profile.profileImage;
+                    editImage = null;
                 return Container(
                   width: MediaQuery.of(context).size.width * 0.35,
                   height: MediaQuery.of(context).size.width * 0.35,
