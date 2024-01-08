@@ -27,6 +27,7 @@ class RankListsItemDisplay extends StatefulWidget {
 class _RankListsItemDisplayState extends State<RankListsItemDisplay> {
   @override
   Widget build(BuildContext context) {
+    final screenSize = MediaQuery.of(context).size;
     Profile? profile = Provider.of<ProfileProvider>(context).profile;
     ProfileProvider profileProvider =
         Provider.of<ProfileProvider>(context, listen: true);
@@ -69,7 +70,7 @@ class _RankListsItemDisplayState extends State<RankListsItemDisplay> {
           width: 5,
         ),
         SizedBox(
-          width: 150,
+          width: screenSize.width*(1/3),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
