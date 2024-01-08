@@ -195,6 +195,7 @@ class Profile {
   String profileImage;
   String mail;
   String password;
+  String favCharacter;
   ProfileDate birthday;
   ProfileGender gender;
   ProfileLocation location;
@@ -206,6 +207,7 @@ class Profile {
     required this.profileImage,
     required this.mail,
     required this.password,
+    required this.favCharacter,
     required this.birthday,
     required this.gender,
     required this.location,
@@ -218,6 +220,7 @@ class Profile {
         profileImage = json["profileImage"],
         mail = json["mail"],
         password = json["password"],
+        favCharacter = json["favCharacter"],
         birthday = ProfileDate(
             day: json["birthday"]["day"],
             month: json["birthday"]["month"],
@@ -243,7 +246,7 @@ class Profile {
 Future<Profile> loadProfile() async {
   final appDir = await getApplicationDocumentsDirectory();
   final filePath =
-          join(appDir.path, 'My Anime Rank', 'LocalData', 'profile.json');
+      join(appDir.path, 'My Anime Rank', 'LocalData', 'profile.json');
   final file = File(filePath);
 
   final String jsonString;
@@ -251,7 +254,7 @@ Future<Profile> loadProfile() async {
   if (await file.exists()) {
     jsonString = await file.readAsString();
   } else {
-    jsonString = await rootBundle.loadString('assets/profile.json');    
+    jsonString = await rootBundle.loadString('assets/profile.json');
   }
 
   final jsonData = jsonDecode(jsonString);

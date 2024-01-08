@@ -17,7 +17,7 @@ class ProfileDescription extends StatelessWidget {
         children: [
           // Alias display
           Text(
-            profile.mail, //TODO: CHANGE MAIL TO NAME OF RANK 1 ANIME
+            profile.favCharacter, //TODO: CHANGE MAIL TO NAME OF RANK 1 ANIME
             style: const TextStyle(
               color: Color.fromARGB(255, 252, 255, 85),
             ),
@@ -28,7 +28,9 @@ class ProfileDescription extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Container(
-                width: MediaQuery.of(context).size.width <= 380 ? MediaQuery.of(context).size.width *(2/3) : 280,
+                width: MediaQuery.of(context).size.width <= 380
+                    ? MediaQuery.of(context).size.width * (2 / 3)
+                    : 280,
                 margin: const EdgeInsets.only(bottom: 40),
                 child: Text(
                   profile.nickname,

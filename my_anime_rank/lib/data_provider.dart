@@ -41,6 +41,7 @@ class ProfileProvider extends ChangeNotifier {
         'profileImage': _profile!.profileImage,
         'mail': _profile!.mail,
         'password': _profile!.password,
+        'favCharacter': _profile!.favCharacter,
         'birthday': {
           'day': _profile!.birthday.day,
           'month': _profile!.birthday.month,

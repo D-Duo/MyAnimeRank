@@ -94,6 +94,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       password: passwordController.text.isEmpty
                           ? profile.password
                           : passwordController.text,
+                      favCharacter: profile.favCharacter,
                       birthday: ProfileDate(
                           day: profile.birthday.day,
                           month: profile.birthday.month,

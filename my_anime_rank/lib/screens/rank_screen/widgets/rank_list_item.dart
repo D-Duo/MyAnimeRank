@@ -173,6 +173,8 @@ class _RankListsItemDisplayState extends State<RankListsItemDisplay> {
                             }
                           default:
                         }
+                        profile!.favCharacter =
+                            widget.previewItems[0].mainString;
                         profileProvider.UpdateJson();
                       }
                     });
@@ -252,6 +254,8 @@ class _RankListsItemDisplayState extends State<RankListsItemDisplay> {
                             }
                           default:
                         }
+                        profile!.favCharacter =
+                            widget.previewItems[0].mainString;
                         profileProvider.UpdateJson();
                       }
                     });
