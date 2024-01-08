@@ -6,39 +6,6 @@ import 'package:my_anime_rank/widgets/screens_navigation_bar.dart';
 import 'package:my_anime_rank/screens/rank_screen/widgets/rank_list_item.dart';
 import 'package:provider/provider.dart';
 
-Future<List<PreviewItem>> loadItems() async {
-  List<Future<PreviewItem>> itemsFutures = [
-    loadPreviewItemRemoteMedia(21), //one piece
-    loadPreviewItemRemoteMedia(101922), //Kimetsu
-    loadPreviewItemRemoteMedia(166873), //Mushoku season 2
-    loadPreviewItemRemoteMedia(99423), //darling in the franxx
-    // loadPreviewItemRemoteCharacter(124381),
-    // loadPreviewItemRemoteCharacter(40882),
-    // loadPreviewItemRemoteCharacter(176754),
-    // loadPreviewItemRemoteCharacter(80),
-    // loadPreviewItemRemoteCharacter(40),
-    // loadPreviewItemRemoteCharacter(16342),
-    // loadPreviewItemRemoteCharacter(138100),
-    // loadPreviewItemRemoteCharacter(169679),
-    // loadPreviewItemRemoteCharacter(138101),
-    // loadPreviewItemRemoteCharacter(138102),
-    // loadPreviewItemRemoteCharacter(36765),
-    // loadPreviewItemRemoteCharacter(36828),
-    // loadPreviewItemRemoteCharacter(73935),
-    // loadPreviewItemRemoteCharacter(81929),
-    // loadPreviewItemRemoteCharacter(130102),
-    // loadPreviewItemRemoteCharacter(137079),
-    // loadPreviewItemRemoteCharacter(88747),
-    // loadPreviewItemRemoteCharacter(88748),
-    // loadPreviewItemRemoteCharacter(88750),
-    // loadPreviewItemRemoteCharacter(88749),
-  ];
-
-  List<PreviewItem> items = await Future.wait(itemsFutures);
-
-  return items;
-}
-
 class RanksScreen extends StatefulWidget {
   const RanksScreen({super.key});
 
@@ -47,18 +14,14 @@ class RanksScreen extends StatefulWidget {
 }
 
 class _RanksScreenState extends State<RanksScreen> {
-  late Future<List<PreviewItem>> _charactersFuture;
+  late Future<List<PreviewItem>> _rankItemsFuture;
   List<bool> isSelected = [true, false];
+  bool init = true;
 
-  @override
-  void initState() {
-    super.initState();
-    _charactersFuture = loadItems();
-  }
-
-  Future<void> _reloadData() async {
+  Future<void> _reloadData(
+      int amount, List<RankListItem> items, bool itemType) async {
     setState(() {
-      _charactersFuture = loadItems();
+      _rankItemsFuture = loadRankList(amount, items, itemType);
     });
   }
 
@@ -69,6 +32,13 @@ class _RanksScreenState extends State<RanksScreen> {
     Profile? profile = Provider.of<ProfileProvider>(context).profile;
 
     if (profile != null) {
+      if (init) {
+        _rankItemsFuture = loadRankList(
+            4,
+            Provider.of<ProfileProvider>(context).profile!.animeRankList!,
+            true);
+        init = false;
+      }
       return Scaffold(
         backgroundColor: const Color.fromARGB(255, 29, 42, 59),
         appBar: AppBar(
@@ -113,6 +83,12 @@ class _RanksScreenState extends State<RanksScreen> {
                       } else {
                         isSelected[0] = !isSelected[1];
                       }
+
+                      if (isSelected[0]) {
+                        _reloadData(4, profile.animeRankList!, true);
+                      } else if (isSelected[1]) {
+                        _reloadData(4, profile.characterRankList!, false);
+                      }
                     },
                   );
                 },
@@ -143,7 +119,7 @@ class _RanksScreenState extends State<RanksScreen> {
           screenId: 4,
         ),
         body: FutureBuilder(
-          future: _charactersFuture,
+          future: _rankItemsFuture,
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return const Center(
@@ -175,7 +151,13 @@ class _RanksScreenState extends State<RanksScreen> {
                     IconButton(
                       icon:
                           const Icon(Icons.refresh_sharp, color: Colors.white),
-                      onPressed: _reloadData,
+                      onPressed: () {
+                        if (isSelected[0]) {
+                          _reloadData(4, profile.animeRankList!, true);
+                        } else if (isSelected[1]) {
+                          _reloadData(4, profile.characterRankList!, false);
+                        }
+                      },
                     ),
                   ],
                 ),

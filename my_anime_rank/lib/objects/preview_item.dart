@@ -192,20 +192,30 @@ Future<List<PreviewItem>> loadSeasonalList(
 }
 
 Future<List<PreviewItem>> loadRankList(
-    int amount, List<RankListItem> items) async {
+    int amount, List<RankListItem> items, bool itemType) async {
   items.sort((a, b) => a.rank.compareTo(b.rank));
 
   List<PreviewItem> finalList = [];
 
   int count = 0;
 
-  await Future.forEach(items, (id) async {
-    if (count < amount) {
-      PreviewItem result = await loadPreviewItemRemoteMedia(id.id);
-      finalList.add(result);
-      count++;
-    }
-  });
+  if (itemType) {
+    await Future.forEach(items, (id) async {
+      if (count < amount) {
+        PreviewItem result = await loadPreviewItemRemoteMedia(id.id);
+        finalList.add(result);
+        count++;
+      }
+    });
+  } else {
+    await Future.forEach(items, (id) async {
+      if (count < amount) {
+        PreviewItem result = await loadPreviewItemRemoteCharacter(id.id);
+        finalList.add(result);
+        count++;
+      }
+    });
+  }
 
   return finalList;
 }
