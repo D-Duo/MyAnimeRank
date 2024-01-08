@@ -22,6 +22,10 @@
 
 Each screen has a top bar with navigation items or filters for the data shown. There will also be a botom bar for navigation through screens in the main screens.
 
+## Features
+- The App has a profile preset asset. When the user modifies the profile, it creates a local json file to store localy the user's data on the app data folder.
+- All the data displayed (with the exception of the profile data) is dinamically loaded from the API AniList (this can lead to some problems if the API changes or so).
+
 ## Developers
 
  - Francisco Ferrerós - [_kikofp02_](https://github.com/kikofp02)

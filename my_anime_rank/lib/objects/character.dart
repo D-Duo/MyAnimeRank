@@ -39,7 +39,7 @@ class Character {
   Character.fromJsonRemote(Map<String, dynamic> json)
       : apiId = json["id"],
         name = json["name"]["full"],
-         bestAlias = json["name"]["alternative"][0],
+        bestAlias = json["name"]["alternative"] == null ? json["name"]["alternative"][0] : " ",
         mainImagePaths = [json["image"]["large"]],
         favs = json["favourites"] ?? 0,
         rank = json["rank"] ?? "Unranked",
@@ -56,7 +56,7 @@ class Character {
 
     if (match != null) {
       descriptionShort = json["description"].substring(0, match.start);
-      
+
       descriptionLong = json["description"];
       descriptionLong =
           descriptionLong!.replaceAll('~!', '').replaceAll('!~', '');

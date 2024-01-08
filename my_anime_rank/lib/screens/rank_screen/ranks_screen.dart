@@ -40,7 +40,7 @@ class _RanksScreenState extends State<RanksScreen> {
     if (profile != null) {
       if (init) {
         _rankItemsFuture = loadRankList(
-            profile.animeRankList!.length ?? 10,
+            profile.animeRankList!.length,
             Provider.of<ProfileProvider>(context).profile!.animeRankList!,
             true);
         init = false;

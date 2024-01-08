@@ -99,7 +99,7 @@ class AnimeDescription extends StatelessWidget {
                   Expanded(
                     child: Center(
                       child: Text(
-                        "${anime.format}, ${anime.startDateYear == 0 ? anime.startDateYear : "Not released"}",
+                        "${anime.format}, ${anime.startDateYear == 0 ? anime.startDateYear : " "}",
                         style: const TextStyle(
                           fontSize: 16,
                           color: Colors.white,
@@ -139,18 +139,14 @@ class AnimeDescription extends StatelessWidget {
             ),
             height: 40,
             child: Center(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  for (int i = 0; i < anime.genres.length; i++)
-                    Text(
-                      anime.genres[i],
-                      style: const TextStyle(
-                        fontSize: 16,
-                        color: Color.fromARGB(255, 255, 255, 85),
-                      ),
-                    ),
-                ],
+              child: Text(
+                anime.genres.join(' '),
+                style: const TextStyle(
+                  fontSize: 16,
+                  color: Color.fromARGB(255, 255, 255, 85),
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
               ),
             ),
           ),
