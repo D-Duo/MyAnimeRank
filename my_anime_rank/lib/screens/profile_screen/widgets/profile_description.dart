@@ -17,7 +17,7 @@ class ProfileDescription extends StatelessWidget {
         children: [
           // Alias display
           Text(
-            profile.favCharacter, //TODO: CHANGE MAIL TO NAME OF RANK 1 ANIME
+            profile.favCharacter,
             style: const TextStyle(
               color: Color.fromARGB(255, 252, 255, 85),
             ),
@@ -75,6 +75,47 @@ class ProfileDescription extends StatelessWidget {
                 "${profile.birthday.day}/${profile.birthday.month}/${profile.birthday.year}",
                 style: const TextStyle(
                   fontSize: 15,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Row(
+            children: [
+              const Icon(Icons.mail, color: Colors.white, size: 17),
+              const SizedBox(width: 10),
+              Text(
+                profile.mail,
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(
+            height: 15,
+          ),
+          Row(
+            children: [
+              if (profile.gender == ProfileGender.male)
+                const Icon(Icons.male, color: Colors.white, size: 27),
+              if (profile.gender == ProfileGender.female)
+                const Icon(Icons.female, color: Colors.white, size: 27),
+              if (profile.gender == ProfileGender.other)
+                const Icon(Icons.format_list_bulleted_rounded,
+                    color: Colors.white, size: 27),
+              if (profile.gender == ProfileGender.unspecified)
+                const Icon(Icons.help_outline_rounded,
+                    color: Colors.white, size: 27),
+              const SizedBox(width: 10),
+              Text(
+                genderToString(profile.gender),
+                style: const TextStyle(
+                  fontSize: 25,
                   color: Colors.white,
                 ),
               ),

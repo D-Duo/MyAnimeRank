@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:my_anime_rank/data_provider.dart';
 import 'package:my_anime_rank/objects/character.dart';
+import 'package:my_anime_rank/objects/profile.dart';
 import 'package:my_anime_rank/screens/character_screen/widgets/character_display.dart';
 import 'package:my_anime_rank/screens/character_screen/widgets/custom_appbar.dart';
 import 'dart:ui';
+
+import 'package:provider/provider.dart';
 
 class CharacterScreen extends StatefulWidget {
   const CharacterScreen({super.key});
@@ -31,6 +35,8 @@ class _CharacterScreenState extends State<CharacterScreen> {
       _characterFuture = loadCharacterRemote(charId);
       _initialized = true;
     }
+
+    Profile? profile = Provider.of<ProfileProvider>(context).profile;
 
     // Main screen scafold
     return Scaffold(
@@ -77,7 +83,10 @@ class _CharacterScreenState extends State<CharacterScreen> {
                   ),
                 ),
                 // Appbar of the screen
-                const CustomAppBar(),
+                CustomAppBar(
+                  charID: charId,
+                  charRankL: profile?.characterRankList,
+                ),
               ],
             );
           } else if (!snapshot.hasData) {
@@ -128,7 +137,10 @@ class _CharacterScreenState extends State<CharacterScreen> {
                         ],
                       ),
                       // Appbar of the screen
-                      const CustomAppBar(),
+                      CustomAppBar(
+                        charID: charId,
+                        charRankL: profile?.characterRankList,
+                      ),
                     ],
                   ),
                 ),

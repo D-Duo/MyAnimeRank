@@ -33,6 +33,27 @@ class ProfileProvider extends ChangeNotifier {
     UpdateJson();
   }
 
+  void removeFromList(RankListItem? newData, bool isAnime) {
+    if (newData != null) {
+      if (isAnime) {
+        _profile!.animeRankList!.remove(newData);
+        for (int i = 0; i < _profile!.animeRankList!.length; i++) {
+          if (_profile!.animeRankList![i].rank > newData!.rank) {
+            _profile!.animeRankList![i].rank--;
+          }
+        }
+      } else {
+        _profile!.characterRankList!.remove(newData);
+        for (int i = 0; i < _profile!.characterRankList!.length; i++) {
+          if (_profile!.characterRankList![i].rank > newData.rank) {
+            _profile!.characterRankList![i].rank--;
+          }
+        }
+      }
+      notifyListeners();
+    }
+  }
+
   Future<void> UpdateJson() async {
     if (_profile != null) {
       // Crear un mapa que representa el perfil

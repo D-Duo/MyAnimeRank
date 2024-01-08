@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:my_anime_rank/data_provider.dart';
 import 'package:my_anime_rank/objects/anime.dart';
+import 'package:my_anime_rank/objects/profile.dart';
 import 'package:my_anime_rank/screens/anime_screen/widgets/anime_appbar.dart';
 import 'package:my_anime_rank/screens/anime_screen/widgets/anime_display.dart';
 import 'dart:ui';
+
+import 'package:provider/provider.dart';
 
 class AnimeScreen extends StatefulWidget {
   const AnimeScreen({super.key});
@@ -26,11 +30,13 @@ class AnimeScreenState extends State<AnimeScreen> {
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final int charId = ModalRoute.of(context)!.settings.arguments as int;
+    final int animeID = ModalRoute.of(context)!.settings.arguments as int;
     if (!_initialized) {
-      _animeFuture = loadAnimeRemote(charId);
+      _animeFuture = loadAnimeRemote(animeID);
       _initialized = true;
     }
+
+    Profile? profile = Provider.of<ProfileProvider>(context).profile;
 
     // Main screen scafold
     return Scaffold(
@@ -71,13 +77,16 @@ class AnimeScreenState extends State<AnimeScreen> {
                       IconButton(
                         icon: const Icon(Icons.refresh_sharp,
                             color: Colors.white),
-                        onPressed: () => _reloadData(charId),
+                        onPressed: () => _reloadData(animeID),
                       ),
                     ],
                   ),
                 ),
                 // Appbar of the screen
-                const AnimeAppBar(),
+                AnimeAppBar(
+                  animeID: animeID,
+                  animeRankL: profile?.animeRankList,
+                ),
               ],
             );
           } else if (!snapshot.hasData) {
@@ -127,7 +136,10 @@ class AnimeScreenState extends State<AnimeScreen> {
                         ],
                       ),
                       // Appbar of the screen
-                      const AnimeAppBar(),
+                      AnimeAppBar(
+                        animeID: animeID,
+                        animeRankL: profile?.animeRankList,
+                      ),
                     ],
                   ),
                 ),
