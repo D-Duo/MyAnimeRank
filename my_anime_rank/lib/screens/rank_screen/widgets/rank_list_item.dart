@@ -5,7 +5,7 @@ import 'package:my_anime_rank/objects/profile.dart';
 import 'package:provider/provider.dart';
 
 class RankListsItemDisplay extends StatefulWidget {
-  RankListsItemDisplay(
+  const RankListsItemDisplay(
       {super.key,
       required this.previewItems,
       required this.index,
@@ -18,7 +18,7 @@ class RankListsItemDisplay extends StatefulWidget {
   final bool showArrows;
   final bool anime;
 
-  void Function()? reload;
+  final void Function()? reload;
 
   @override
   State<RankListsItemDisplay> createState() => _RankListsItemDisplayState();
