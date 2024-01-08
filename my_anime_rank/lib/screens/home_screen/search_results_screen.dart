@@ -85,16 +85,16 @@ class _SearchScreenState extends State<SearchScreen> {
           return ListView.separated(
             itemCount: search_results.length,
             itemBuilder: (BuildContext context, int index) {
-              if ((search_results[index].type == 1) && (index == 0)) {
+              if (index == 0) {
                 return Column(
                   children: [
                     Container(
                       color: const Color.fromARGB(255, 54, 85, 131),
-                      child: const Align(
+                      child:  Align(
                         alignment: Alignment.bottomLeft,
                         child: Text(
-                          "Animes:",
-                          style: TextStyle(
+                          (search_results[index].type == 0) ? "Characters:" : "Animes:",
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
@@ -120,18 +120,18 @@ class _SearchScreenState extends State<SearchScreen> {
                     ),
                   ],
                 );
-              } else if ((search_results[index].type == 1) &&
+              } else if ((search_results[index-1].type == 1) &&
                   (index + 1 < search_results.length &&
-                      search_results[index + 1].type == 0)) {
+                      search_results[index].type == 0)) {
                 return Column(
                   children: [
                     Container(
                       color: const Color.fromARGB(255, 54, 85, 131),
-                      child: const Align(
+                      child: Align(
                         alignment: Alignment.bottomLeft,
                         child: Text(
-                          "Characters:",
-                          style: TextStyle(
+                          (search_results[index].type == 0) ? "Characters:" : "Animes:",
+                          style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
