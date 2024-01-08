@@ -10,10 +10,12 @@ import 'package:path/path.dart';
 class RankListItem {
   int id;
   int rank;
+  //bool isFavourite;
 
   RankListItem({
     required this.id,
     required this.rank,
+    //required this.isFavourite,
   });
 }
 
