@@ -55,8 +55,17 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       appBar: AppBar(
         backgroundColor: const Color.fromARGB(0, 0, 0, 0),
         shadowColor: const Color.fromARGB(0, 0, 0, 0),
-        leading: GestureDetector(
-          onTap: () {
+        leading: IconButton(
+          hoverColor: const Color.fromARGB(100, 19, 28, 39),
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all<Color>(
+                  const Color.fromARGB(100, 19, 28, 39))),
+          icon: const Icon(
+            Icons.arrow_back_rounded,
+            color: Colors.white,
+            size: 25,
+          ),
+          onPressed: () {
             if (tempImg != profile!.profileImage) {
               profile.profileImage = tempImg!;
             }
@@ -69,8 +78,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             init = true;
             Navigator.of(context).pushNamed("/profileDemo");
           },
-          child: const Icon(Icons.keyboard_arrow_left,
-              size: 40, color: Color.fromARGB(255, 255, 255, 255)),
         ),
         actions: [
           GestureDetector(
