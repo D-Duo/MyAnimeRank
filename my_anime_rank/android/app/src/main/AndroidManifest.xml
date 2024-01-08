@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:label="my_anime_rank"
+        android:label="My Anime Rank"
         android:name="${applicationName}"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@drawable/myanimerank_logo">
         <activity
             android:name=".MainActivity"
             android:exported="true"

@@ -25,6 +25,12 @@ class _RanksScreenState extends State<RanksScreen> {
     });
   }
 
+  void reloadScreen() {
+    setState(() {
+      print("reloading Screen");
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -34,7 +40,7 @@ class _RanksScreenState extends State<RanksScreen> {
     if (profile != null) {
       if (init) {
         _rankItemsFuture = loadRankList(
-            4,
+            profile.animeRankList!.length ?? 10,
             Provider.of<ProfileProvider>(context).profile!.animeRankList!,
             true);
         init = false;
@@ -45,13 +51,8 @@ class _RanksScreenState extends State<RanksScreen> {
           scrolledUnderElevation: 0,
           backgroundColor: const Color.fromARGB(255, 19, 28, 39),
           centerTitle: true,
-          title: const Text(
-            "MAR",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          title: Image.asset("assets/MyAnimeRank_Logo_emptyBackground.png",
+              width: 80),
           leading: Padding(
             padding: const EdgeInsets.only(left: 20.0),
             child: GestureDetector(
@@ -85,9 +86,11 @@ class _RanksScreenState extends State<RanksScreen> {
                       }
 
                       if (isSelected[0]) {
-                        _reloadData(4, profile.animeRankList!, true);
+                        _reloadData(profile.animeRankList!.length,
+                            profile.animeRankList!, true);
                       } else if (isSelected[1]) {
-                        _reloadData(4, profile.characterRankList!, false);
+                        _reloadData(profile.characterRankList!.length,
+                            profile.characterRankList!, false);
                       }
                     },
                   );
@@ -153,9 +156,11 @@ class _RanksScreenState extends State<RanksScreen> {
                           const Icon(Icons.refresh_sharp, color: Colors.white),
                       onPressed: () {
                         if (isSelected[0]) {
-                          _reloadData(4, profile.animeRankList!, true);
+                          _reloadData(profile.animeRankList!.length,
+                              profile.animeRankList!, true);
                         } else if (isSelected[1]) {
-                          _reloadData(4, profile.characterRankList!, false);
+                          _reloadData(profile.characterRankList!.length,
+                              profile.characterRankList!, false);
                         }
                       },
                     ),
@@ -186,7 +191,10 @@ class _RanksScreenState extends State<RanksScreen> {
                     }
                   },
                   child: RankListsItemDisplay(
-                      previewItems: previewItems[index], index: index),
+                      previewItems: previewItems,
+                      index: index,
+                      reload: reloadScreen,
+                      anime: isSelected[0]),
                 );
               },
               separatorBuilder: (BuildContext context, int index) => Container(

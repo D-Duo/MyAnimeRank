@@ -28,13 +28,8 @@ class _HomeScreenState extends State<HomeScreen> {
           scrolledUnderElevation: 0,
           backgroundColor: const Color.fromARGB(255, 19, 28, 39),
           centerTitle: true,
-          title: const Text(
-            "MAR",
-            style: TextStyle(
-              color: Colors.white,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
+          title: Image.asset("assets/MyAnimeRank_Logo_emptyBackground.png",
+              width: 80),
           leading: Padding(
             padding: const EdgeInsets.only(left: 20.0),
             child: GestureDetector(

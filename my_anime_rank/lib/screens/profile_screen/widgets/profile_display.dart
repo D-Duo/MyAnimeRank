@@ -215,7 +215,7 @@ class _ProfileDisplayState extends State<ProfileDisplay> {
                                 }
                               },
                               child: RankListsItemDisplay(
-                                previewItems: previewItems[i],
+                                previewItems: previewItems,
                                 index: i,
                                 showArrows: false,
                               ),
