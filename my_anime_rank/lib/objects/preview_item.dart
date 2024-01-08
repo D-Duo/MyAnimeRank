@@ -36,7 +36,6 @@ class PreviewItem {
 
 Future<PreviewItem> loadPreviewItemRemoteCharacter(int previewItemId) async {
   dynamic lastException;
-  print("Loading Character: $previewItemId");
 
   const query = '''
       query (\$id: Int) {
@@ -87,7 +86,6 @@ Future<PreviewItem> loadPreviewItemRemoteCharacter(int previewItemId) async {
 
 Future<PreviewItem> loadPreviewItemRemoteMedia(int previewItemId) async {
   dynamic lastException;
-  print("Loading Media: $previewItemId");
 
   const query = '''
       query (\$id: Int) {
@@ -368,8 +366,6 @@ Future<List<PreviewItem>> loadSearchResults(
     headers: headers,
     body: json.encode(body),
   );
-
-  print(response.body);
 
   if (response.statusCode == 200) {
     final data = json.decode(response.body);

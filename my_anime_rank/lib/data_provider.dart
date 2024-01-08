@@ -38,7 +38,7 @@ class ProfileProvider extends ChangeNotifier {
       if (isAnime) {
         _profile!.animeRankList!.remove(newData);
         for (int i = 0; i < _profile!.animeRankList!.length; i++) {
-          if (_profile!.animeRankList![i].rank > newData!.rank) {
+          if (_profile!.animeRankList![i].rank > newData.rank) {
             _profile!.animeRankList![i].rank--;
           }
         }
