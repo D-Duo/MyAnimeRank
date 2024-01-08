@@ -34,6 +34,7 @@ class PreviewItem {
 
 Future<PreviewItem> loadPreviewItemRemoteCharacter(int previewItemId) async {
   dynamic lastException;
+  print("Loading Character: $previewItemId");
 
   const query = '''
       query (\$id: Int) {
@@ -84,6 +85,7 @@ Future<PreviewItem> loadPreviewItemRemoteCharacter(int previewItemId) async {
 
 Future<PreviewItem> loadPreviewItemRemoteMedia(int previewItemId) async {
   dynamic lastException;
+  print("Loading Media: $previewItemId");
 
   const query = '''
       query (\$id: Int) {
@@ -139,7 +141,7 @@ Future<List<PreviewItem>> loadSeasonalList(
   const query = '''
       query(\$perPage: Int, \$season: MediaSeason, \$seasonYear: Int) {
         Page(perPage: \$perPage){
-          media(season: \$season, seasonYear: \$seasonYear, sort: POPULARITY_DESC) {
+          media(season: \$season, seasonYear: \$seasonYear, sort: POPULARITY_DESC, type: ANIME) {
             id
           }
         }
@@ -218,4 +220,196 @@ Future<List<PreviewItem>> loadRankList(
   }
 
   return finalList;
+}
+
+Future<List<PreviewItem>> loadPopularAnimes(int ammount) async {
+  dynamic lastException;
+
+  const query = '''
+      query(\$perPage: Int) {
+        Page(perPage: \$perPage){
+          media(sort: POPULARITY_DESC, type: ANIME) {
+            id
+          }
+        }
+      }
+    ''';
+
+  final variables = {'perPage': ammount};
+
+  final url = 'https://graphql.anilist.co';
+  final headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
+  final body = {'query': query, 'variables': variables};
+
+  final response = await http.post(
+    Uri.parse(url),
+    headers: headers,
+    body: json.encode(body),
+  );
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    final mediaListJson = data['data']['Page']['media'];
+    final idList =
+        List<int>.from(mediaListJson.map((media) => media['id'] as int));
+
+    List<PreviewItem> finalList = [];
+
+    await Future.wait(idList.map((id) => loadPreviewItemRemoteMedia(id)))
+        .then((listOfResults) {
+      finalList.addAll(listOfResults);
+    });
+
+    return finalList;
+  } else if (response.statusCode == 429) {
+    final retryAfter = response.headers['retry-after'];
+    lastException =
+        '''Error in loadCharacterRemote: ${response.statusCode}. Surpassed requests per minute limit. Retry after ${retryAfter ?? 'unknown'} seconds pressing the next button.''';
+    return Future.error(lastException); // Return an error future
+  } else {
+    lastException =
+        ('Error in loadCharacterRemote: ${response.statusCode}. Retry pressing the next button.');
+    return Future.error(lastException); // Return an error future
+  }
+}
+
+Future<List<PreviewItem>> loadTrendingAnimes(int ammount) async {
+  dynamic lastException;
+
+  const query = '''
+      query(\$perPage: Int) {
+        Page(perPage: \$perPage){
+          media(sort: TRENDING_DESC, type: ANIME) {
+            id
+          }
+        }
+      }
+    ''';
+
+  final variables = {'perPage': ammount};
+
+  final url = 'https://graphql.anilist.co';
+  final headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
+  final body = {'query': query, 'variables': variables};
+
+  final response = await http.post(
+    Uri.parse(url),
+    headers: headers,
+    body: json.encode(body),
+  );
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    final mediaListJson = data['data']['Page']['media'];
+    final idList =
+        List<int>.from(mediaListJson.map((media) => media['id'] as int));
+
+    List<PreviewItem> finalList = [];
+
+    await Future.wait(idList.map((id) => loadPreviewItemRemoteMedia(id)))
+        .then((listOfResults) {
+      finalList.addAll(listOfResults);
+    });
+
+    return finalList;
+  } else if (response.statusCode == 429) {
+    final retryAfter = response.headers['retry-after'];
+    lastException =
+        '''Error in loadCharacterRemote: ${response.statusCode}. Surpassed requests per minute limit. Retry after ${retryAfter ?? 'unknown'} seconds pressing the next button.''';
+    return Future.error(lastException); // Return an error future
+  } else {
+    lastException =
+        ('Error in loadCharacterRemote: ${response.statusCode}. Retry pressing the next button.');
+    return Future.error(lastException); // Return an error future
+  }
+}
+
+Future<List<PreviewItem>> loadSearchResults(
+    int ammount, String searchImput) async {
+  dynamic lastException;
+
+  const query = '''
+      query(\$search: String, \$perPage: Int) {
+        mediaPage: Page(perPage: \$perPage){
+          media(search: \$search, sort: SEARCH_MATCH, type: ANIME) {
+            id
+          }          
+        }
+        charactersPage: Page(perPage: \$perPage){
+          characters(search: \$search, sort: SEARCH_MATCH) {
+            id
+          }         
+        }        
+      }
+    ''';
+
+  final variables = {
+    'perPage': ammount,
+    'search': searchImput,
+  };
+
+  final url = 'https://graphql.anilist.co';
+  final headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
+  final body = {'query': query, 'variables': variables};
+
+  final response = await http.post(
+    Uri.parse(url),
+    headers: headers,
+    body: json.encode(body),
+  );
+
+  print(response.body);
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    final mediaListJson = data['data']['mediaPage']['media'];
+    final idListMedia =
+        List<int>.from(mediaListJson.map((media) => media['id'] as int));
+
+    final characterListJson = data['data']['charactersPage']['characters'];
+    final idListCharacters = List<int>.from(
+        characterListJson.map((character) => character['id'] as int));
+
+    List<PreviewItem> finalList = [];
+
+    await Future.wait(idListMedia.map((id) async {
+      try {
+        return await loadPreviewItemRemoteMedia(id);
+      } catch (error) {
+        return null; // Return null for characters with errors
+      }
+    })).then((listOfResults1) {
+      finalList.addAll(listOfResults1.whereType<PreviewItem>());
+    });
+
+    await Future.wait(idListCharacters.map((id) async {
+      try {
+        return await loadPreviewItemRemoteCharacter(id);
+      } catch (error) {
+        return null; // Return null for characters with errors
+      }
+    })).then((listOfResults2) {
+      finalList.addAll(listOfResults2.whereType<PreviewItem>());
+    });
+
+    return finalList;
+  } else if (response.statusCode == 429) {
+    final retryAfter = response.headers['retry-after'];
+    lastException =
+        '''Error in loadCharacterRemote: ${response.statusCode}. Surpassed requests per minute limit. Retry after ${retryAfter ?? 'unknown'} seconds pressing the next button.''';
+    return Future.error(lastException); // Return an error future
+  } else {
+    lastException =
+        ('Error in loadCharacterRemote: ${response.statusCode}. Retry pressing the next button.');
+    return Future.error(lastException); // Return an error future
+  }
 }

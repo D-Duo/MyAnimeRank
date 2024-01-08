@@ -1,81 +1,222 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/preview_item.dart';
-import 'package:my_anime_rank/widgets/previewItem_gridDisplay.dart';
+import 'package:my_anime_rank/screens/seasonal_screen/widgets/seasonal_filter.dart';
+import 'package:my_anime_rank/widgets/previewItem_sideScrollDisplay.dart';
 
 class BaseHomeDisplay extends StatelessWidget {
-  const BaseHomeDisplay({
-    super.key,
-    required this.previewItems,
-  });
-
-  final List<PreviewItem> previewItems;
+  const BaseHomeDisplay({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return Column(
+    return ListView(
       children: [
-        SingleChildScrollView(
-          scrollDirection: Axis.horizontal,
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(
-                width: 20,
-              ),
-              for (PreviewItem item in previewItems)
-                GestureDetector(
-                  onTap: () {
-                    if (item.type == 0) {
-                      Navigator.of(context).pushNamed(
-                        "/characterDemo",
-                        arguments: item.apiId,
-                      );
-                    } else {
-                      Navigator.of(context).pushNamed(
-                        "/animeDemo",
-                        arguments: item.apiId,
-                      );
-                    }
-                  },
-                  child: PreviewItemGridDisplay(
-                    item: item,
-                  ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const SizedBox(
+              height: 20,
+            ),
+            Container(
+              padding: const EdgeInsets.only(left: 20, top: 45),
+              child: const Text(
+                "TENDING NOW:",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
                 ),
-            ],
-          ),
+              ),
+            ),
+            const TrendingAnimesDisplay(),
+            Container(
+              padding: const EdgeInsets.only(left: 20, top: 45),
+              child: const Text(
+                "POPULAR THIS SEASON:",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            const SeasonalDemoDisplay(),
+            Container(
+              padding: const EdgeInsets.only(left: 20, top: 45),
+              child: const Text(
+                "ALL TIME POPLULAR:",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 25,
+                ),
+              ),
+            ),
+            const TopAnimesDisplay(),
+          ],
         ),
       ],
     );
   }
 }
 
-// return GridView.builder(
-//               itemCount: previewItems.length,
-//               gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-//                 maxCrossAxisExtent: 250,
-//                 mainAxisExtent: 400,
-//                 crossAxisSpacing: 8,
-//                 mainAxisSpacing: 8,
-//               ),
-//               padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
-//               itemBuilder: (context, index) {
-//                 return GestureDetector(
-//                   onTap: () {
-//                     if (previewItems[index].type == 0) {
-//                       Navigator.of(context).pushNamed(
-//                         "/characterDemo",
-//                         arguments: previewItems[index].apiId,
-//                       );
-//                     } else {
-//                       Navigator.of(context).pushNamed(
-//                         "/animeDemo",
-//                         arguments: previewItems[index].apiId,
-//                       );
-//                     }
-//                   },
-//                   child: PreviewItemGridDisplay(
-//                     item: previewItems[index],
-//                   ),
-//                 );
-//               },
-//             );
+class SeasonalDemoDisplay extends StatefulWidget {
+  const SeasonalDemoDisplay({super.key});
+
+  @override
+  State<SeasonalDemoDisplay> createState() => _SeasonalDemoDisplayState();
+}
+
+class _SeasonalDemoDisplayState extends State<SeasonalDemoDisplay> {
+  late Future<List<PreviewItem>> _previewItemsFuture;
+
+  String selectedMonth = getCurrentSeason();
+  int selectedYear = DateTime.now().year.toInt();
+
+  @override
+  void initState() {
+    super.initState();
+    _previewItemsFuture = loadSeasonalList(4, selectedMonth, selectedYear);
+  }
+
+  Future<void> _reloadData() async {
+    setState(() {
+      _previewItemsFuture = loadSeasonalList(4, selectedMonth, selectedYear);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _previewItemsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: IconButton(
+              icon: const Icon(Icons.refresh_sharp, color: Colors.white),
+              onPressed: _reloadData,
+            ),
+          );
+        } else if (!snapshot.hasData) {
+          return const Center(
+            child: Text('No data available'),
+          );
+        }
+        final previewItems = snapshot.data!;
+        return Stack(
+          children: [
+            PreviewItemSideScrollDisplay(previewItems: previewItems),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class TopAnimesDisplay extends StatefulWidget {
+  const TopAnimesDisplay({super.key});
+
+  @override
+  State<TopAnimesDisplay> createState() => _TopAnimesDisplayState();
+}
+
+class _TopAnimesDisplayState extends State<TopAnimesDisplay> {
+  late Future<List<PreviewItem>> _previewItemsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _previewItemsFuture = loadPopularAnimes(4);
+  }
+
+  Future<void> _reloadData() async {
+    setState(() {
+      _previewItemsFuture = loadPopularAnimes(4);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _previewItemsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: IconButton(
+              icon: const Icon(Icons.refresh_sharp, color: Colors.white),
+              onPressed: _reloadData,
+            ),
+          );
+        } else if (!snapshot.hasData) {
+          return const Center(
+            child: Text('No data available'),
+          );
+        }
+        final previewItems = snapshot.data!;
+        return Stack(
+          children: [
+            PreviewItemSideScrollDisplay(previewItems: previewItems),
+          ],
+        );
+      },
+    );
+  }
+}
+
+class TrendingAnimesDisplay extends StatefulWidget {
+  const TrendingAnimesDisplay({super.key});
+
+  @override
+  State<TrendingAnimesDisplay> createState() => _TrendingAnimesDisplayState();
+}
+
+class _TrendingAnimesDisplayState extends State<TrendingAnimesDisplay> {
+  late Future<List<PreviewItem>> _previewItemsFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _previewItemsFuture = loadTrendingAnimes(4);
+  }
+
+  Future<void> _reloadData() async {
+    setState(() {
+      _previewItemsFuture = loadTrendingAnimes(4);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: _previewItemsFuture,
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: CircularProgressIndicator(),
+          );
+        } else if (snapshot.hasError) {
+          return Center(
+            child: IconButton(
+              icon: const Icon(Icons.refresh_sharp, color: Colors.white),
+              onPressed: _reloadData,
+            ),
+          );
+        } else if (!snapshot.hasData) {
+          return const Center(
+            child: Text('No data available'),
+          );
+        }
+        final previewItems = snapshot.data!;
+        return Stack(
+          children: [
+            PreviewItemSideScrollDisplay(previewItems: previewItems),
+          ],
+        );
+      },
+    );
+  }
+}
