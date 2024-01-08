@@ -74,7 +74,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   if (favourite) {
                     profile?.characterRankList?.add(RankListItem(
                         id: charID,
-                        rank: profile.characterRankList!.last.rank + 1));
+                        rank: (profile.characterRankList!.isNotEmpty
+                            ? profile.characterRankList!.length + 1
+                            : 1)));
                   } else {
                     profileProvider.removeFromList(
                         getItem(profile!.characterRankList, charID), false);

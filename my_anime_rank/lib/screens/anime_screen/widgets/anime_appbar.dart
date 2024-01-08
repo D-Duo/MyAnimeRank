@@ -75,7 +75,9 @@ class _AnimeAppBarState extends State<AnimeAppBar> {
                   if (favourite) {
                     profile?.animeRankList?.add(RankListItem(
                         id: animeID,
-                        rank: profile.animeRankList!.last.rank + 1));
+                        rank: (profile.animeRankList!.isNotEmpty
+                            ? profile.animeRankList!.length + 1
+                            : 1)));
                   } else {
                     profileProvider.removeFromList(
                         getItem(profile!.animeRankList, animeID), true);

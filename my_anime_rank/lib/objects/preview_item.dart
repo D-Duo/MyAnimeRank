@@ -20,7 +20,9 @@ class PreviewItem {
   PreviewItem.characterFromJsonRemote(Map<String, dynamic> json)
       : apiId = json["id"],
         mainString = json["name"]["full"],
-        secondaryString = json["name"]["alternative"][0],
+        secondaryString = (json["name"]["alternative"] == null)
+            ? json["name"]["alternative"][0]
+            : " ",
         itemImage = json["image"]["large"],
         type = 0;
 
