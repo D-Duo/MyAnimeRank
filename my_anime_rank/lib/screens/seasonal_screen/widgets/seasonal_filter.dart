@@ -5,7 +5,7 @@ class SeasonalFilterItem extends StatefulWidget {
       {super.key, required this.filter, required this.onValueChanged});
 
   final int filter;
-  final void Function(String) onValueChanged;
+  final void Function(int) onValueChanged;
 
   @override
   State<SeasonalFilterItem> createState() => _SeasonalFilterItemState();
@@ -40,11 +40,28 @@ class _SeasonalFilterItemState extends State<SeasonalFilterItem> {
                 buttonText,
                 style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
-              DropdownButton<String>(
-                onChanged: (String? value) {
+              DropdownButton<int>(
+                onChanged: (int? value) {
                   setState(() {
                     widget.onValueChanged(value!);
-                    buttonText = value;
+                    String text;
+                    switch (value) {
+                      case 0:
+                        text = 'WINTER';
+                        break;
+                      case 1:
+                        text = 'SPRING';
+                        break;
+                      case 2:
+                        text = 'SUMMER';
+                        break;
+                      case 3:
+                        text = 'FALL';
+                        break;
+                      default:
+                        text = ''; // Handle unexpected values
+                    }
+                    buttonText = text;
                   });
                 },
 
@@ -71,34 +88,52 @@ EdgeInsets getEdgeInsetsItem(int filter) {
   }
 }
 
-List<DropdownMenuItem<String>> getDropdownItems(int filter) {
+List<DropdownMenuItem<int>> getDropdownItems(int filter) {
   switch (filter) {
     case 0:
-      return ['WINTER', 'SPRING', 'SUMMER', 'FALL'].map((String choice) {
-        return DropdownMenuItem<String>(
+      return [0, 1, 2, 3].map((int choice) {
+        String text;
+        switch (choice) {
+          case 0:
+            text = 'WINTER';
+            break;
+          case 1:
+            text = 'SPRING';
+            break;
+          case 2:
+            text = 'SUMMER';
+            break;
+          case 3:
+            text = 'FALL';
+            break;
+          default:
+            text = ''; // Handle unexpected values
+        }
+
+        return DropdownMenuItem<int>(
           value: choice,
-          child: Text(choice, style: TextStyle(color: Colors.white)),
+          child: Text(text, style: TextStyle(color: Colors.white)),
         );
       }).toList();
     case 1:
       // You can customize the range of years as needed
       int currentYear = DateTime.now().year;
       int startYear = 1999; // Change this to your desired starting year
-      List<String> years = List.generate(
+      List<int> years = List.generate(
         currentYear - startYear + 1,
-        (index) => (currentYear - index).toString(),
+        (index) => (currentYear - index).toInt(),
       );
-      return years.map((String year) {
-        return DropdownMenuItem<String>(
+      return years.map((int year) {
+        return DropdownMenuItem<int>(
           value: year,
-          child: Text(year, style: TextStyle(color: Colors.white)),
+          child: Text(year.toString(), style: TextStyle(color: Colors.white)),
         );
       }).toList();
     default:
-      return ['ERROR'].map((String choice) {
-        return DropdownMenuItem<String>(
+      return [0].map((int choice) {
+        return DropdownMenuItem<int>(
           value: choice,
-          child: Text(choice, style: TextStyle(color: Colors.white)),
+          child: Text('ERROR', style: TextStyle(color: Colors.white)),
         );
       }).toList();
   }

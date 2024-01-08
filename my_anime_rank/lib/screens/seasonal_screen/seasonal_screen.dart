@@ -7,27 +7,6 @@ import 'package:my_anime_rank/providers/profile_provider.dart';
 import 'package:my_anime_rank/widgets/screens_navigation_bar.dart';
 import 'package:provider/provider.dart';
 
-Future<List<PreviewItem>> loadItems() async {
-  List<Future<PreviewItem>> itemsFutures = [
-    loadPreviewItemRemoteMedia(21), //one piece
-    loadPreviewItemRemoteMedia(101922), //Kimetsu
-    loadPreviewItemRemoteMedia(166873), //Mushoku season 2
-    loadPreviewItemRemoteMedia(99423), //darling in the franxx
-    loadPreviewItemRemoteMedia(16498), //shingeki
-    loadPreviewItemRemoteMedia(154587), //frieren
-    loadPreviewItemRemoteMedia(1535), //death note
-    loadPreviewItemRemoteMedia(140960), //spy x fam
-    loadPreviewItemRemoteMedia(11757), //sword art
-    loadPreviewItemRemoteMedia(21087), //one punch
-    loadPreviewItemRemoteMedia(127230), //chainsaw
-    loadPreviewItemRemoteMedia(20657), //saenai heroine
-  ];
-
-  List<PreviewItem> items = await Future.wait(itemsFutures);
-
-  return items;
-}
-
 class SeasonalScreen extends StatefulWidget {
   const SeasonalScreen({super.key});
 
@@ -40,31 +19,48 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
   List<bool> isSelected = [true, false];
 
   String selectedMonth = getCurrentSeason();
-  String selectedYear = DateTime.now().year.toString();
+  int selectedYear = DateTime.now().year.toInt();
 
   @override
   void initState() {
     super.initState();
-    _charactersFuture = loadItems();
+    _charactersFuture = loadSeasonalList(4, selectedMonth, selectedYear);
   }
 
   Future<void> _reloadData() async {
     setState(() {
-      _charactersFuture = loadItems();
+      _charactersFuture = loadSeasonalList(4, selectedMonth, selectedYear);
     });
   }
 
-  void onMonthValueChanged(String value) {
+  void onMonthValueChanged(int value) {
     setState(() {
-      selectedMonth = value;
-      print('Selected Month: $selectedMonth');
+      String text;
+      switch (value) {
+        case 0:
+          text = 'WINTER';
+          break;
+        case 1:
+          text = 'SPRING';
+          break;
+        case 2:
+          text = 'SUMMER';
+          break;
+        case 3:
+          text = 'FALL';
+          break;
+        default:
+          text = ''; // Handle unexpected values
+      }
+      selectedMonth = text;
+      _reloadData();
     });
   }
 
-  void onYearValueChanged(String value) {
+  void onYearValueChanged(int value) {
     setState(() {
       selectedYear = value;
-      print('Selected Month: $selectedYear');
+      _reloadData();
     });
   }
 
@@ -186,7 +182,8 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
           ),
           Container(
             height: 50,
-            decoration: const BoxDecoration(color: Color.fromARGB(255, 19, 28, 39)),
+            decoration:
+                const BoxDecoration(color: Color.fromARGB(255, 19, 28, 39)),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [

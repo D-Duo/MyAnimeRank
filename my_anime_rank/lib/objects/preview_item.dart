@@ -84,7 +84,7 @@ Future<PreviewItem> loadPreviewItemRemoteCharacter(int previewItemId) async {
 Future<PreviewItem> loadPreviewItemRemoteMedia(int previewItemId) async {
   dynamic lastException;
 
-    const query = '''
+  const query = '''
       query (\$id: Int) {
         Media (id: \$id) {
           id
@@ -119,6 +119,65 @@ Future<PreviewItem> loadPreviewItemRemoteMedia(int previewItemId) async {
     final previewItemJson = data['data']['Media'];
     final previewItem = PreviewItem.mediaFromJsonRemote(previewItemJson);
     return previewItem;
+  } else if (response.statusCode == 429) {
+    final retryAfter = response.headers['retry-after'];
+    lastException =
+        '''Error in loadCharacterRemote: ${response.statusCode}. Surpassed requests per minute limit. Retry after ${retryAfter ?? 'unknown'} seconds pressing the next button.''';
+    return Future.error(lastException); // Return an error future
+  } else {
+    lastException =
+        ('Error in loadCharacterRemote: ${response.statusCode}. Retry pressing the next button.');
+    return Future.error(lastException); // Return an error future
+  }
+}
+
+Future<List<PreviewItem>> loadSeasonalList(
+    int ammount, String season, int seasonYear) async {
+  dynamic lastException;
+
+  const query = '''
+      query(\$perPage: Int, \$season: MediaSeason, \$seasonYear: Int) {
+        Page(perPage: \$perPage){
+          media(season: \$season, seasonYear: \$seasonYear, sort: POPULARITY_DESC) {
+            id
+          }
+        }
+      }
+    ''';
+
+  final variables = {
+    'perPage': ammount,
+    'season': season,
+    'seasonYear': seasonYear
+  };
+
+  final url = 'https://graphql.anilist.co';
+  final headers = {
+    'Content-Type': 'application/json',
+    'Accept': 'application/json',
+  };
+  final body = {'query': query, 'variables': variables};
+
+  final response = await http.post(
+    Uri.parse(url),
+    headers: headers,
+    body: json.encode(body),
+  );
+
+  if (response.statusCode == 200) {
+    final data = json.decode(response.body);
+    final mediaListJson = data['data']['Page']['media'];
+    final idList =
+        List<int>.from(mediaListJson.map((media) => media['id'] as int));
+        
+    List<PreviewItem> finalList = [];
+
+    await Future.wait(idList.map((id) => loadPreviewItemRemoteMedia(id)))
+        .then((listOfResults) {
+      finalList.addAll(listOfResults);
+    });
+
+    return finalList;
   } else if (response.statusCode == 429) {
     final retryAfter = response.headers['retry-after'];
     lastException =
