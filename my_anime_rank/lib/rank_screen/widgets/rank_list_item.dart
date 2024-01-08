@@ -2,14 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/preview_item.dart';
 
 class RankListsItemDisplay extends StatelessWidget {
-  const RankListsItemDisplay({
-    super.key,
-    required this.previewItems,
-    required this.index,
-  });
+  const RankListsItemDisplay(
+      {super.key,
+      required this.previewItems,
+      required this.index,
+      this.showArrows = true});
 
   final PreviewItem previewItems;
   final int index;
+  final bool showArrows;
 
   @override
   Widget build(BuildContext context) {
@@ -78,21 +79,22 @@ class RankListsItemDisplay extends StatelessWidget {
           ),
         ),
         const Spacer(),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            children: [
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.arrow_upward_rounded),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(Icons.arrow_downward_rounded),
-              ),
-            ],
+        if (showArrows)
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.arrow_upward_rounded),
+                ),
+                IconButton(
+                  onPressed: () {},
+                  icon: const Icon(Icons.arrow_downward_rounded),
+                ),
+              ],
+            ),
           ),
-        ),
       ],
     );
   }

@@ -1,6 +1,74 @@
 import 'package:flutter/material.dart';
+import 'package:my_anime_rank/objects/preview_item.dart';
 import 'package:my_anime_rank/objects/profile.dart';
+import 'package:my_anime_rank/rank_screen/widgets/rank_list_item.dart';
 import 'package:my_anime_rank/screens/profile_screen/widgets/profile_description.dart';
+
+Future<List<PreviewItem>> loadItems() async {
+  List<Future<PreviewItem>> itemsFutures = [
+    loadPreviewItemRemoteMedia(21), //one piece
+    loadPreviewItemRemoteMedia(101922), //Kimetsu
+    loadPreviewItemRemoteMedia(166873), //Mushoku season 2
+    loadPreviewItemRemoteMedia(99423), //darling in the franxx
+    // loadPreviewItemRemoteCharacter(124381),
+    // loadPreviewItemRemoteCharacter(40882),
+    // loadPreviewItemRemoteCharacter(176754),
+    // loadPreviewItemRemoteCharacter(80),
+    // loadPreviewItemRemoteCharacter(40),
+    // loadPreviewItemRemoteCharacter(16342),
+    // loadPreviewItemRemoteCharacter(138100),
+    // loadPreviewItemRemoteCharacter(169679),
+    // loadPreviewItemRemoteCharacter(138101),
+    // loadPreviewItemRemoteCharacter(138102),
+    // loadPreviewItemRemoteCharacter(36765),
+    // loadPreviewItemRemoteCharacter(36828),
+    // loadPreviewItemRemoteCharacter(73935),
+    // loadPreviewItemRemoteCharacter(81929),
+    // loadPreviewItemRemoteCharacter(130102),
+    // loadPreviewItemRemoteCharacter(137079),
+    // loadPreviewItemRemoteCharacter(88747),
+    // loadPreviewItemRemoteCharacter(88748),
+    // loadPreviewItemRemoteCharacter(88750),
+    // loadPreviewItemRemoteCharacter(88749),
+  ];
+
+  List<PreviewItem> items = await Future.wait(itemsFutures);
+
+  return items;
+}
+
+Future<List<PreviewItem>> loadCharacters() async {
+  List<Future<PreviewItem>> itemsFutures = [
+    // loadPreviewItemRemoteMedia(21), //one piece
+    // loadPreviewItemRemoteMedia(101922), //Kimetsu
+    // loadPreviewItemRemoteMedia(166873), //Mushoku season 2
+    // loadPreviewItemRemoteMedia(99423), //darling in the franxx
+    loadPreviewItemRemoteCharacter(124381),
+    loadPreviewItemRemoteCharacter(40882),
+    loadPreviewItemRemoteCharacter(176754),
+    // loadPreviewItemRemoteCharacter(80),
+    // loadPreviewItemRemoteCharacter(40),
+    // loadPreviewItemRemoteCharacter(16342),
+    // loadPreviewItemRemoteCharacter(138100),
+    // loadPreviewItemRemoteCharacter(169679),
+    // loadPreviewItemRemoteCharacter(138101),
+    // loadPreviewItemRemoteCharacter(138102),
+    // loadPreviewItemRemoteCharacter(36765),
+    // loadPreviewItemRemoteCharacter(36828),
+    // loadPreviewItemRemoteCharacter(73935),
+    // loadPreviewItemRemoteCharacter(81929),
+    // loadPreviewItemRemoteCharacter(130102),
+    // loadPreviewItemRemoteCharacter(137079),
+    // loadPreviewItemRemoteCharacter(88747),
+    // loadPreviewItemRemoteCharacter(88748),
+    // loadPreviewItemRemoteCharacter(88750),
+    // loadPreviewItemRemoteCharacter(88749),
+  ];
+
+  List<PreviewItem> items = await Future.wait(itemsFutures);
+
+  return items;
+}
 
 class ProfileDisplay extends StatefulWidget {
   const ProfileDisplay({super.key, required this.profile});
@@ -12,6 +80,23 @@ class ProfileDisplay extends StatefulWidget {
 
 class _ProfileDisplayState extends State<ProfileDisplay> {
   bool anime = true;
+  late Future<List<PreviewItem>> _animesFuture;
+  late Future<List<PreviewItem>> _charactersFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    _animesFuture = loadItems();
+    _charactersFuture = loadCharacters();
+  }
+
+  Future<void> _reloadData() async {
+    setState(() {
+      _animesFuture = loadItems();
+      _charactersFuture = loadCharacters();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
@@ -115,6 +200,104 @@ class _ProfileDisplayState extends State<ProfileDisplay> {
                     ),
                   )
                 ],
+              ),
+              FutureBuilder(
+                future: anime ? _animesFuture : _charactersFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                      child: CircularProgressIndicator(),
+                    );
+                  } else if (snapshot.hasError) {
+                    return Center(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SizedBox(
+                            width: (screenSize.width * (2 / 3)),
+                            child: Text('Error: ${snapshot.error}',
+                                textAlign: TextAlign.center,
+                                style: const TextStyle(color: Colors.white)),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          Container(
+                            height: 100,
+                            child: const Image(
+                                image: NetworkImage(
+                                    "https://i.redd.it/pzjkyzkqhza11.png")),
+                          ),
+                          const SizedBox(
+                            height: 20,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.refresh_sharp,
+                                color: Colors.white),
+                            onPressed: _reloadData,
+                          ),
+                        ],
+                      ),
+                    );
+                  } else if (!snapshot.hasData) {
+                    return const Center(
+                      child: Text('No data available'),
+                    );
+                  }
+                  final previewItems = snapshot.data!;
+                  return Column(
+                    children: [
+                      for (int i = 0;
+                          i <
+                              (previewItems.length < 5
+                                  ? previewItems.length
+                                  : 5);
+                          i++)
+                        Column(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                if (previewItems[i].type == 0) {
+                                  Navigator.of(context).pushNamed(
+                                    "/characterDemo",
+                                    arguments: previewItems[i].apiId,
+                                  );
+                                } else {
+                                  Navigator.of(context).pushNamed(
+                                    "/animeDemo",
+                                    arguments: previewItems[i].apiId,
+                                  );
+                                }
+                              },
+                              child: RankListsItemDisplay(
+                                previewItems: previewItems[i],
+                                index: i,
+                                showArrows: false,
+                              ),
+                            ),
+                            if (i <
+                                (previewItems.length < 5
+                                        ? previewItems.length
+                                        : 5) -
+                                    1)
+                              Container(
+                                height: 2,
+                                decoration: BoxDecoration(
+                                  gradient: RadialGradient(
+                                    center: Alignment.center,
+                                    radius: screenSize.width,
+                                    colors: const [
+                                      Color.fromARGB(255, 54, 85, 131),
+                                      Colors.transparent,
+                                    ],
+                                  ),
+                                ),
+                              )
+                          ],
+                        )
+                    ],
+                  );
+                },
               ),
               Container(
                 height: 100,
