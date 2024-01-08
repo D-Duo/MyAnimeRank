@@ -31,3 +31,5 @@ Each screen has a top bar with navigation items or filters for the data shown. T
  - Francisco Ferrerós - [_kikofp02_](https://github.com/kikofp02)
  - Jan Neto Llorens - [_kikofp02_](https://github.com/JanNetoLlorens)
  - Lluís González - [_punto16_](https://github.com/punto16)
+
+[Project's Repository](https://github.com/D-Duo/MyAnimeRank)
