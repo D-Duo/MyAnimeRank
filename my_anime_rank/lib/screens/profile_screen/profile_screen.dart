@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/profile.dart';
-import 'package:my_anime_rank/providers/profile_provider.dart';
+import 'package:my_anime_rank/data_provider.dart';
 import 'package:my_anime_rank/screens/profile_screen/widgets/profile_display.dart';
 import 'package:my_anime_rank/widgets/screens_navigation_bar.dart';
 import 'dart:ui';
@@ -30,7 +30,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
           height: double.infinity,
           decoration: BoxDecoration(
             image: DecorationImage(
-              image: NetworkImage(profile!.profileImage),
+              image: NetworkImage(profile.profileImage),
               fit: BoxFit.cover,
             ),
           ),

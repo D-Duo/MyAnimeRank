@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_anime_rank/providers/profile_provider.dart';
+import 'package:my_anime_rank/data_provider.dart';
 import 'package:my_anime_rank/screens/home_screen/home_screen.dart';
 import 'package:my_anime_rank/screens/character_screen/character_screen.dart';
 import 'package:my_anime_rank/screens/anime_screen/anime_screen.dart';
-import 'package:my_anime_rank/rank_screen/rank_lists.dart';
+import 'package:my_anime_rank/screens/rank_screen/ranks_screen.dart';
 import 'package:my_anime_rank/screens/profile_screen/editprofile_screen.dart';
 import 'package:my_anime_rank/screens/seasonal_screen/seasonal_screen.dart';
 import 'package:provider/provider.dart';

@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:my_anime_rank/objects/profile.dart';
 
 class PreviewItem {
   int? apiId;
@@ -169,7 +170,7 @@ Future<List<PreviewItem>> loadSeasonalList(
     final mediaListJson = data['data']['Page']['media'];
     final idList =
         List<int>.from(mediaListJson.map((media) => media['id'] as int));
-        
+
     List<PreviewItem> finalList = [];
 
     await Future.wait(idList.map((id) => loadPreviewItemRemoteMedia(id)))
@@ -188,4 +189,23 @@ Future<List<PreviewItem>> loadSeasonalList(
         ('Error in loadCharacterRemote: ${response.statusCode}. Retry pressing the next button.');
     return Future.error(lastException); // Return an error future
   }
+}
+
+Future<List<PreviewItem>> loadRankList(
+    int amount, List<RankListItem> items) async {
+  items.sort((a, b) => a.rank.compareTo(b.rank));
+
+  List<PreviewItem> finalList = [];
+
+  int count = 0;
+
+  await Future.forEach(items, (id) async {
+    if (count < amount) {
+      PreviewItem result = await loadPreviewItemRemoteMedia(id.id);
+      finalList.add(result);
+      count++;
+    }
+  });
+
+  return finalList;
 }

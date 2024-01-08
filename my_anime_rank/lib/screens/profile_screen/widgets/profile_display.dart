@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/preview_item.dart';
 import 'package:my_anime_rank/objects/profile.dart';
-import 'package:my_anime_rank/rank_screen/widgets/rank_list_item.dart';
+import 'package:my_anime_rank/screens/rank_screen/widgets/rank_list_item.dart';
 import 'package:my_anime_rank/screens/profile_screen/widgets/profile_description.dart';
 
 Future<List<PreviewItem>> loadItems() async {

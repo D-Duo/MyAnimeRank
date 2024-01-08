@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:my_anime_rank/objects/preview_item.dart';
 import 'package:my_anime_rank/widgets/screens_navigation_bar.dart';
 import 'package:my_anime_rank/objects/profile.dart';
-import 'package:my_anime_rank/providers/profile_provider.dart';
+import 'package:my_anime_rank/data_provider.dart';
 import 'package:provider/provider.dart';
 
 import 'widgets/base_home_display.dart';

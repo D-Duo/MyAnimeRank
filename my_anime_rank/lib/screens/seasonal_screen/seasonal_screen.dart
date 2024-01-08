@@ -3,7 +3,7 @@ import 'package:my_anime_rank/objects/preview_item.dart';
 import 'package:my_anime_rank/screens/seasonal_screen/widgets/seasonal_filter.dart';
 import 'package:my_anime_rank/widgets/previewItem_gridDisplay.dart';
 import 'package:my_anime_rank/objects/profile.dart';
-import 'package:my_anime_rank/providers/profile_provider.dart';
+import 'package:my_anime_rank/data_provider.dart';
 import 'package:my_anime_rank/widgets/screens_navigation_bar.dart';
 import 'package:provider/provider.dart';
 
@@ -156,7 +156,7 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
                   crossAxisSpacing: 8,
                   mainAxisSpacing: 8,
                 ),
-                padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
+                padding: const EdgeInsets.fromLTRB(20, 70, 20, 20),
                 itemBuilder: (context, index) {
                   return GestureDetector(
                     onTap: () {
