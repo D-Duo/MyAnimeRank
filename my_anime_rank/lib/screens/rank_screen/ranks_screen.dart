@@ -138,8 +138,10 @@ class _RanksScreenState extends State<RanksScreen> {
             ),
           ],
         ),
-        bottomNavigationBar:
-            const ScreensNavigationBar(screen: "/rankListsDemo"),
+        bottomNavigationBar: const ScreensNavigationBar(
+          screen: "/rankListsDemo",
+          screenId: 4,
+        ),
         body: FutureBuilder(
           future: _charactersFuture,
           builder: (context, snapshot) {

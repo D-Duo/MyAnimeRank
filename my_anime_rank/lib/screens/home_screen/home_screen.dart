@@ -99,7 +99,10 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         ),
-        bottomNavigationBar: const ScreensNavigationBar(screen: "/"),
+        bottomNavigationBar: const ScreensNavigationBar(
+          screen: "/",
+          screenId: 2,
+        ),
         body: Stack(
           children: [
             FutureBuilder(

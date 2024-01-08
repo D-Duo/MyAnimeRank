@@ -101,7 +101,10 @@ class _SeasonalScreenState extends State<SeasonalScreen> {
           ),
         ),
       ),
-      bottomNavigationBar: const ScreensNavigationBar(screen: "/seasonalDemo"),
+      bottomNavigationBar: const ScreensNavigationBar(
+        screen: "/seasonalDemo",
+        screenId: 3,
+      ),
       body: Stack(
         children: [
           FutureBuilder(

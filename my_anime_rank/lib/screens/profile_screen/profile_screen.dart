@@ -23,7 +23,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
     if (profile != null) {
       return Scaffold(
         backgroundColor: const Color.fromARGB(255, 29, 42, 59),
-        bottomNavigationBar: const ScreensNavigationBar(screen: "/profileDemo"),
+        bottomNavigationBar: const ScreensNavigationBar(
+          screen: "/profileDemo",
+          screenId: 1,
+        ),
         // Container for the background image
         body: Container(
           width: double.infinity,

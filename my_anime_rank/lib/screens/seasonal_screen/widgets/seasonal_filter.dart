@@ -41,6 +41,7 @@ class _SeasonalFilterItemState extends State<SeasonalFilterItem> {
                 style: const TextStyle(color: Colors.white, fontSize: 20),
               ),
               DropdownButton<int>(
+                menuMaxHeight: 200,
                 onChanged: (int? value) {
                   setState(() {
                     widget.onValueChanged(value!);
@@ -59,7 +60,7 @@ class _SeasonalFilterItemState extends State<SeasonalFilterItem> {
                         text = 'FALL';
                         break;
                       default:
-                        text = ''; // Handle unexpected values
+                        text = value.toString(); // Handle unexpected values
                     }
                     buttonText = text;
                   });
