@@ -98,10 +98,12 @@ class Anime {
         genres = (json["genres"] as List<dynamic>)
             .map<String>((studio) => studio as String)
             .toList(),
-        studios = (json["studios"]["edges"] as List<dynamic>)
-            .map<String>((studio) => studio["node"]["name"] as String)
-            .toList(),
-        isAdult = json["isAdult"],
+        studios = (json["studios"]["edges"] == null)
+            ? ((json["studios"]["edges"] as List<dynamic>)
+                .map<String>((studio) => studio["node"]["name"] as String)
+                .toList())
+            : [" "],
+        isAdult = json["isAdult"] ?? false,
         favs = json["favourites"] ?? 0,
         rank = json["rank"] ?? "Unranked",
         characters = (json["characters"]["edges"] as List<dynamic>?)
