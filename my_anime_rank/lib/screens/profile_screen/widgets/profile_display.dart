@@ -3,72 +3,8 @@ import 'package:my_anime_rank/objects/preview_item.dart';
 import 'package:my_anime_rank/objects/profile.dart';
 import 'package:my_anime_rank/screens/rank_screen/widgets/rank_list_item.dart';
 import 'package:my_anime_rank/screens/profile_screen/widgets/profile_description.dart';
-
-Future<List<PreviewItem>> loadItems() async {
-  List<Future<PreviewItem>> itemsFutures = [
-    loadPreviewItemRemoteMedia(21), //one piece
-    loadPreviewItemRemoteMedia(101922), //Kimetsu
-    loadPreviewItemRemoteMedia(166873), //Mushoku season 2
-    loadPreviewItemRemoteMedia(99423), //darling in the franxx
-    // loadPreviewItemRemoteCharacter(124381),
-    // loadPreviewItemRemoteCharacter(40882),
-    // loadPreviewItemRemoteCharacter(176754),
-    // loadPreviewItemRemoteCharacter(80),
-    // loadPreviewItemRemoteCharacter(40),
-    // loadPreviewItemRemoteCharacter(16342),
-    // loadPreviewItemRemoteCharacter(138100),
-    // loadPreviewItemRemoteCharacter(169679),
-    // loadPreviewItemRemoteCharacter(138101),
-    // loadPreviewItemRemoteCharacter(138102),
-    // loadPreviewItemRemoteCharacter(36765),
-    // loadPreviewItemRemoteCharacter(36828),
-    // loadPreviewItemRemoteCharacter(73935),
-    // loadPreviewItemRemoteCharacter(81929),
-    // loadPreviewItemRemoteCharacter(130102),
-    // loadPreviewItemRemoteCharacter(137079),
-    // loadPreviewItemRemoteCharacter(88747),
-    // loadPreviewItemRemoteCharacter(88748),
-    // loadPreviewItemRemoteCharacter(88750),
-    // loadPreviewItemRemoteCharacter(88749),
-  ];
-
-  List<PreviewItem> items = await Future.wait(itemsFutures);
-
-  return items;
-}
-
-Future<List<PreviewItem>> loadCharacters() async {
-  List<Future<PreviewItem>> itemsFutures = [
-    // loadPreviewItemRemoteMedia(21), //one piece
-    // loadPreviewItemRemoteMedia(101922), //Kimetsu
-    // loadPreviewItemRemoteMedia(166873), //Mushoku season 2
-    // loadPreviewItemRemoteMedia(99423), //darling in the franxx
-    loadPreviewItemRemoteCharacter(124381),
-    loadPreviewItemRemoteCharacter(40882),
-    loadPreviewItemRemoteCharacter(176754),
-    // loadPreviewItemRemoteCharacter(80),
-    // loadPreviewItemRemoteCharacter(40),
-    // loadPreviewItemRemoteCharacter(16342),
-    // loadPreviewItemRemoteCharacter(138100),
-    // loadPreviewItemRemoteCharacter(169679),
-    // loadPreviewItemRemoteCharacter(138101),
-    // loadPreviewItemRemoteCharacter(138102),
-    // loadPreviewItemRemoteCharacter(36765),
-    // loadPreviewItemRemoteCharacter(36828),
-    // loadPreviewItemRemoteCharacter(73935),
-    // loadPreviewItemRemoteCharacter(81929),
-    // loadPreviewItemRemoteCharacter(130102),
-    // loadPreviewItemRemoteCharacter(137079),
-    // loadPreviewItemRemoteCharacter(88747),
-    // loadPreviewItemRemoteCharacter(88748),
-    // loadPreviewItemRemoteCharacter(88750),
-    // loadPreviewItemRemoteCharacter(88749),
-  ];
-
-  List<PreviewItem> items = await Future.wait(itemsFutures);
-
-  return items;
-}
+import 'package:my_anime_rank/data_provider.dart';
+import 'package:provider/provider.dart';
 
 class ProfileDisplay extends StatefulWidget {
   const ProfileDisplay({super.key, required this.profile});
@@ -80,30 +16,30 @@ class ProfileDisplay extends StatefulWidget {
 
 class _ProfileDisplayState extends State<ProfileDisplay> {
   bool anime = true;
-  late Future<List<PreviewItem>> _animesFuture;
-  late Future<List<PreviewItem>> _charactersFuture;
+  late Future<List<PreviewItem>> _rankItemsFuture;
+  bool init = true;
 
-  @override
-  void initState() {
-    super.initState();
-    _animesFuture = loadItems();
-    _charactersFuture = loadCharacters();
-  }
-
-  Future<void> _reloadData() async {
+  Future<void> _reloadData(
+      int amount, List<RankListItem> items, bool itemType) async {
     setState(() {
-      _animesFuture = loadItems();
-      _charactersFuture = loadCharacters();
+      _rankItemsFuture = loadRankList(amount, items, itemType);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    Profile? profile = Provider.of<ProfileProvider>(context).profile;
     final screenSize = MediaQuery.of(context).size;
     //double scalingFactor = (screenSize.width) * 0.002;
     final double sidesPadding = screenSize.width <= 440
         ? 20
         : 20 + ((screenSize.width - 440) / 60) * 20;
+
+    if (init) {
+      _rankItemsFuture = loadRankList(4,
+          Provider.of<ProfileProvider>(context).profile!.animeRankList!, true);
+      init = false;
+    }
     return SizedBox(
       child: Stack(
         children: [
@@ -153,6 +89,7 @@ class _ProfileDisplayState extends State<ProfileDisplay> {
                     onTap: () {
                       setState(() {
                         anime = true;
+                        _reloadData(5, profile!.animeRankList!, true);
                       });
                     },
                     child: Container(
@@ -178,6 +115,7 @@ class _ProfileDisplayState extends State<ProfileDisplay> {
                     onTap: () {
                       setState(() {
                         anime = false;
+                        _reloadData(5, profile!.characterRankList!, false);
                       });
                     },
                     child: Container(
@@ -202,7 +140,7 @@ class _ProfileDisplayState extends State<ProfileDisplay> {
                 ],
               ),
               FutureBuilder(
-                future: anime ? _animesFuture : _charactersFuture,
+                future: _rankItemsFuture,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(
@@ -234,7 +172,14 @@ class _ProfileDisplayState extends State<ProfileDisplay> {
                           IconButton(
                             icon: const Icon(Icons.refresh_sharp,
                                 color: Colors.white),
-                            onPressed: _reloadData,
+                            onPressed: () {
+                              if (anime) {
+                                _reloadData(4, profile!.animeRankList!, true);
+                              } else {
+                                _reloadData(
+                                    4, profile!.characterRankList!, false);
+                              }
+                            },
                           ),
                         ],
                       ),
