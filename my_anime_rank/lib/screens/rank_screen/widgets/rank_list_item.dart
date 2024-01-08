@@ -70,7 +70,7 @@ class _RankListsItemDisplayState extends State<RankListsItemDisplay> {
           width: 5,
         ),
         SizedBox(
-          width: screenSize.width*(1/3),
+          width: screenSize.width * (1 / 3),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -131,15 +131,11 @@ class _RankListsItemDisplayState extends State<RankListsItemDisplay> {
                                     !done1) {
                                   profile.animeRankList![i].rank--;
                                   done1 = true;
-                                  print(
-                                      "${profile.animeRankList![i].rank + 1} with id ${profile.animeRankList![i].id} now is ${profile.animeRankList![i].rank}");
                                 } else if (profile.animeRankList![i].rank - 1 ==
                                         widget.index - 1 &&
                                     !done2) {
                                   profile.animeRankList![i].rank++;
                                   done2 = true;
-                                  print(
-                                      "${profile.animeRankList![i].rank - 1} with id ${profile.animeRankList![i].id} now is ${profile.animeRankList![i].rank}");
                                 }
                               }
                             }
@@ -159,16 +155,12 @@ class _RankListsItemDisplayState extends State<RankListsItemDisplay> {
                                     !done1) {
                                   profile.characterRankList![i].rank--;
                                   done1 = true;
-                                  print(
-                                      "${profile.characterRankList![i].rank + 1} with id ${profile.characterRankList![i].id} now is ${profile.characterRankList![i].rank}");
                                 } else if (profile.characterRankList![i].rank -
                                             1 ==
                                         widget.index - 1 &&
                                     !done2) {
                                   profile.characterRankList![i].rank++;
                                   done2 = true;
-                                  print(
-                                      "${profile.characterRankList![i].rank - 1} with id ${profile.characterRankList![i].id} now is ${profile.characterRankList![i].rank}");
                                 }
                               }
                             }
@@ -212,15 +204,11 @@ class _RankListsItemDisplayState extends State<RankListsItemDisplay> {
                                     !done1) {
                                   profile.animeRankList![i].rank++;
                                   done1 = true;
-                                  print(
-                                      "${profile.animeRankList![i].rank - 1} with id ${profile.animeRankList![i].id} now is ${profile.animeRankList![i].rank}");
                                 } else if (profile.animeRankList![i].rank - 1 ==
                                         widget.index + 1 &&
                                     !done2) {
                                   profile.animeRankList![i].rank--;
                                   done2 = true;
-                                  print(
-                                      "${profile.animeRankList![i].rank + 1} with id ${profile.animeRankList![i].id} now is ${profile.animeRankList![i].rank}");
                                 }
                               }
                             }
@@ -240,16 +228,12 @@ class _RankListsItemDisplayState extends State<RankListsItemDisplay> {
                                     !done1) {
                                   profile.characterRankList![i].rank++;
                                   done1 = true;
-                                  print(
-                                      "${profile.characterRankList![i].rank - 1} with id ${profile.characterRankList![i].id} now is ${profile.characterRankList![i].rank}");
                                 } else if (profile.characterRankList![i].rank -
                                             1 ==
                                         widget.index + 1 &&
                                     !done2) {
                                   profile.characterRankList![i].rank--;
                                   done2 = true;
-                                  print(
-                                      "${profile.characterRankList![i].rank + 1} with id ${profile.characterRankList![i].id} now is ${profile.characterRankList![i].rank}");
                                 }
                               }
                             }
