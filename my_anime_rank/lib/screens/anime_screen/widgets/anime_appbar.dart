@@ -3,29 +3,29 @@ import 'package:my_anime_rank/data_provider.dart';
 import 'package:my_anime_rank/objects/profile.dart';
 import 'package:provider/provider.dart';
 
-class CustomAppBar extends StatefulWidget {
-  const CustomAppBar(
-      {super.key, required this.charID, required this.charRankL});
+class AnimeAppBar extends StatefulWidget {
+  const AnimeAppBar(
+      {super.key, required this.animeID, required this.animeRankL});
 
-  final int charID;
-  final List<RankListItem>? charRankL;
+  final int animeID;
+  final List<RankListItem>? animeRankL;
 
   @override
-  State<CustomAppBar> createState() => _CustomAppBarState(charID, charRankL);
+  State<AnimeAppBar> createState() => _AnimeAppBarState(animeID, animeRankL);
 }
 
-class _CustomAppBarState extends State<CustomAppBar> {
+class _AnimeAppBarState extends State<AnimeAppBar> {
   bool favourite = false;
 
-  late int charID;
-  late List<RankListItem>? charRankL;
+  late int animeID;
+  late List<RankListItem>? animeRankL;
 
-  _CustomAppBarState(this.charID, this.charRankL);
+  _AnimeAppBarState(this.animeID, this.animeRankL);
 
   @override
   void initState() {
     super.initState();
-    favourite = checkFavourite(charRankL, charID);
+    favourite = checkFavourite(animeRankL, animeID);
   }
 
   @override
@@ -72,14 +72,14 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   favourite = !favourite;
                   //if fav add to ranklist
                   if (favourite) {
-                    profile?.characterRankList?.add(RankListItem(
-                        id: charID,
-                        rank: (profile.characterRankList!.isNotEmpty
-                            ? profile.characterRankList!.length + 1
+                    profile?.animeRankList?.add(RankListItem(
+                        id: animeID,
+                        rank: (profile.animeRankList!.isNotEmpty
+                            ? profile.animeRankList!.length + 1
                             : 1)));
                   } else {
                     profileProvider.removeFromList(
-                        getItem(profile!.characterRankList, charID), false);
+                        getItem(profile!.animeRankList, animeID), true);
                   }
                   profileProvider.UpdateJson();
                 });

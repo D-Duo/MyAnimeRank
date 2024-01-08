@@ -1,0 +1,85 @@
+{
+    "nickname": "itsnick69itsbig",
+    "profileImage": "https://w0.peakpx.com/wallpaper/880/618/HD-wallpaper-yuuki-asuna-pretty-bread-adorable-sweet-nice-anime-anime-girl-long-hair-yuuki-lovely-food-chibi-braids-cute-asuna-yuuki-asuna-white-eating-knight-dress-brown-hungry-adore-eat.jpg",
+    "mail": "example@gmail.com",
+    "password": "contraseñasupersegura123",
+    "birthday": {
+        "day": 1,
+        "month": 1,
+        "year": 2001
+    },
+    "gender": 1,
+    "location": {
+        "country": "Spain",
+        "city": "Barcelona"
+    },
+    "favCharacter": "Zero Two",
+    "animeRankList": [
+        {
+            "id": 21,
+            "rank": 1
+        },
+        {
+            "id": 21560,
+            "rank": 2
+        },
+        {
+            "id": 101922,
+            "rank": 3
+        },
+        {
+            "id": 11757,
+            "rank": 4
+        },
+        {
+            "id": 30,
+            "rank": 5
+        },
+        {
+            "id": 21459,
+            "rank": 6
+        },
+        {
+            "id": 100922,
+            "rank": 7
+        },
+        {
+            "id": 99423,
+            "rank": 8
+        }
+    ],
+    "characterRankList": [
+        {
+            "id": 124381,
+            "rank": 1
+        },
+        {
+            "id": 40882,
+            "rank": 2
+        },
+        {
+            "id": 14,
+            "rank": 3
+        },
+        {
+            "id": 16342,
+            "rank": 4
+        },
+        {
+            "id": 138102,
+            "rank": 5
+        },
+        {
+            "id": 138101,
+            "rank": 6
+        },
+        {
+            "id": 13810,
+            "rank": 7
+        },
+        {
+            "id": 88576,
+            "rank": 8
+        }
+    ]
+}

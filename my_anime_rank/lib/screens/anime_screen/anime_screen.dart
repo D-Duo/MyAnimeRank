@@ -1,38 +1,38 @@
 import 'package:flutter/material.dart';
 import 'package:my_anime_rank/data_provider.dart';
-import 'package:my_anime_rank/objects/character.dart';
+import 'package:my_anime_rank/objects/anime.dart';
 import 'package:my_anime_rank/objects/profile.dart';
-import 'package:my_anime_rank/screens/character_screen/widgets/character_display.dart';
-import 'package:my_anime_rank/screens/character_screen/widgets/custom_appbar.dart';
+import 'package:my_anime_rank/screens/anime_screen/widgets/anime_appbar.dart';
+import 'package:my_anime_rank/screens/anime_screen/widgets/anime_display.dart';
 import 'dart:ui';
 
 import 'package:provider/provider.dart';
 
-class CharacterScreen extends StatefulWidget {
-  const CharacterScreen({super.key});
+class AnimeScreen extends StatefulWidget {
+  const AnimeScreen({super.key});
 
   @override
-  _CharacterScreenState createState() => _CharacterScreenState();
+  AnimeScreenState createState() => AnimeScreenState();
 }
 
-class _CharacterScreenState extends State<CharacterScreen> {
+class AnimeScreenState extends State<AnimeScreen> {
   int mainImageIndex = 0;
 
-  late Future<Character> _characterFuture;
+  late Future<Anime> _animeFuture;
   bool _initialized = false;
 
-  Future<void> _reloadData(int charId) async {
+  Future<void> _reloadData(int animeId) async {
     setState(() {
-      _characterFuture = loadCharacterRemote(charId);
+      _animeFuture = loadAnimeRemote(animeId);
     });
   }
 
   @override
   Widget build(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final int charId = ModalRoute.of(context)!.settings.arguments as int;
+    final int animeID = ModalRoute.of(context)!.settings.arguments as int;
     if (!_initialized) {
-      _characterFuture = loadCharacterRemote(charId);
+      _animeFuture = loadAnimeRemote(animeID);
       _initialized = true;
     }
 
@@ -43,7 +43,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
       backgroundColor: const Color.fromARGB(255, 29, 42, 59),
       // Container for the background image
       body: FutureBuilder(
-        future: _characterFuture,
+        future: _animeFuture,
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(
@@ -77,15 +77,15 @@ class _CharacterScreenState extends State<CharacterScreen> {
                       IconButton(
                         icon: const Icon(Icons.refresh_sharp,
                             color: Colors.white),
-                        onPressed: () => _reloadData(charId),
+                        onPressed: () => _reloadData(animeID),
                       ),
                     ],
                   ),
                 ),
                 // Appbar of the screen
-                CustomAppBar(
-                  charID: charId,
-                  charRankL: profile?.characterRankList,
+                AnimeAppBar(
+                  animeID: animeID,
+                  animeRankL: profile?.animeRankList,
                 ),
               ],
             );
@@ -94,13 +94,13 @@ class _CharacterScreenState extends State<CharacterScreen> {
               child: Text('No data available'),
             );
           }
-          final character = snapshot.data!;
+          final anime = snapshot.data!;
           return Container(
             width: double.infinity,
             height: double.infinity,
             decoration: BoxDecoration(
               image: DecorationImage(
-                image: NetworkImage(character.mainImagePaths[mainImageIndex]),
+                image: NetworkImage(anime.mainImagePaths[mainImageIndex]),
                 fit: BoxFit.cover,
               ),
             ),
@@ -115,8 +115,7 @@ class _CharacterScreenState extends State<CharacterScreen> {
                   height: double.infinity,
                   decoration: BoxDecoration(
                     image: DecorationImage(
-                      image: NetworkImage(
-                          character.mainImagePaths[mainImageIndex]),
+                      image: NetworkImage(anime.mainImagePaths[mainImageIndex]),
                       fit: BoxFit.fitHeight,
                     ),
                   ),
@@ -133,13 +132,13 @@ class _CharacterScreenState extends State<CharacterScreen> {
                                 : screenSize.height - 210,
                           ),
                           //
-                          CharacterDisplay(character: character),
+                          AnimeDisplay(anime: anime),
                         ],
                       ),
                       // Appbar of the screen
-                      CustomAppBar(
-                        charID: charId,
-                        charRankL: profile?.characterRankList,
+                      AnimeAppBar(
+                        animeID: animeID,
+                        animeRankL: profile?.animeRankList,
                       ),
                     ],
                   ),

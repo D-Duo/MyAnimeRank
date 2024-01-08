@@ -81,11 +81,11 @@ class BasicDescription extends StatelessWidget {
           ),
           // Expandable text
           CustomExpandable(
-            shortText: character.descriptionShort,
+            shortText: character.descriptionShort!,
             longText: character.descriptionLong,
             triggerTextMore: "Show spoilers...",
             triggerTextLess: "Hide spoilers...",
-          )
+          ),
         ],
       ),
     );

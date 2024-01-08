@@ -2,10 +2,12 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class TitleItem {
+  int? apiId;
   final String title;
   final String imagePath;
 
   TitleItem({
+    this.apiId,
     required this.title,
     required this.imagePath,
   });
@@ -14,8 +16,8 @@ class TitleItem {
 class Character {
   int? apiId;
   final String name;
-  final String descriptionShort;
-  final String? descriptionLong;
+  String? descriptionShort;
+  String? descriptionLong;
   final List<String> mainImagePaths;
   final String? bestAlias;
   final int favs;
@@ -37,24 +39,40 @@ class Character {
   Character.fromJsonRemote(Map<String, dynamic> json)
       : apiId = json["id"],
         name = json["name"]["full"],
-        descriptionShort = json["description"],
-        descriptionLong = json["descriptionLong"],
-        bestAlias = json["name"]["alternative"][0],
+        bestAlias = (json["name"]["alternative"] == null)
+            ? json["name"]["alternative"][0]
+            : " ",
+        mainImagePaths = [json["image"]["large"]],
         favs = json["favourites"] ?? 0,
         rank = json["rank"] ?? "Unranked",
-        mainImagePaths = [json["image"]["large"]],
-        filmography = (json["filmography"] as List<dynamic>?)
+        filmography = (json["media"]["edges"] as List<dynamic>?)
             ?.map<TitleItem>((item) => TitleItem(
-                  title: item["title"] as String,
-                  imagePath: item["imagePath"] as String,
+                  apiId: item["node"]["id"] as int,
+                  title: item["node"]["title"]["romaji"] as String,
+                  imagePath: item["node"]["coverImage"]["large"] as String,
                 ))
-            .toList();
+            .toList() {
+    // Split description into short and long based on ~! and !~
+    final RegExp exp = RegExp(r'~!');
+    final Match? match = exp.firstMatch(json["description"]);
+
+    if (match != null) {
+      descriptionShort = json["description"].substring(0, match.start);
+
+      descriptionLong = json["description"];
+      descriptionLong =
+          descriptionLong!.replaceAll('~!', '').replaceAll('!~', '');
+    } else {
+      // If no match, set both to the original description
+      descriptionShort = json["description"];
+    }
+  }
 }
 
 Future<Character> loadCharacterRemote(int characterId) async {
   dynamic lastException;
 
-  final query = '''
+  const query = '''
       query (\$id: Int) {
         Character (id: \$id) {
           id
@@ -65,8 +83,22 @@ Future<Character> loadCharacterRemote(int characterId) async {
           image {
             large
           }
-          description
+          description (asHtml: false)
           favourites
+          media (type: ANIME) {
+            edges {
+              node {
+                id
+                title {
+                  romaji
+                }
+                coverImage {
+                  large
+                }
+              }
+              characterRole              
+            }
+          }
         }
       }
     ''';
@@ -93,15 +125,16 @@ Future<Character> loadCharacterRemote(int characterId) async {
     return character;
   } else if (response.statusCode == 429) {
     final retryAfter = response.headers['retry-after'];
-    lastException = '''Error in loadCharacterRemote: ${response.statusCode}. Surpassed requests per minute limit.
+    lastException =
+        '''Error in loadCharacterRemote: ${response.statusCode}. Surpassed requests per minute limit.
     Retry after ${retryAfter ?? 'unknown'} seconds pressing the next button.''';
     return Future.error(lastException); // Return an error future
   } else {
-    lastException = ('Error in loadCharacterRemote: ${response.statusCode}. Retry pressing the next button.');
+    lastException =
+        ('Error in loadCharacterRemote: ${response.statusCode}. Retry pressing the next button.');
     return Future.error(lastException); // Return an error future
   }
 }
-
 
 Future<List<Character>> loadCharacters() async {
   List<Future<Character>> characterFutures = [

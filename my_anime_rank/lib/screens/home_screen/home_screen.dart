@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:my_anime_rank/objects/character.dart';
-import 'package:my_anime_rank/screens/home_screen/widgets/character_gridItem.dart';
-
-//Future<List<Character>> characters = loadCharactersLocal();
+import 'package:my_anime_rank/widgets/screens_navigation_bar.dart';
+import 'package:my_anime_rank/objects/profile.dart';
+import 'package:my_anime_rank/data_provider.dart';
+import 'package:provider/provider.dart';
+import 'package:my_anime_rank/screens/home_screen/widgets/base_home_display.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -12,117 +13,98 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late Future<List<Character>> _charactersFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _charactersFuture = loadCharacters();
-  }
-
-  Future<void> _reloadData() async {
-    setState(() {
-      _charactersFuture = loadCharacters();
-    });
-  }
+  TextEditingController searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     //final screenSize = MediaQuery.of(context).size;
     //final itemsPerRow = (screenSize.width / 150).floor();
+    Profile? profile = Provider.of<ProfileProvider>(context).profile;
 
-    return Scaffold(
-      backgroundColor: const Color.fromARGB(255, 29, 42, 59),
-      appBar: AppBar(
-        backgroundColor: const Color.fromARGB(255, 19, 28, 39),
-        title: const Text(
-          "Pick your waifu:",
-          style: TextStyle(
-            color: Colors.white,
+    if (profile != null) {
+      return Scaffold(
+        backgroundColor: const Color.fromARGB(255, 29, 42, 59),
+        appBar: AppBar(
+          scrolledUnderElevation: 0,
+          backgroundColor: const Color.fromARGB(255, 19, 28, 39),
+          centerTitle: true,
+          title: Image.asset("assets/MyAnimeRank_Logo_emptyBackground.png",
+              width: 80),
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 20.0),
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pushNamed("/profileDemo"),
+              child: Container(
+                height: 15,
+                width: 15,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  image: DecorationImage(
+                    image: NetworkImage(profile.profileImage),
+                    fit: BoxFit.cover,
+                  ),
+                ),
+              ),
+            ),
           ),
         ),
-      ),
-      bottomNavigationBar: BottomAppBar(
-        height: 50,
-        color: const Color.fromARGB(
-            255, 29, 42, 59), // Set the color of the BottomAppBar
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            IconButton(
-              icon: const Icon(Icons.person),
-              onPressed: () {
-                // Handle favorite button press
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.search),
-              onPressed: () => Navigator.of(context).pushNamed("/discoverDemo"),
-            ),
-            IconButton(
-              icon: const Icon(Icons.calendar_today_rounded),
-              onPressed: () {
-                // Handle favorite button press
-              },
-            ),
-            IconButton(
-              icon: const Icon(Icons.format_list_bulleted_rounded),
-              onPressed: () {
-                // Handle favorite button press
-              },
-            ),
+        bottomNavigationBar: const ScreensNavigationBar(
+          screen: "/",
+          screenId: 2,
+        ),
+        body: Stack(
+          children: [
+            const BaseHomeDisplay(),
+            Container(
+              height: 50,
+              decoration:
+                  const BoxDecoration(color: Color.fromARGB(255, 19, 28, 39)),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(bottom: 5),
+                    height: 40,
+                    width: MediaQuery.of(context).size.width * 0.6,
+                    child: TextField(
+                      controller: searchController,
+                      decoration: InputDecoration(
+                        hintText: "Search",
+                        hintStyle: const TextStyle(
+                          color: Color.fromARGB(255, 52, 72, 95), // fontcolor of hint
+                          fontSize: 14.0, // fontsize of hint
+                        ),
+                        suffixIcon: IconButton(
+                          icon: const Icon(
+                            Icons.search,
+                            color: Colors.white,
+                          ),
+                          onPressed: () {
+                            setState(() {
+                              String temp = searchController.text;
+                              searchController.text = "";
+                              Navigator.of(context).pushNamed("/searchDemo", arguments: temp);
+                            });
+                          },
+                        ),
+                      ),
+                      style: const TextStyle(
+                        color: Colors.white, // text color inside textfield
+                        fontSize: 18.0, // fontsize inside textfield
+                      ),
+                      cursorColor: Colors.blue, // cursor color
+                    ),
+                  ),
+                ],
+              ),
+            )
           ],
         ),
-      ),
-      body: FutureBuilder(
-        future: _charactersFuture,
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          } else if (snapshot.hasError) {
-            return Center(
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text('Error: ${snapshot.error}'),
-                    const SizedBox(height: 20,),
-                    IconButton(
-                      icon: const Icon(Icons.refresh_sharp),
-                      onPressed: _reloadData,
-                    ),
-                  ],
-                ),
-            );
-          } else if (!snapshot.hasData) {
-            return const Center(
-              child: Text('No data available'),
-            );
-          }
-          final characters = snapshot.data!;
-          return GridView.builder(
-            itemCount: characters.length,
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 250,
-              crossAxisSpacing: 8,
-              mainAxisSpacing: 8,
-              childAspectRatio: 2 / 3,
-            ),
-            padding: const EdgeInsets.fromLTRB(20, 50, 20, 50),
-            itemBuilder: (context, index) {
-              return GestureDetector(
-                onTap: () => Navigator.of(context).pushNamed("/characterDemo",
-                    arguments: characters[index].apiId),
-                child: CharacterGridItem(
-                  character: characters[index],
-                ),
-              );
-            },
-          );
-        },
-      ),
-    );
+      );
+    } else {
+      return const CircularProgressIndicator();
+    }
   }
 }

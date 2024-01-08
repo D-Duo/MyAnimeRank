@@ -1,5 +1,5 @@
 name: my_anime_rank
-description: "A new Flutter project."
+description: "App with my anime list api so you can have a rank of your favourites anime and characters"
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -37,6 +37,9 @@ dependencies:
   cupertino_icons: ^1.0.2
   expandable: ^5.0.1
   http: ^1.1.2
+  provider: ^6.1.1
+  image_picker: ^1.0.6
+  path_provider: ^2.1.1
 
 dev_dependencies:
   flutter_test:
@@ -61,8 +64,10 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  # assets:
-  #  - assets/images/BoaHancock/BoaHancock.jpg
+  assets:
+   - assets/profile.json
+   - assets/MyAnimeRank_Logo.png
+   - assets/MyAnimeRank_Logo_emptyBackground.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

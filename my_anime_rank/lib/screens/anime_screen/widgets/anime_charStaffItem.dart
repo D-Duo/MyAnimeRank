@@ -1,15 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:my_anime_rank/objects/character.dart';
+import 'package:my_anime_rank/objects/anime.dart';
 
-class TitlesScrollableHorizontalDisplay extends StatelessWidget {
-  const TitlesScrollableHorizontalDisplay({
+class CharStaffHorizontalDisplay extends StatelessWidget {
+  const CharStaffHorizontalDisplay({
     super.key,
-    required this.titles,
-    required this.initialPading,
+    required this.charItem,
   });
 
-  final List<TitleItem> titles;
-  final double initialPading;
+  final List<CharacterItem> charItem;
 
   @override
   Widget build(BuildContext context) {
@@ -18,11 +16,9 @@ class TitlesScrollableHorizontalDisplay extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          if(initialPading>0)
-            SizedBox(width: initialPading,),
-          for (TitleItem title in titles)
-            TitleItemDisplay(
-              title: title,
+          for (CharacterItem char in charItem)
+            CharStaffItem(
+              charItem: char,
             ),
         ],
       ),
@@ -30,19 +26,19 @@ class TitlesScrollableHorizontalDisplay extends StatelessWidget {
   }
 }
 
-class TitleItemDisplay extends StatelessWidget {
-  const TitleItemDisplay({
+class CharStaffItem extends StatelessWidget {
+  const CharStaffItem({
     super.key,
-    required this.title,
+    required this.charItem,
   });
 
-  final TitleItem title;
+  final CharacterItem charItem;
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () => Navigator.of(context).pushNamed("/animeDemo",
-                    arguments: title.apiId),
+      onTap: () => Navigator.of(context)
+          .pushNamed("/characterDemo", arguments: charItem.Cid),
       child: Container(
         width: 150,
         child: Column(
@@ -51,7 +47,7 @@ class TitleItemDisplay extends StatelessWidget {
               height: 200,
               decoration: BoxDecoration(
                 image: DecorationImage(
-                  image: NetworkImage(title.imagePath),
+                  image: NetworkImage(charItem.CimagePath),
                   fit: BoxFit.cover,
                 ),
               ),
@@ -65,12 +61,11 @@ class TitleItemDisplay extends StatelessWidget {
                   color: Color.fromARGB(255, 54, 85, 131),
                 ),
                 margin: const EdgeInsets.only(left: 10, right: 10),
-                child: Padding(
-                  padding: const EdgeInsets.all(5),
+                child: Center(
                   child: Text(
-                    title.title,
+                    charItem.Cname,
                     style: const TextStyle(
-                      fontSize: 10,
+                      fontSize: 12,
                       fontWeight: FontWeight.bold,
                       color: Color.fromARGB(255, 174, 184, 197),
                     ),
