@@ -22,6 +22,12 @@
 
 Each screen has a top bar with navigation items or filters for the data shown. There will also be a botom bar for navigation through screens in the main screens.
 
+## Screenshots
+
+![Some app screenshots](/screenshots/screenshots1.png?raw=true "Some app screenshots")
+![Some app screenshots](/screenshots/screenshots2.png?raw=true "Some app screenshots")
+![Some app screenshots](/screenshots/screenshots3.png?raw=true "Some app screenshots")
+
 ## Features
 - The App has a profile preset asset. When the user modifies the profile, it creates a local json file to store localy the user's data on the app data folder.
 - All the data displayed (with the exception of the profile data) is dinamically loaded from the API AniList (this can lead to some problems if the API changes or so).
@@ -29,7 +35,7 @@ Each screen has a top bar with navigation items or filters for the data shown. T
 ## Developers
 
  - Francisco Ferrerós - [_kikofp02_](https://github.com/kikofp02)
- - Jan Neto Llorens - [_kikofp02_](https://github.com/JanNetoLlorens)
+ - Jan Neto Llorens - [_JanNetoLlorens_](https://github.com/JanNetoLlorens)
  - Lluís González - [_punto16_](https://github.com/punto16)
 
 [Project's Repository](https://github.com/D-Duo/MyAnimeRank)
